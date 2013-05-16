@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: My Application
+Bundle-SymbolicName: de.hsrm.thesis.bachelor.ui.swt;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: de.hsrm.thesis.bachelor.ui.swt.Activator
+Export-Package: de.hsrm.thesis.bachelor.ui.swt;uses:="org.eclipse.scout.rt.ui.swt,org.eclipse.scout.rt.client.session,org.osgi.framework",
+ de.hsrm.thesis.bachelor.ui.swt.application,
+ de.hsrm.thesis.bachelor.ui.swt.application.button,
+ de.hsrm.thesis.bachelor.ui.swt.application.menu,
+ de.hsrm.thesis.bachelor.ui.swt.editor,
+ de.hsrm.thesis.bachelor.ui.swt.perspective,
+ de.hsrm.thesis.bachelor.ui.swt.views
+Require-Bundle: de.hsrm.thesis.bachelor.client;visibility:=reexport,
+ de.hsrm.thesis.bachelor.shared,
+ org.eclipse.scout.rt.ui.swt,
+ org.eclipse.scout.net,
+ org.eclipse.equinox.app,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.views
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
