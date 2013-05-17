@@ -29,6 +29,8 @@
    </vm>
 
    <plugins>
+      <plugin id="com.bsiag.scout.rt.ui.swing.laf.rayo.fragment" fragment="true"/>
+      <plugin id="com.bsiag.scout.rt.ui.swing.rayo"/>
       <plugin id="de.hsrm.thesis.bachelor.client"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.ui.swing"/>

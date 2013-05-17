@@ -1,5 +1,7 @@
 package de.hsrm.thesis.bachelor.client.ui.desktop;
 
+import java.util.ArrayList;
+
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.logger.IScoutLogger;
@@ -8,7 +10,6 @@ import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
-import org.eclipse.scout.rt.client.ui.desktop.bookmark.menu.AbstractBookmarkMenu;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
@@ -21,6 +22,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.AdministrationOutline;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.UserNodePage;
 import de.hsrm.thesis.bachelor.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
@@ -32,7 +34,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   @SuppressWarnings("unchecked")
   @Override
   protected Class<? extends IOutline>[] getConfiguredOutlines() {
-    return new Class[]{ AdministrationOutline.class};
+    ArrayList<Class> outlines = new ArrayList<Class>();
+    outlines.add(AdministrationOutline.class);
+    return outlines.toArray(new Class[outlines.size()]);
   }
 
   @Override
@@ -42,11 +46,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   @Override
   protected void execOpened() throws ProcessingException {
-    //If it is a mobile or tablet device, the DesktopExtension in the mobile plugin takes care of starting the correct forms.
-    if (!UserAgentUtility.isDesktopDevice()) {
-      return;
-    }
-
     // outline tree
     DefaultOutlineTreeForm treeForm = new DefaultOutlineTreeForm();
     treeForm.setIconId(Icons.EclipseScout);
@@ -61,6 +60,55 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       setOutline(getAvailableOutlines()[0]);
     }
 
+  }
+
+  public static Desktop get() {
+    return (Desktop) ClientSyncJob.getCurrentSession().getDesktop();
+  }
+
+  public UserNodePage getUserNodePage() {
+//    IPage invisibleRootPage = getChatOutline().getRootPage();
+//    if (invisibleRootPage != null && invisibleRootPage.getChildNodeCount() > 0) {
+//      IPage p = invisibleRootPage.getChildPage(0);
+//      if (p instanceof UserNodePage) {
+//        return (UserNodePage) p;
+//      }
+//    }
+    return null;
+  }
+
+  @Order(10.0)
+  public class AboutMenu extends AbstractMenu {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("AboutMenu");
+    }
+
+    @Override
+    public void execAction() throws ProcessingException {
+      ScoutInfoForm form = new ScoutInfoForm();
+      form.startModify();
+    }
+  }
+
+  @Order(20.0)
+  public class LogoutMenu extends AbstractMenu {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Logout");
+    }
+
+    @Override
+    protected void execPrepareAction() throws ProcessingException {
+      setVisible(UserAgentUtility.isDesktopDevice());
+    }
+
+    @Override
+    protected void execAction() throws ProcessingException {
+      ClientSession.get().stopSession();
+    }
   }
 
   @Order(10.0)
@@ -86,46 +134,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(20.0)
-  public class ToolsMenu extends AbstractMenu {
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("ToolsMenu");
-    }
-  }
-
-  @Order(25)
-  public class BookmarkMenu extends AbstractBookmarkMenu {
-    public BookmarkMenu() {
-      super(Desktop.this);
-    }
-  }
-
-  @Order(30.0)
-  public class HelpMenu extends AbstractMenu {
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("HelpMenu");
-    }
-
-    @Order(10.0)
-    public class AboutMenu extends AbstractMenu {
-
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("AboutMenu");
-      }
-
-      @Override
-      public void execAction() throws ProcessingException {
-        ScoutInfoForm form = new ScoutInfoForm();
-        form.startModify();
-      }
-    }
-  }
-
   @Order(10.0)
   public class RefreshOutlineKeyStroke extends AbstractKeyStroke {
 
@@ -145,7 +153,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(20.0)
+  @Order(10.0)
   public class AdministrationOutlineViewButton extends AbstractOutlineViewButton {
     public AdministrationOutlineViewButton() {
       super(Desktop.this, AdministrationOutline.class);

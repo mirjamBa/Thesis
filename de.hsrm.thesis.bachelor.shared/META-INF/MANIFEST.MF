@@ -5,10 +5,11 @@ Bundle-SymbolicName: de.hsrm.thesis.bachelor.shared;singleton:=true
 Bundle-Version: 3.9.0.qualifier
 Bundle-Activator: de.hsrm.thesis.bachelor.shared.Activator
 Export-Package: de.hsrm.thesis.bachelor.shared,
+ de.hsrm.thesis.bachelor.shared.notification,
  de.hsrm.thesis.bachelor.shared.security,
- de.hsrm.thesis.bachelor.shared.services,
  de.hsrm.thesis.bachelor.shared.services.code,
  de.hsrm.thesis.bachelor.shared.services.common.text,
+ de.hsrm.thesis.bachelor.shared.services.outline,
  de.hsrm.thesis.bachelor.shared.services.process,
  de.hsrm.thesis.bachelor.shared.util
 Require-Bundle: org.eclipse.core.runtime,

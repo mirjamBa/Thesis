@@ -6,9 +6,12 @@ Bundle-Version: 3.9.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.hsrm.thesis.bachelor.server.Activator
 Export-Package: de.hsrm.thesis.bachelor.server,
+ de.hsrm.thesis.bachelor.server.security,
  de.hsrm.thesis.bachelor.server.services,
  de.hsrm.thesis.bachelor.server.services.common.security,
  de.hsrm.thesis.bachelor.server.services.common.sql,
+ de.hsrm.thesis.bachelor.server.services.outline,
+ de.hsrm.thesis.bachelor.server.servlet,
  de.hsrm.thesis.bachelor.server.util
 Require-Bundle: org.eclipse.core.runtime,
  de.hsrm.thesis.bachelor.shared,

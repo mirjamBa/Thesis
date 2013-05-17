@@ -12,8 +12,29 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.bachelor.shared.services.process.IPasswordProcessService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.process.INotificationProcessService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IChatService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IIconProcessService">
+      </proxy>
+      <service
+            factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
+            class="de.hsrm.thesis.bachelor.client.services.BahBahNotificationConsumerService"
+            session="de.hsrm.thesis.bachelor.client.ClientSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
+            class="de.hsrm.thesis.bachelor.client.services.BuddyIconProviderService"
+            session="de.hsrm.thesis.bachelor.client.ClientSession">
+      </service>
    </extension>
-   
    <extension
          name=""
          point="org.eclipse.scout.service.services">

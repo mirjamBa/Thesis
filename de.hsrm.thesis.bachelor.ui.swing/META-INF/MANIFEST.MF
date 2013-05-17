@@ -3,12 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: My Application
 Bundle-SymbolicName: de.hsrm.thesis.bachelor.ui.swing;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
 Bundle-Activator: de.hsrm.thesis.bachelor.ui.swing.Activator
-Bundle-ActivationPolicy: lazy
+Export-Package: de.hsrm.thesis.bachelor.ui.swing;uses:="org.eclipse.scout.rt.ui.swing,org.eclipse.scout.rt.client.session,org.osgi.framework"
 Require-Bundle: org.eclipse.scout.rt.ui.swing,
  de.hsrm.thesis.bachelor.client;visibility:=reexport,
  de.hsrm.thesis.bachelor.shared,
- org.eclipse.scout.net
-Export-Package: de.hsrm.thesis.bachelor.ui.swing;uses:="org.eclipse.scout.rt.ui.swing,org.eclipse.scout.rt.client.session,org.osgi.framework"
-Bundle-ClassPath: .
+ org.eclipse.scout.net,
+ com.bsiag.scout.rt.ui.swing.rayo
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

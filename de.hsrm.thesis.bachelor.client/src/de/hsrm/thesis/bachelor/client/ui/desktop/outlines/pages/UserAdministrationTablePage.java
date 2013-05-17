@@ -34,7 +34,7 @@ public class UserAdministrationTablePage extends AbstractExtensiblePageWithTable
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("UserAdministration");
+    return TEXTS.get("Users");
   }
 
   @Override

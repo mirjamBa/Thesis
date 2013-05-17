@@ -14,6 +14,7 @@ import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
+import org.eclipse.scout.service.SERVICES;
 import org.osgi.framework.ServiceRegistration;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
@@ -21,8 +22,11 @@ import de.hsrm.thesis.bachelor.server.util.UserUtility;
 import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.ReadUsersPermission;
+import de.hsrm.thesis.bachelor.shared.security.RegisterUserPermission;
+import de.hsrm.thesis.bachelor.shared.security.UnregisterUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
+import de.hsrm.thesis.bachelor.shared.services.process.INotificationProcessService;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 import de.hsrm.thesis.bachelor.shared.services.process.UserFormData;
 
@@ -34,6 +38,26 @@ public class UserProcessService extends AbstractService implements IUserProcessS
   public void initializeService(ServiceRegistration registration) {
     super.initializeService(registration);
     m_users = Collections.synchronizedSet(new HashSet<String>());
+  }
+
+  @Override
+  public void registerUser() throws ProcessingException {
+    if (!ACCESS.check(new RegisterUserPermission())) {
+      throw new VetoException(TEXTS.get("AuthorizationFailed"));
+    }
+
+    m_users.add(ServerSession.get().getUserId());
+    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
+  }
+
+  @Override
+  public void unregisterUser() throws ProcessingException {
+    if (!ACCESS.check(new UnregisterUserPermission())) {
+      throw new VetoException(TEXTS.get("AuthorizationFailed"));
+    }
+
+    m_users.remove(ServerSession.get().getUserId());
+    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
   }
 
   @Override
@@ -82,6 +106,15 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     }
 
     return SQL.select("SELECT u_id, username, permission_id FROM TABUSERS");
+  }
+
+  @Override
+  public Set<String> getUsersOnline() throws ProcessingException {
+    if (!ACCESS.check(new ReadUsersPermission())) {
+      throw new VetoException(TEXTS.get("AuthorizationFailed"));
+    }
+
+    return m_users;
   }
 
   @SuppressWarnings("unchecked")

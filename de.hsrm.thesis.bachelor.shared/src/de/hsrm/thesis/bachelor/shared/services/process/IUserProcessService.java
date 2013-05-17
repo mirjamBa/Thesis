@@ -1,5 +1,7 @@
 package de.hsrm.thesis.bachelor.shared.services.process;
 
+import java.util.Set;
+
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
@@ -20,4 +22,10 @@ public interface IUserProcessService extends IService {
   void createUser(UserFormData formData) throws ProcessingException;
 
   void updateUser(UserFormData formData) throws ProcessingException;
+
+  public void registerUser() throws ProcessingException;
+
+  public void unregisterUser() throws ProcessingException;
+
+  public Set<String> getUsersOnline() throws ProcessingException;
 }

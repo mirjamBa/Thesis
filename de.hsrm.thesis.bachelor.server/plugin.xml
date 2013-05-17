@@ -34,10 +34,29 @@
             class="de.hsrm.thesis.bachelor.server.services.common.sql.DerbySqlService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.NotificationProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.ChatService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.IconProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""
          point="org.eclipse.equinox.http.registry.servlets">
+      <servlet
+            alias="/auth"
+            class="de.hsrm.thesis.bachelor.server.servlet.BahBahAuthenticationServlet">
+      </servlet>
       <servlet
             alias="/process"
             class="org.eclipse.scout.rt.server.ServiceTunnelServlet">
@@ -98,20 +117,6 @@
       </filter>
    </extension>
    <extension
-         name=""
-         point="org.eclipse.scout.http.servletfilter.filters">
-      <filter
-            aliases="/process /remotefiles /updatesite"
-            class="org.eclipse.scout.http.servletfilter.security.BasicSecurityFilter"
-            ranking="20">
-      </filter>
-      <filter
-            aliases="/process /remotefiles /updatesite"
-            class="org.eclipse.scout.http.servletfilter.security.AnonymousSecurityFilter"
-            ranking="30">
-      </filter>
-   </extension>
-   <extension
          id="app"
          name="Server Application"
          point="org.eclipse.core.runtime.applications">
@@ -126,8 +131,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            application="de.hsrm.thesis.bachelor.server.app"
-            name="bachelor Server">
+            name="bachelor Server"
+            application="de.hsrm.thesis.bachelor.server.app">
          <property
                name="appName"
                value="bachelor Server">

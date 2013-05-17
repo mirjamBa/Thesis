@@ -3,8 +3,8 @@ package de.hsrm.thesis.bachelor.client.ui.desktop.outlines;
 import java.util.Collection;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
-import org.eclipse.scout.rt.extension.client.ui.desktop.outline.AbstractExtensibleOutline;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
@@ -15,7 +15,7 @@ import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 
-public class AdministrationOutline extends AbstractExtensibleOutline {
+public class AdministrationOutline extends AbstractOutline {
 
   @Override
   protected String getConfiguredTitle() {

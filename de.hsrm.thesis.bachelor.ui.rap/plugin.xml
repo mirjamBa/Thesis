@@ -108,4 +108,17 @@
       class="org.eclipse.scout.rt.ui.rap.mobile.servlets.DeviceDispatcherServlet">
     </servlet>
   </extension>
+  <extension point="org.eclipse.scout.rt.extension.client.desktopExtensions">
+      <desktopExtension
+            active="true"
+            class="org.eclipse.scout.rt.client.mobile.ui.desktop.DeviceTransformationDesktopExtension">
+      </desktopExtension>
+   </extension>
+  <extension
+        point="org.eclipse.equinox.http.registry.servlets">
+     <servlet
+           alias="/"
+           class="org.eclipse.scout.rt.ui.rap.mobile.servlets.DeviceDispatcherServlet">
+     </servlet>
+  </extension>
 </plugin>

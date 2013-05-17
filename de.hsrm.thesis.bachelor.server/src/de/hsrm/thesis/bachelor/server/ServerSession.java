@@ -47,6 +47,8 @@ public class ServerSession extends AbstractServerSession {
 
       setPermission(SERVICES.getService(IUserProcessService.class).getUserPermission(getUserId()));
 
+      SERVICES.getService(IUserProcessService.class).registerUser();
+
     }
   }
 }

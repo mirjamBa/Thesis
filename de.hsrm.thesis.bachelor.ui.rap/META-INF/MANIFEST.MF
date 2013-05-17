@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RAP Bundle
 Bundle-SymbolicName: de.hsrm.thesis.bachelor.ui.rap;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 3.9.0.qualifier
 Bundle-Activator: de.hsrm.thesis.bachelor.ui.rap.Activator
 Bundle-Vendor: Eclipse Scout Project
 Export-Package: de.hsrm.thesis.bachelor.ui.rap
@@ -15,6 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.http.servletfilter,
  org.eclipse.scout.rt.ui.rap.mobile,
  org.eclipse.scout.rt.ui.rap.theme.rayo,
- org.eclipse.scout.rt.client.mobile
+ org.eclipse.scout.rt.client.mobile,
+ javax.servlet;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Scout-Project: org.eclipse.scout.rt
 Bundle-ActivationPolicy: lazy

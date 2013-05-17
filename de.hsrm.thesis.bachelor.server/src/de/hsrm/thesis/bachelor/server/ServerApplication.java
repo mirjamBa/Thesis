@@ -18,7 +18,7 @@ import org.eclipse.scout.service.SERVICES;
  * osgi.console=
  * eclipse.consoleLog=true
  * org.eclipse.equinox.http.jetty.http.port=8080
- * org.eclipse.equinox.http.jetty.context.path=/bachelor_server
+ * org.eclipse.equinox.http.jetty.context.path=/bachelor
  * osgi.bundles=org.eclipse.equinox.common@2:start, org.eclipse.update.configurator@start,
  * org.eclipse.equinox.http.jetty@start, org.eclipse.equinox.http.registry@start, org.eclipse.core.runtime@start
  * osgi.bundles.defaultStartLevel=4

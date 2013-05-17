@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.hsrm.thesis.bachelor.client;singleton:=true
 Bundle-Version: 3.9.0.qualifier
 Bundle-Activator: de.hsrm.thesis.bachelor.client.Activator
 Export-Package: de.hsrm.thesis.bachelor.client,
+ de.hsrm.thesis.bachelor.client.services,
  de.hsrm.thesis.bachelor.client.ui.desktop,
  de.hsrm.thesis.bachelor.client.ui.desktop.outlines,
  de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages,
