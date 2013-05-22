@@ -5,21 +5,37 @@ Bundle-SymbolicName: de.hsrm.thesis.bachelor.server;singleton:=true
 Bundle-Version: 3.9.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.hsrm.thesis.bachelor.server.Activator
-Export-Package: de.hsrm.thesis.bachelor.server,
- de.hsrm.thesis.bachelor.server.security,
- de.hsrm.thesis.bachelor.server.services,
- de.hsrm.thesis.bachelor.server.services.common.security,
- de.hsrm.thesis.bachelor.server.services.common.sql,
- de.hsrm.thesis.bachelor.server.services.outline,
- de.hsrm.thesis.bachelor.server.servlet,
- de.hsrm.thesis.bachelor.server.util
+Export-Package: de.hsrm.thesis.bachelor.server;
+  uses:="org.eclipse.core.runtime,
+   org.eclipse.scout.rt.server,
+   org.eclipse.scout.rt.server.scheduler,
+   org.eclipse.scout.rt.shared.services.common.code,
+   org.eclipse.scout.service,
+   de.hsrm.thesis.bachelor.shared,
+   org.eclipse.equinox.app,
+   org.osgi.framework,
+   javax.security.auth",
+ de.hsrm.thesis.bachelor.server.security;uses:="javax.servlet,org.eclipse.scout.http.servletfilter.security,javax.servlet.http",
+ de.hsrm.thesis.bachelor.server.services;
+  uses:="de.hsrm.thesis.bachelor.shared.services,
+   org.eclipse.scout.rt.server.services.common.pwd,
+   de.hsrm.thesis.bachelor.shared.services.process,
+   org.eclipse.scout.service,
+   org.eclipse.scout.rt.shared.services.common.code,
+   org.osgi.framework",
+ de.hsrm.thesis.bachelor.server.services.common.security;uses:="org.eclipse.scout.rt.server.services.common.security",
+ de.hsrm.thesis.bachelor.server.services.common.sql;uses:="org.eclipse.scout.service,org.eclipse.scout.rt.services.common.jdbc",
+ de.hsrm.thesis.bachelor.server.services.outline;uses:="org.eclipse.scout.service,de.hsrm.thesis.bachelor.shared.services.outline",
+ de.hsrm.thesis.bachelor.server.servlet;uses:="org.eclipse.scout.http.servletfilter,javax.servlet.http",
+ de.hsrm.thesis.bachelor.server.util;uses:="de.hsrm.thesis.bachelor.shared.util"
 Require-Bundle: org.eclipse.core.runtime,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.rt.server,
  org.eclipse.scout.http.servletfilter,
  org.eclipse.equinox.http.registry,
  org.eclipse.scout.rt.jdbc.derby,
- org.eclipse.scout.jaxws216;bundle-version="2.1.6"
+ org.eclipse.scout.jaxws216;bundle-version="2.1.6",
+ net.sourceforge.tess4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"

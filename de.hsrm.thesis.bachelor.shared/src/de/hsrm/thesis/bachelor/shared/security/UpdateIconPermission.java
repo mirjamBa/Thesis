@@ -1,8 +1,8 @@
 package de.hsrm.thesis.bachelor.shared.security;
 
-import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
+import java.security.BasicPermission;
 
-public class UpdateIconPermission extends BasicHierarchyPermission {
+public class UpdateIconPermission extends BasicPermission {
 
   private static final long serialVersionUID = 0L;
 

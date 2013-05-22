@@ -16,14 +16,19 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
+import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
+import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.AdministrationOutline;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.ChatOutline;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.UserNodePage;
 import de.hsrm.thesis.bachelor.shared.Icons;
+import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
@@ -35,7 +40,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   @Override
   protected Class<? extends IOutline>[] getConfiguredOutlines() {
     ArrayList<Class> outlines = new ArrayList<Class>();
+    outlines.add(FileManagementOutline.class);
     outlines.add(AdministrationOutline.class);
+//    outlines.add(ChatOutline.class);
     return outlines.toArray(new Class[outlines.size()]);
   }
 
@@ -67,13 +74,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   public UserNodePage getUserNodePage() {
-//    IPage invisibleRootPage = getChatOutline().getRootPage();
-//    if (invisibleRootPage != null && invisibleRootPage.getChildNodeCount() > 0) {
-//      IPage p = invisibleRootPage.getChildPage(0);
-//      if (p instanceof UserNodePage) {
-//        return (UserNodePage) p;
-//      }
-//    }
+    //    IPage invisibleRootPage = getChatOutline().getRootPage();
+    //    if (invisibleRootPage != null && invisibleRootPage.getChildNodeCount() > 0) {
+    //      IPage p = invisibleRootPage.getChildPage(0);
+    //      if (p instanceof UserNodePage) {
+    //        return (UserNodePage) p;
+    //      }
+    //    }
     return null;
   }
 
@@ -92,7 +99,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(20.0)
+  @Order(30.0)
   public class LogoutMenu extends AbstractMenu {
 
     @Override
@@ -111,7 +118,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(10.0)
+  @Order(20.0)
   public class FileMenu extends AbstractMenu {
 
     @Override
@@ -153,7 +160,33 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
+  @Order(40.0)
+  public class OCRTestingMenu extends AbstractExtensibleMenu {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("OCRTesting");
+    }
+
+    @Override
+    protected void execAction() throws ProcessingException {
+      SERVICES.getService(IOCRProcessService.class).doOCR();
+    }
+  }
+
   @Order(10.0)
+  public class FileManagementOutlineViewButton extends AbstractOutlineViewButton {
+    public FileManagementOutlineViewButton() {
+      super(Desktop.this, FileManagementOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("FileManagement");
+    }
+  }
+
+  @Order(20.0)
   public class AdministrationOutlineViewButton extends AbstractOutlineViewButton {
     public AdministrationOutlineViewButton() {
       super(Desktop.this, AdministrationOutline.class);
@@ -162,6 +195,18 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     @Override
     protected String getConfiguredText() {
       return TEXTS.get("Administration");
+    }
+  }
+
+  @Order(30.0)
+  public class ChatOutlineViewButton extends AbstractOutlineViewButton {
+    public ChatOutlineViewButton() {
+      super(Desktop.this, ChatOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Chat");
     }
   }
 }

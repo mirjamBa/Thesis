@@ -9,7 +9,11 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileTypeTablePage;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.MetadataTablePage;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.TagTablePage;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.UserAdministrationTablePage;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.VersionTablePage;
 import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
@@ -25,6 +29,10 @@ public class AdministrationOutline extends AbstractOutline {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     UserAdministrationTablePage userAdministrationTablePage = new UserAdministrationTablePage();
+    pageList.add(new FileTypeTablePage());
+    pageList.add(new TagTablePage());
+    pageList.add(new MetadataTablePage());
+    pageList.add(new VersionTablePage());
     pageList.add(userAdministrationTablePage);
 
   }

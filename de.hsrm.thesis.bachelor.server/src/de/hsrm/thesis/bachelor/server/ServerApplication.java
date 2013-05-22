@@ -50,7 +50,7 @@ public class ServerApplication implements IApplication {
           DbSetup.installDb();
         }
         catch (Throwable t) {
-          return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while installing the bahbah server Db schema", t);
+          return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while installing the bachelor server Db schema", t);
         }
         return Status.OK_STATUS;
       }

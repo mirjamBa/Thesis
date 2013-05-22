@@ -34,6 +34,26 @@
             class="de.hsrm.thesis.bachelor.client.services.BuddyIconProviderService"
             session="de.hsrm.thesis.bachelor.client.ClientSession">
       </service>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.IOCRProcessService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IFileFormat0Service">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.ITagService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IMetadataService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IVersionService">
+      </proxy>
    </extension>
    <extension
          name=""
