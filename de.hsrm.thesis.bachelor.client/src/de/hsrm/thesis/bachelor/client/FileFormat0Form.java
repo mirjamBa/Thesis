@@ -12,26 +12,23 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.CancelButton;
-import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.FileFormatField;
-import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.FileType0Field;
+import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.FileFormat0Box;
+import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.FileFormat0Box.FileFormatField;
+import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.FileFormat0Box.FileType0Field;
 import de.hsrm.thesis.bachelor.client.FileFormat0Form.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.FileFormat0FormData;
 import de.hsrm.thesis.bachelor.shared.IFileFormat0Service;
-import de.hsrm.thesis.bachelor.shared.UpdateFileFormat0Permission;
+import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 @FormData(value = FileFormat0FormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileFormat0Form extends AbstractForm {
 
   public FileFormat0Form() throws ProcessingException {
     super();
-  }
-
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("FileFormat0");
   }
 
   public CancelButton getCancelButton() {
@@ -44,6 +41,10 @@ public class FileFormat0Form extends AbstractForm {
 
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
+  }
+
+  public FileFormat0Box getFileFormat0Box() {
+    return getFieldByClass(FileFormat0Box.class);
   }
 
   public FileFormatField getFileFormatField() {
@@ -65,29 +66,48 @@ public class FileFormat0Form extends AbstractForm {
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
-    @Order(10.0)
-    public class FileFormatField extends AbstractStringField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("FileFormat");
-      }
-    }
-
-    @Order(20.0)
-    public class FileType0Field extends AbstractSmartField<Long> {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("FileType0");
-      }
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
     }
 
     @Order(30.0)
-    public class OkButton extends AbstractOkButton {
+    public class FileFormat0Box extends AbstractGroupBox {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("FileFormat0");
+      }
+
+      @Order(10.0)
+      public class FileFormatField extends AbstractStringField {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("FileFormat");
+        }
+      }
+
+      @Order(20.0)
+      public class FileType0Field extends AbstractSmartField<Long> {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("FileType0");
+        }
+
+        @Override
+        protected Class<? extends LookupCall> getConfiguredLookupCall() {
+          return FiletypeLookupCall.class;
+        }
+      }
     }
 
     @Order(40.0)
+    public class OkButton extends AbstractOkButton {
+    }
+
+    @Order(50.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }
@@ -101,7 +121,6 @@ public class FileFormat0Form extends AbstractForm {
       exportFormData(formData);
       formData = service.load(formData);
       importFormData(formData);
-      setEnabledPermission(new UpdateFileFormat0Permission());
     }
 
     @Override

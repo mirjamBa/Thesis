@@ -18,10 +18,6 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.IChatService">
-      </proxy>
-      <proxy
-            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.bachelor.shared.IIconProcessService">
       </proxy>
       <service
@@ -53,6 +49,18 @@
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.bachelor.shared.IVersionService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.IFiletypeService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IFileService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.lookup.IFiletypeLookupService">
       </proxy>
    </extension>
    <extension

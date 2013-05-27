@@ -4,12 +4,20 @@ Bundle-Name: de.hsrm.thesis.bachelor.shared
 Bundle-SymbolicName: de.hsrm.thesis.bachelor.shared;singleton:=true
 Bundle-Version: 3.9.0.qualifier
 Bundle-Activator: de.hsrm.thesis.bachelor.shared.Activator
-Export-Package: de.hsrm.thesis.bachelor.shared,
+Export-Package: de.hsrm.thesis.bachelor.shared;
+  uses:="org.eclipse.scout.service,
+   org.eclipse.scout.rt.shared,
+   org.eclipse.scout.rt.shared.data.form.fields.tablefield,
+   org.osgi.framework,
+   org.eclipse.scout.rt.shared.data.form.properties,
+   org.eclipse.scout.rt.shared.data.form.fields,
+   org.eclipse.scout.rt.shared.data.form",
  de.hsrm.thesis.bachelor.shared.notification;uses:="org.eclipse.scout.rt.shared.services.common.clientnotification",
  de.hsrm.thesis.bachelor.shared.security,
  de.hsrm.thesis.bachelor.shared.services;uses:="org.eclipse.scout.service",
  de.hsrm.thesis.bachelor.shared.services.code;uses:="org.eclipse.scout.rt.shared.services.common.code",
  de.hsrm.thesis.bachelor.shared.services.common.text;uses:="org.eclipse.scout.rt.shared.services.common.text",
+ de.hsrm.thesis.bachelor.shared.services.lookup;uses:="org.eclipse.scout.rt.shared.services.lookup",
  de.hsrm.thesis.bachelor.shared.services.outline;uses:="org.eclipse.scout.service",
  de.hsrm.thesis.bachelor.shared.services.process;
   uses:="org.eclipse.scout.rt.shared.services.common.code,

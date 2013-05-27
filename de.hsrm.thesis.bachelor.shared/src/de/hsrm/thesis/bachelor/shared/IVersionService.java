@@ -8,9 +8,7 @@ import org.eclipse.scout.service.IService2;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IVersionService extends IService2 {
 
-  VersionFormData prepareCreate(VersionFormData formData) throws ProcessingException;
-
-  VersionFormData create(VersionFormData formData) throws ProcessingException;
+  Object[][] getVersionControlOfFiletypes() throws ProcessingException;
 
   VersionFormData load(VersionFormData formData) throws ProcessingException;
 

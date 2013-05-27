@@ -4,6 +4,8 @@ import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 
+import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
+
 public class VersionFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;
 
@@ -30,6 +32,7 @@ public class VersionFormData extends AbstractFormData {
     @Override
     protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.LOOKUP_CALL, FiletypeLookupCall.class);
       ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
     }
   }

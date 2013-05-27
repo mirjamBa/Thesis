@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?><filetypecontainer>
+  <types>
+    <filetype id="0">
+      <name>Standard</name>
+      <versionControl>false</versionControl>
+    </filetype>
+    <filetype id="1">
+      <name>Dokument</name>
+      <versionControl>true</versionControl>
+      <language>DE</language>
+    </filetype>
+    <filetype id="2">
+      <name>Bild</name>
+      <versionControl>false</versionControl>
+    </filetype>
+  </types>
+</filetypecontainer>

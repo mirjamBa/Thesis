@@ -12,26 +12,26 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
+import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.BezeichnungField;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.CancelButton;
-import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.DatatypeField;
+import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox;
+import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.BezeichnungField;
+import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.DatatypeField;
+import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.FileType0Field;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.IMetadataService;
 import de.hsrm.thesis.bachelor.shared.MetadataFormData;
-import de.hsrm.thesis.bachelor.shared.UpdateMetadataPermission;
+import de.hsrm.thesis.bachelor.shared.services.code.DatatypeCodeType;
+import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 @FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
 public class MetadataForm extends AbstractForm {
 
   public MetadataForm() throws ProcessingException {
     super();
-  }
-
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("Metadata");
   }
 
   public BezeichnungField getBezeichnungField() {
@@ -54,8 +54,16 @@ public class MetadataForm extends AbstractForm {
     return getFieldByClass(DatatypeField.class);
   }
 
+  public FileType0Field getFileType0Field() {
+    return getFieldByClass(FileType0Field.class);
+  }
+
   public MainBox getMainBox() {
     return getFieldByClass(MainBox.class);
+  }
+
+  public MetadataBox getMetadataBox() {
+    return getFieldByClass(MetadataBox.class);
   }
 
   public OkButton getOkButton() {
@@ -65,29 +73,63 @@ public class MetadataForm extends AbstractForm {
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
-    @Order(10.0)
-    public class BezeichnungField extends AbstractStringField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Bezeichnung");
-      }
-    }
-
-    @Order(20.0)
-    public class DatatypeField extends AbstractSmartField<Long> {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Datatype");
-      }
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
     }
 
     @Order(30.0)
-    public class OkButton extends AbstractOkButton {
+    public class MetadataBox extends AbstractGroupBox {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Metadata");
+      }
+
+      @Order(10.0)
+      public class BezeichnungField extends AbstractStringField {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("Bezeichnung");
+        }
+      }
+
+      @Order(20.0)
+      public class DatatypeField extends AbstractSmartField<Long> {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("Datatype");
+        }
+
+        @Override
+        protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
+          return DatatypeCodeType.class;
+        }
+      }
+
+      @Order(30.0)
+      public class FileType0Field extends AbstractSmartField<Long> {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("FileType0");
+        }
+
+        @Override
+        protected Class<? extends LookupCall> getConfiguredLookupCall() {
+          return FiletypeLookupCall.class;
+
+        }
+      }
     }
 
     @Order(40.0)
+    public class OkButton extends AbstractOkButton {
+    }
+
+    @Order(50.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }
@@ -101,7 +143,6 @@ public class MetadataForm extends AbstractForm {
       exportFormData(formData);
       formData = service.load(formData);
       importFormData(formData);
-      setEnabledPermission(new UpdateMetadataPermission());
     }
 
     @Override

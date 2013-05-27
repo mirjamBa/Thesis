@@ -8,11 +8,11 @@ import org.eclipse.scout.service.IService2;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface ITagService extends IService2 {
 
-  TagFormData prepareCreate(TagFormData formData) throws ProcessingException;
-
   TagFormData create(TagFormData formData) throws ProcessingException;
 
-  TagFormData load(TagFormData formData) throws ProcessingException;
+  public Object[][] getTags() throws ProcessingException;
 
-  TagFormData store(TagFormData formData) throws ProcessingException;
+  public void updateTag(TagFormData formData) throws ProcessingException;
+
+  public void deleteTag(Long[] ids) throws ProcessingException;
 }

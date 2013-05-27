@@ -10,7 +10,7 @@ import de.hsrm.thesis.bachelor.server.util.UserUtility;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
 
 /**
- * class that installs the bahbah DB schema
+ * class that installs the bachelor DB schema
  */
 public class DbSetup {
   public static void installDb() throws ProcessingException {
@@ -33,9 +33,8 @@ public class DbSetup {
       SQL.insert("CREATE TABLE filetype ("
           + "filetype_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILETYPE_PK PRIMARY KEY,"
           + "name        VARCHAR(256) NOT NULL, "
-          + "mimetype    VARCHAR(64) NOT NULL, "
           + "language    VARCHAR(32),"
-          + "versioning  CHAR NOT NULL)");
+          + "version_control  BOOLEAN NOT NULL)");
       SQL.commit();
 
       SQL.insert("CREATE TABLE tag ("
@@ -68,22 +67,30 @@ public class DbSetup {
           + "version     VARCHAR(8) NOT NULL)");
       SQL.commit();
 
-      SQL.insert("CREATE TABLE metadataattribute ("
+      SQL.insert("CREATE TABLE metadata_attribute ("
           + "attribute_id  BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ATTR_PK PRIMARY KEY,"
           + "name          VARCHAR(256) NOT NULL,"
-          + "filetype_id   BIGINT NOT NULL REFERENCES filetype(filetype_id))");
+          + "datatype_id   BIGINT NOT NULL,"
+          + "filetype_id   BIGINT NOT NULL)");
       SQL.commit();
 
       SQL.insert("CREATE TABLE metadata ("
           + "metadata_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT METADATA_PK PRIMARY KEY,"
-          + "version     VARCHAR(8) NOT NULL,"
           + "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
-          + "attribute_id  BIGINT NOT NULL REFERENCES metadataattribute(attribute_id),"
-          + "value       VARCHAR(512) NOT NULL)");
+          + "attribute_id  BIGINT NOT NULL REFERENCES metadata_attribute(attribute_id),"
+          + "value       BLOB)");
+      SQL.commit();
+
+      SQL.insert("CREATE TABLE fileformat ("
+          + "fileformat_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILEFORMAT_PK PRIMARY KEY,"
+          + "format        VARCHAR(8) NOT NULL,"
+          + "mimetype      VARCHAR(32) NOT NULL,"
+          + "filetype_id   BIGINT REFERENCES filetype(filetype_id))");
       SQL.commit();
 
       // create first admin account
       UserUtility.createNewUser("admin", "admin", UserRoleCodeType.AdministratorCode.ID);
+
       SQL.commit();
     }
 

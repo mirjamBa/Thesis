@@ -9,7 +9,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
-import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileTypeTablePage;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileFormatTablePage;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.MetadataTablePage;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.TagTablePage;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.UserAdministrationTablePage;
@@ -29,7 +29,7 @@ public class AdministrationOutline extends AbstractOutline {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     UserAdministrationTablePage userAdministrationTablePage = new UserAdministrationTablePage();
-    pageList.add(new FileTypeTablePage());
+    pageList.add(new FileFormatTablePage());
     pageList.add(new TagTablePage());
     pageList.add(new MetadataTablePage());
     pageList.add(new VersionTablePage());

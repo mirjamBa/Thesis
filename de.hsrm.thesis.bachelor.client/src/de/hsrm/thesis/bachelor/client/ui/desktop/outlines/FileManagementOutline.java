@@ -8,7 +8,6 @@ import org.eclipse.scout.rt.extension.client.ui.desktop.outline.AbstractExtensib
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileTablePage;
-import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.TestNodePage;
 
 public class FileManagementOutline extends AbstractExtensibleOutline {
 
@@ -21,7 +20,6 @@ public class FileManagementOutline extends AbstractExtensibleOutline {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     FileTablePage fileTablePage = new FileTablePage();
     pageList.add(fileTablePage);
-    pageList.add(new TestNodePage());
 
   }
 }

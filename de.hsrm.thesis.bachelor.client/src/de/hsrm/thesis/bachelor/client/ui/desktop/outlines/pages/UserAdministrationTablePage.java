@@ -7,10 +7,10 @@ import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.client.ui.form.useradmin.DefaultPasswordForm;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
-import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
@@ -25,7 +25,7 @@ import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 
-public class UserAdministrationTablePage extends AbstractExtensiblePageWithTable<UserAdministrationTablePage.Table> {
+public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdministrationTablePage.Table> {
 
   @Override
   protected boolean getConfiguredLeaf() {

@@ -11,6 +11,8 @@ import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.rt.server.services.common.session.IServerSessionRegistryService;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.thesis.bachelor.shared.services.IFiletypeService;
+
 /**
  * Dummy application in order to manage server side product configurations in *.product files.
  * A typical config.ini for such a product has (among others) the following properties:
@@ -52,6 +54,15 @@ public class ServerApplication implements IApplication {
         catch (Throwable t) {
           return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while installing the bachelor server Db schema", t);
         }
+
+        try {
+          SERVICES.getService(IFiletypeService.class).initFiletypeXML();
+          SERVICES.getService(IFiletypeService.class).organizeFiletypes();
+        }
+        catch (Throwable t) {
+          return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while initiating filetypes", t);
+        }
+
         return Status.OK_STATUS;
       }
     };

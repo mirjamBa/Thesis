@@ -41,11 +41,6 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.ChatService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.IconProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
@@ -72,6 +67,21 @@
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.VersionService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.FiletypeService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.FileService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.lookup.FiletypeLookupService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
    </extension>
@@ -140,6 +150,16 @@
                value="de.hsrm.thesis.bachelor.server.ServerSession">
          </init-param>
       </filter>
+      <filter
+            aliases="/process"
+            class="org.eclipse.scout.http.servletfilter.security.LDAPSecurityFilter"
+            ranking="50">
+      </filter>
+      <filter
+          aliases="/process"
+          class="de.hsrm.thesis.bachelor.server.security.LDAPExSecurityFilter"
+          ranking="30">
+    </filter>
    </extension>
    <extension
          id="app"
