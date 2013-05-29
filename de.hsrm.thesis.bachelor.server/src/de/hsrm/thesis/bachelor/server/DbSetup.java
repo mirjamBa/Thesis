@@ -31,7 +31,7 @@ public class DbSetup {
       SQL.commit();
 
       SQL.insert("CREATE TABLE filetype ("
-          + "filetype_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILETYPE_PK PRIMARY KEY,"
+          + "filetype_id BIGINT NOT NULL PRIMARY KEY,"
           + "name        VARCHAR(256) NOT NULL, "
           + "language    VARCHAR(32),"
           + "version_control  BOOLEAN NOT NULL)");
@@ -70,7 +70,7 @@ public class DbSetup {
       SQL.insert("CREATE TABLE metadata_attribute ("
           + "attribute_id  BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ATTR_PK PRIMARY KEY,"
           + "name          VARCHAR(256) NOT NULL,"
-          + "datatype_id   BIGINT NOT NULL,"
+          + "datatype_id   VARCHAR(256) NOT NULL,"
           + "filetype_id   BIGINT NOT NULL)");
       SQL.commit();
 

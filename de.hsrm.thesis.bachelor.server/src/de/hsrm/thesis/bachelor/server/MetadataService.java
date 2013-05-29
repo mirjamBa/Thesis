@@ -1,6 +1,7 @@
 package de.hsrm.thesis.bachelor.server;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 
 import de.hsrm.thesis.bachelor.shared.IMetadataService;
@@ -30,5 +31,14 @@ public class MetadataService extends AbstractService implements IMetadataService
   public MetadataFormData store(MetadataFormData formData) throws ProcessingException {
     //TODO [mba] business logic here
     return formData;
+  }
+
+  @Override
+  public Object[][] getAttributes() throws ProcessingException {
+    return SQL.select("SELECT attribute_id, "
+        + "                   name, "
+        + "                   datatype_id, "
+        + "                   filetype_id "
+        + "            FROM metadata_attribute ");
   }
 }

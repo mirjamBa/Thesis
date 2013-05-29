@@ -15,4 +15,6 @@ public interface IFileService extends IService2 {
   FileFormData load(FileFormData formData) throws ProcessingException;
 
   FileFormData store(FileFormData formData) throws ProcessingException;
+
+  public Object[][] getFiles() throws ProcessingException;
 }

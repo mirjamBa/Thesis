@@ -2,20 +2,19 @@ package de.hsrm.thesis.bachelor.server.services;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.NVPair;
-import org.eclipse.scout.commons.xmlparser.ScoutXmlDocument;
-import org.eclipse.scout.commons.xmlparser.ScoutXmlDocument.ScoutXmlElement;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 import org.osgi.framework.FrameworkUtil;
@@ -33,34 +32,19 @@ public class FiletypeService extends AbstractService implements IFiletypeService
 
   @Override
   public void organizeFiletypes() throws ProcessingException {
+
+    XStream xstream = getXStreamInstance();
     URL filePath = FrameworkUtil.getBundle(getClass()).getResource("resources/xml/types.xml");
     try {
       File file = new File(FileLocator.toFileURL(filePath).getFile());
 
       if (updateNecessary(file)) {
-        FileInputStream stream = new FileInputStream(file);
-        ScoutXmlDocument doc = new ScoutXmlDocument(stream);
-        ScoutXmlElement filetypecontainer = doc.getRoot();
-        ScoutXmlElement types = filetypecontainer.getChild("types");
+        file = new File(FileLocator.toFileURL(filePath).getFile());
+        FiletypeContainer con = (FiletypeContainer) xstream.fromXML(file);
 
-        clearFiletypes();
-
-        container = new FiletypeContainer();
-        for (int i = 0; i < types.countChildren(); i++) {
-          ScoutXmlElement ft = types.getChild(i);
-
-          Filetype f = new Filetype();
-          f.setId(ft.getAttributeAsInt("id"));
-          f.setName(ft.getChild("name").getText());
-          if (ft.hasChild("language")) {
-            f.setLanguage(solveLanguage(ft.getChild("language").getText()));
-          }
-          f.setVersionControl(ft.getChild("versionControl").getTextAsBoolean());
-          container.addFiletype(f);
+        for (Filetype f : con.getTypes()) {
           insertFiletype(f);
         }
-
-        stream.close();
 
       }
     }
@@ -68,6 +52,44 @@ public class FiletypeService extends AbstractService implements IFiletypeService
       throw new ProcessingException(e.getMessage());
     }
   }
+
+//  @Override
+//  public void organizeFiletypes() throws ProcessingException {
+//    URL filePath = FrameworkUtil.getBundle(getClass()).getResource("resources/xml/types.xml");
+//    try {
+//      File file = new File(FileLocator.toFileURL(filePath).getFile());
+//
+//      if (updateNecessary(file)) {
+//        FileInputStream stream = new FileInputStream(file);
+//        ScoutXmlDocument doc = new ScoutXmlDocument(stream);
+//        ScoutXmlElement filetypecontainer = doc.getRoot();
+//        ScoutXmlElement types = filetypecontainer.getChild("types");
+//
+//        clearFiletypes();
+//
+//        container = new FiletypeContainer();
+//        for (int i = 0; i < types.countChildren(); i++) {
+//          ScoutXmlElement ft = types.getChild(i);
+//
+//          Filetype f = new Filetype();
+//          f.setId(ft.getAttributeAsInt("id"));
+//          f.setName(ft.getChild("name").getText());
+//          if (ft.hasChild("language")) {
+//            f.setLanguage(solveLanguage(ft.getChild("language").getText()));
+//          }
+//          f.setVersionControl(ft.getChild("versionControl").getTextAsBoolean());
+//          container.addFiletype(f);
+//          insertFiletype(f);
+//        }
+//
+//        stream.close();
+//
+//      }
+//    }
+//    catch (IOException e) {
+//      throw new ProcessingException(e.getMessage());
+//    }
+//  }
 
   private boolean updateNecessary(File f) throws ProcessingException {
     long lastModified = f.lastModified();
@@ -95,6 +117,7 @@ public class FiletypeService extends AbstractService implements IFiletypeService
   }
 
   private Long getLastInsertTimestamp() throws ProcessingException {
+
     URL filePath = FrameworkUtil.getBundle(getClass()).getResource("resources/xml/config.prop");
     File file;
     Long l;
@@ -142,6 +165,7 @@ public class FiletypeService extends AbstractService implements IFiletypeService
     catch (IOException e) {
       throw new ProcessingException(e.getMessage());
     }
+
   }
 
   private void clearFiletypes() throws ProcessingException {
@@ -149,11 +173,26 @@ public class FiletypeService extends AbstractService implements IFiletypeService
   }
 
   private void insertFiletype(Filetype filetype) throws ProcessingException {
-    SQL.insert("INSERT INTO filetype (name, language, version_control) VALUES(:name, :language, :version_control)",
+    SQL.insert("INSERT INTO filetype (filetype_id, name, language, version_control) VALUES(:type, :name, :language, :version_control)",
+        new NVPair("type", filetype.getId()),
         new NVPair("name", filetype.getName()),
         new NVPair("language", (filetype.getLanguage() != null) ? filetype.getLanguage().getLanguageCode() : null),
         new NVPair("version_control", filetype.isVersionControl()));
+    insertMetaattributes(filetype);
     setLastInsertTimestamp();
+  }
+
+  private void insertMetaattributes(Filetype filetype) throws ProcessingException {
+    long id = filetype.getId();
+    if (filetype.getMeta().size() > 0) {
+      for (String attribute : filetype.getMeta().keySet()) {
+        String datatype = filetype.getMeta().get(attribute);
+        SQL.insert("INSERT INTO metadata_attribute (name, datatype_id, filetype_id) VALUES(:name, :datatype_id, :filetype_id)",
+            new NVPair("name", attribute),
+            new NVPair("datatype_id", datatype),
+            new NVPair("filetype_id", id));
+      }
+    }
   }
 
   private FiletypeContainer fillContainer() {
@@ -162,18 +201,29 @@ public class FiletypeService extends AbstractService implements IFiletypeService
 
     Filetype t1 = new Filetype();
     t1.setId(0);
-    t1.setName("Standard");
+    t1.setName("Default");
     t1.setVersionControl(false);
+
+    Map<String, String> meta = new HashMap<String, String>();
+    meta.put("Mime-Typ", "java.lang.String");
+    meta.put("Titel", "java.lang.String");
+    meta.put("Autor", "java.lang.String");
+    meta.put("Erfasser", "java.lang.String");
+    meta.put("Dateigroesse", "java.lang.String");
+    meta.put("Dateiendung", "java.lang.String");
+    meta.put("Erstellt am", "java.util.Date");
+    meta.put("Geaendert am", "java.util.Date");
+    t1.setMeta(meta);
 
     Filetype t2 = new Filetype();
     t2.setId(1);
-    t2.setName("Dokument");
+    t2.setName("Text");
     t2.setVersionControl(true);
     t2.setLanguage(Language.DE);
 
     Filetype t3 = new Filetype();
     t3.setId(2);
-    t3.setName("Bild");
+    t3.setName("Image");
     t3.setVersionControl(false);
 
     list.add(t1);

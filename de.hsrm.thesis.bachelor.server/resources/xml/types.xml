@@ -1,17 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?><filetypecontainer>
   <types>
     <filetype id="0">
-      <name>Standard</name>
+      <name>Default</name>
       <versionControl>false</versionControl>
+      <meta>
+        <entry>
+          <string>Mime-Typ</string>
+          <string>java.lang.String</string>
+        </entry>
+        <entry>
+          <string>Geaendert am</string>
+          <string>java.util.Date</string>
+        </entry>
+        <entry>
+          <string>Titel</string>
+          <string>java.lang.String</string>
+        </entry>
+        <entry>
+          <string>Autor</string>
+          <string>java.lang.String</string>
+        </entry>
+        <entry>
+          <string>Dateigroesse</string>
+          <string>java.lang.String</string>
+        </entry>
+        <entry>
+          <string>Erstellt am</string>
+          <string>java.util.Date</string>
+        </entry>
+        <entry>
+          <string>Dateiendung</string>
+          <string>java.lang.String</string>
+        </entry>
+        <entry>
+          <string>Erfasser</string>
+          <string>java.lang.String</string>
+        </entry>
+      </meta>
     </filetype>
     <filetype id="1">
-      <name>Dokument</name>
+      <name>Text</name>
       <versionControl>true</versionControl>
       <language>DE</language>
+      <meta/>
     </filetype>
     <filetype id="2">
-      <name>Bild</name>
+      <name>Image</name>
       <versionControl>false</versionControl>
+      <meta/>
     </filetype>
   </types>
 </filetypecontainer>

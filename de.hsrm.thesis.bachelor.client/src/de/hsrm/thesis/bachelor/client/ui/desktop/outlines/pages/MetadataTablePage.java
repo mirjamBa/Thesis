@@ -9,11 +9,12 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTabl
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
+import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
+import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.MetadataForm;
-import de.hsrm.thesis.bachelor.shared.services.code.DatatypeCodeType;
+import de.hsrm.thesis.bachelor.shared.IMetadataService;
 import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.Table> {
@@ -26,6 +27,11 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
   @Override
   protected boolean getConfiguredLeaf() {
     return true;
+  }
+
+  @Override
+  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
+    return SERVICES.getService(IMetadataService.class).getAttributes();
   }
 
   @Order(10.0)
@@ -76,17 +82,11 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
     }
 
     @Order(30.0)
-    public class DatatypeColumn extends AbstractSmartColumn<Long> {
+    public class DatatypeColumn extends AbstractStringColumn {
 
       @Override
       protected String getConfiguredHeaderText() {
         return TEXTS.get("Datatype");
-      }
-
-      @Override
-      protected Class<? extends ICodeType> getConfiguredCodeType() {
-        return DatatypeCodeType.class;
-
       }
     }
 

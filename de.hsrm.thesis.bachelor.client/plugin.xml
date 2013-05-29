@@ -62,10 +62,25 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.bachelor.shared.services.lookup.IFiletypeLookupService">
       </proxy>
+      <service
+            factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
+            class="de.hsrm.thesis.bachelor.client.services.IconProviderService"
+            session="de.hsrm.thesis.bachelor.client.ClientSession">
+      </service>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.ILogoProcessService">
+      </proxy>
    </extension>
    <extension
          name=""
          point="org.eclipse.scout.service.services">
+   </extension>
+   <extension
+         point="de.hsrm.testtest.fileform">
+      <tabbox
+            class="de.hsrm.thesis.bachelor.client.TestAddonTab">
+      </tabbox>
    </extension>
 
 </plugin>

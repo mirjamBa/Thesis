@@ -1,11 +1,34 @@
 package de.hsrm.thesis.bachelor.server.filetype;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Filetype {
 
-  private int id;
+  private long id;
   private String name;
   private boolean versionControl;
   private Language language;
+  private Map<String, String> meta;
+
+  public Filetype() {
+    meta = new HashMap<String, String>();
+  }
+
+  /**
+   * @return the meta
+   */
+  public Map<String, String> getMeta() {
+    return meta;
+  }
+
+  /**
+   * @param meta
+   *          the meta to set
+   */
+  public void setMeta(Map<String, String> meta) {
+    this.meta = meta;
+  }
 
   public char getVersionControlChar() {
     return (versionControl == true) ? 't' : 'f';
@@ -14,7 +37,7 @@ public class Filetype {
   /**
    * @return the id
    */
-  public int getId() {
+  public long getId() {
     return id;
   }
 
@@ -22,7 +45,7 @@ public class Filetype {
    * @param id
    *          the id to set
    */
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 

@@ -84,6 +84,11 @@
             class="de.hsrm.thesis.bachelor.server.services.lookup.FiletypeLookupService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.LogoProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""
@@ -150,16 +155,6 @@
                value="de.hsrm.thesis.bachelor.server.ServerSession">
          </init-param>
       </filter>
-      <filter
-            aliases="/process"
-            class="org.eclipse.scout.http.servletfilter.security.LDAPSecurityFilter"
-            ranking="50">
-      </filter>
-      <filter
-          aliases="/process"
-          class="de.hsrm.thesis.bachelor.server.security.LDAPExSecurityFilter"
-          ranking="30">
-    </filter>
    </extension>
    <extension
          id="app"
@@ -176,8 +171,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            application="de.hsrm.thesis.bachelor.server.app"
-            name="bachelor Server">
+            name="bachelor Server"
+            application="de.hsrm.thesis.bachelor.server.app">
          <property
                name="appName"
                value="bachelor Server">

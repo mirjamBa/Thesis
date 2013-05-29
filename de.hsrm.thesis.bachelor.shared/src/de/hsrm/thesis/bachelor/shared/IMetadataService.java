@@ -15,4 +15,6 @@ public interface IMetadataService extends IService2 {
   MetadataFormData load(MetadataFormData formData) throws ProcessingException;
 
   MetadataFormData store(MetadataFormData formData) throws ProcessingException;
+
+  public Object[][] getAttributes() throws ProcessingException;
 }

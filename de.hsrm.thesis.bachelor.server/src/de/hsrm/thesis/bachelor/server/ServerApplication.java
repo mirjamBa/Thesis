@@ -56,7 +56,7 @@ public class ServerApplication implements IApplication {
         }
 
         try {
-          SERVICES.getService(IFiletypeService.class).initFiletypeXML();
+//          SERVICES.getService(IFiletypeService.class).initFiletypeXML();
           SERVICES.getService(IFiletypeService.class).organizeFiletypes();
         }
         catch (Throwable t) {

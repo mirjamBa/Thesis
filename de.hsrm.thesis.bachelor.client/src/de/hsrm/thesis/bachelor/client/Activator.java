@@ -1,5 +1,8 @@
 package de.hsrm.thesis.bachelor.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -13,6 +16,27 @@ public class Activator extends Plugin {
 
   // The shared instance
   private static Activator plugin;
+
+  //image cache
+  private Map<String, byte[]> m_imageCache = new HashMap<String, byte[]>();
+
+  public void cacheImage(String imageId, byte[] content) {
+    if (content != null) {
+      m_imageCache.put(imageId, content);
+    }
+  }
+
+  public boolean isImageCached(String imageId) {
+    return m_imageCache.containsKey(imageId);
+  }
+
+  public byte[] getImageFromCache(String imageId) {
+    byte[] content = m_imageCache.get(imageId);
+    if (content != null && content.length > 0) {
+      return content;
+    }
+    return null;
+  }
 
   /**
    * The constructor
