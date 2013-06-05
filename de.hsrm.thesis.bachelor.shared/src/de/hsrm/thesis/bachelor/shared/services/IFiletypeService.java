@@ -12,4 +12,6 @@ public interface IFiletypeService extends IService {
 
   public void initFiletypeXML() throws ProcessingException;
 
+  public Object[][] getFiletypes() throws ProcessingException;
+
 }

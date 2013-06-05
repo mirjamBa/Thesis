@@ -200,7 +200,7 @@ public class FiletypeService extends AbstractService implements IFiletypeService
     List<Filetype> list = new ArrayList<Filetype>();
 
     Filetype t1 = new Filetype();
-    t1.setId(0);
+    t1.setId(1);
     t1.setName("Default");
     t1.setVersionControl(false);
 
@@ -216,13 +216,13 @@ public class FiletypeService extends AbstractService implements IFiletypeService
     t1.setMeta(meta);
 
     Filetype t2 = new Filetype();
-    t2.setId(1);
+    t2.setId(2);
     t2.setName("Text");
     t2.setVersionControl(true);
     t2.setLanguage(Language.DE);
 
     Filetype t3 = new Filetype();
-    t3.setId(2);
+    t3.setId(3);
     t3.setName("Image");
     t3.setVersionControl(false);
 
@@ -243,6 +243,14 @@ public class FiletypeService extends AbstractService implements IFiletypeService
     xstream.alias("language", de.hsrm.thesis.bachelor.server.filetype.Language.class);
     xstream.useAttributeFor(de.hsrm.thesis.bachelor.server.filetype.Filetype.class, "id");
     return xstream;
+  }
+
+  /* (non-Javadoc)
+   * @see de.hsrm.thesis.bachelor.shared.services.IFiletypeService#getFiletypes()
+   */
+  @Override
+  public Object[][] getFiletypes() throws ProcessingException {
+    return SQL.select("SELECT filetype_id, name FROM filetype");
   }
 
 }

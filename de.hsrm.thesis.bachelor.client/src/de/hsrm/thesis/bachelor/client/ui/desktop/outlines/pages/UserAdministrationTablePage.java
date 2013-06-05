@@ -5,14 +5,12 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
-import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.client.ui.form.useradmin.DefaultPasswordForm;
 import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
@@ -22,7 +20,6 @@ import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 
 public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdministrationTablePage.Table> {
@@ -62,10 +59,6 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
     @Override
     protected void execRowAction(ITableRow row) throws ProcessingException {
       getMenu(ModifyUserMenu.class).execAction();
-    }
-
-    public RoleColumn getRoleColumn() {
-      return getColumnSet().getColumnByClass(RoleColumn.class);
     }
 
     public UserIdColumn getUserIdColumn() {
@@ -120,31 +113,6 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       }
     }
 
-    @Order(30.0)
-    public class RoleColumn extends AbstractSmartColumn<Integer> {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Role");
-      }
-
-      @Override
-      protected boolean getConfiguredAutoOptimizeWidth() {
-        return true;
-      }
-
-      @Override
-      protected Class<? extends ICodeType> getConfiguredCodeType() {
-        return UserRoleCodeType.class;
-
-      }
-
-      @Override
-      protected int getConfiguredWidth() {
-        return 276;
-      }
-    }
-
     @Order(10.0)
     public class ModifyUserMenu extends AbstractMenu {
 
@@ -162,8 +130,8 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       protected void execAction() throws ProcessingException {
         UserForm form = new UserForm();
         form.getUsernameField().setValue(getUsernameColumn().getSelectedValue());
-        form.getUserRoleField().setValue(getRoleColumn().getSelectedValue());
         form.setUserId(getUserIdColumn().getSelectedValue());
+        form.getRoleField().setValue(SERVICES.getService(IUserProcessService.class).getUserRoles(getUserIdColumn().getSelectedValue()));
         form.startModify();
         form.waitFor();
         if (form.isFormStored()) {

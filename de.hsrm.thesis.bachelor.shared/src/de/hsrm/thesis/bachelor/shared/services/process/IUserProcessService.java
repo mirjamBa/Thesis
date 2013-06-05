@@ -28,4 +28,6 @@ public interface IUserProcessService extends IService {
   public void unregisterUser() throws ProcessingException;
 
   public Set<String> getUsersOnline() throws ProcessingException;
+
+  public Long[] getUserRoles(Long userId) throws ProcessingException;
 }

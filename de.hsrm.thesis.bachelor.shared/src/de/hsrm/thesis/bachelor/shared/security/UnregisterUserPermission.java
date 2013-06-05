@@ -1,8 +1,8 @@
 package de.hsrm.thesis.bachelor.shared.security;
 
-import java.security.BasicPermission;
+import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
 
-public class UnregisterUserPermission extends BasicPermission {
+public class UnregisterUserPermission extends BasicHierarchyPermission {
 
   private static final long serialVersionUID = 0L;
 

@@ -36,7 +36,7 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.IFileFormat0Service">
+            class="de.hsrm.thesis.bachelor.shared.IFileFormatService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
@@ -71,16 +71,26 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.bachelor.shared.services.ILogoProcessService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.ITestService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.lookup.IRoleLookupService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.IRoleProcessService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.IStorageService">
+      </proxy>
    </extension>
    <extension
          name=""
          point="org.eclipse.scout.service.services">
-   </extension>
-   <extension
-         point="de.hsrm.testtest.fileform">
-      <tabbox
-            class="de.hsrm.thesis.bachelor.client.TestAddonTab">
-      </tabbox>
    </extension>
 
 </plugin>

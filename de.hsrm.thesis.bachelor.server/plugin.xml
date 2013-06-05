@@ -51,7 +51,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.FileFormat0Service"
+            class="de.hsrm.thesis.bachelor.server.FileFormatService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -87,6 +87,31 @@
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.LogoProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.TestService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.lookup.RoleLookupService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.RoleProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.DBStorageService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.FileStorageService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
    </extension>

@@ -12,6 +12,7 @@ Export-Package: de.hsrm.thesis.bachelor.shared;
    org.eclipse.scout.rt.shared.data.form.properties,
    org.eclipse.scout.rt.shared.data.form.fields,
    org.eclipse.scout.rt.shared.data.form",
+ de.hsrm.thesis.bachelor.shared.column,
  de.hsrm.thesis.bachelor.shared.notification;uses:="org.eclipse.scout.rt.shared.services.common.clientnotification",
  de.hsrm.thesis.bachelor.shared.security,
  de.hsrm.thesis.bachelor.shared.services;uses:="org.eclipse.scout.service",

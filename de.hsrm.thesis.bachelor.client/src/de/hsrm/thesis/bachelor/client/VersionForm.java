@@ -18,7 +18,7 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.CancelButton;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox;
-import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox.FileType0Field;
+import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox.FileTypeField;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox.VersionField;
 import de.hsrm.thesis.bachelor.shared.IVersionService;
 import de.hsrm.thesis.bachelor.shared.VersionFormData;
@@ -39,8 +39,8 @@ public class VersionForm extends AbstractForm {
     startInternal(new ModifyHandler());
   }
 
-  public FileType0Field getFileType0Field() {
-    return getFieldByClass(FileType0Field.class);
+  public FileTypeField getFileTypeField() {
+    return getFieldByClass(FileTypeField.class);
   }
 
   public MainBox getMainBox() {
@@ -76,11 +76,11 @@ public class VersionForm extends AbstractForm {
       }
 
       @Order(10.0)
-      public class FileType0Field extends AbstractSmartField<Long> {
+      public class FileTypeField extends AbstractSmartField<Long> {
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("FileType0");
+          return TEXTS.get("FileType");
         }
 
         @Override

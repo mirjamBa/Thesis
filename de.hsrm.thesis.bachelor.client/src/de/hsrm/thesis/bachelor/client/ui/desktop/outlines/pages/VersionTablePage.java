@@ -1,5 +1,6 @@
 package de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages;
 
+import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBooleanColumn;
@@ -17,6 +18,8 @@ import de.hsrm.thesis.bachelor.shared.IVersionService;
 
 public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Table> {
 
+  private long m_fileTypeNr;
+
   @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("Version");
@@ -29,7 +32,7 @@ public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Tab
 
   @Override
   protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IVersionService.class).getVersionControlOfFiletypes();
+    return SERVICES.getService(IVersionService.class).getVersionControlOfFiletypes(getFileTypeNr());
   }
 
   @Order(10.0)
@@ -43,8 +46,13 @@ public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Tab
       return getColumnSet().getColumnByClass(FiletypeIdColumn.class);
     }
 
-    public FileType0Column getFileType0Column() {
-      return getColumnSet().getColumnByClass(FileType0Column.class);
+    public FileTypeColumn getFileTypeColumn() {
+      return getColumnSet().getColumnByClass(FileTypeColumn.class);
+    }
+
+    @Override
+    protected boolean getConfiguredAutoResizeColumns() {
+      return true;
     }
 
     @Order(10.0)
@@ -67,11 +75,11 @@ public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Tab
     }
 
     @Order(20.0)
-    public class FileType0Column extends AbstractStringColumn {
+    public class FileTypeColumn extends AbstractStringColumn {
 
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("FileType0");
+        return TEXTS.get("FileType");
       }
 
       @Override
@@ -105,7 +113,7 @@ public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Tab
       @Override
       protected void execAction() throws ProcessingException {
         VersionForm form = new VersionForm();
-        form.getFileType0Field().setValue(getFiletypeIdColumn().getSelectedValue());
+        form.getFileTypeField().setValue(getFiletypeIdColumn().getSelectedValue());
         form.getVersionField().setValue(getVersionColumn().getSelectedValue());
         form.startModify();
         form.waitFor();
@@ -114,5 +122,15 @@ public class VersionTablePage extends AbstractPageWithTable<VersionTablePage.Tab
         }
       }
     }
+  }
+
+  @FormData
+  public long getFileTypeNr() {
+    return m_fileTypeNr;
+  }
+
+  @FormData
+  public void setFileTypeNr(long fileTypeNr) {
+    m_fileTypeNr = fileTypeNr;
   }
 }

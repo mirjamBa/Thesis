@@ -20,7 +20,7 @@ import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.CancelButton;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.BezeichnungField;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.DatatypeField;
-import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.FileType0Field;
+import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.MetadataBox.FileTypeField;
 import de.hsrm.thesis.bachelor.client.MetadataForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.IMetadataService;
 import de.hsrm.thesis.bachelor.shared.MetadataFormData;
@@ -54,8 +54,8 @@ public class MetadataForm extends AbstractForm {
     return getFieldByClass(DatatypeField.class);
   }
 
-  public FileType0Field getFileType0Field() {
-    return getFieldByClass(FileType0Field.class);
+  public FileTypeField getFileTypeField() {
+    return getFieldByClass(FileTypeField.class);
   }
 
   public MainBox getMainBox() {
@@ -107,14 +107,15 @@ public class MetadataForm extends AbstractForm {
         protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
           return DatatypeCodeType.class;
         }
+
       }
 
       @Order(30.0)
-      public class FileType0Field extends AbstractSmartField<Long> {
+      public class FileTypeField extends AbstractSmartField<Long> {
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("FileType0");
+          return TEXTS.get("FileType");
         }
 
         @Override
@@ -137,33 +138,15 @@ public class MetadataForm extends AbstractForm {
   public class ModifyHandler extends AbstractFormHandler {
 
     @Override
-    public void execLoad() throws ProcessingException {
-      IMetadataService service = SERVICES.getService(IMetadataService.class);
-      MetadataFormData formData = new MetadataFormData();
-      exportFormData(formData);
-      formData = service.load(formData);
-      importFormData(formData);
-    }
-
-    @Override
     public void execStore() throws ProcessingException {
       IMetadataService service = SERVICES.getService(IMetadataService.class);
       MetadataFormData formData = new MetadataFormData();
       exportFormData(formData);
-      formData = service.store(formData);
+      formData = service.update(formData);
     }
   }
 
   public class NewHandler extends AbstractFormHandler {
-
-    @Override
-    public void execLoad() throws ProcessingException {
-      IMetadataService service = SERVICES.getService(IMetadataService.class);
-      MetadataFormData formData = new MetadataFormData();
-      exportFormData(formData);
-      formData = service.prepareCreate(formData);
-      importFormData(formData);
-    }
 
     @Override
     public void execStore() throws ProcessingException {

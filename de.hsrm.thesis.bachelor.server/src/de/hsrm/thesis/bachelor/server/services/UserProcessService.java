@@ -7,6 +7,7 @@ import java.util.Set;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.commons.holders.IntegerHolder;
+import org.eclipse.scout.commons.holders.LongArrayHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -26,6 +27,8 @@ import de.hsrm.thesis.bachelor.shared.security.RegisterUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.UnregisterUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
+import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.AdministratorCode;
+import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.UserCode;
 import de.hsrm.thesis.bachelor.shared.services.process.INotificationProcessService;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 import de.hsrm.thesis.bachelor.shared.services.process.UserFormData;
@@ -66,7 +69,7 @@ public class UserProcessService extends AbstractService implements IUserProcessS
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
 
-    UserUtility.createNewUser(formData.getUsername().getValue(), formData.getPassword().getValue(), formData.getUserRole().getValue());
+    UserUtility.createNewUser(formData.getUsername().getValue(), formData.getPassword().getValue(), formData.getRole().getValue());
   }
 
   @Override
@@ -96,7 +99,12 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     }
 
     SQL.update("UPDATE TABUSERS SET username = :newUsername, permission_id = :newPermId WHERE u_id = :uid",
-        new NVPair("newUsername", formData.getUsername().getValue()), new NVPair("newPermId", formData.getUserRole().getValue()), new NVPair("uid", formData.getUserId()));
+        new NVPair("newUsername", formData.getUsername().getValue()),
+        new NVPair("newPermId", UserUtility.isAdmin(formData.getRole().getValue()) ? AdministratorCode.ID : UserCode.ID),
+        new NVPair("uid", formData.getUserId()));
+
+    UserUtility.setUserRoles(formData.getUserId(), formData.getRole().getValue());
+
   }
 
   @Override
@@ -124,5 +132,16 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     SQL.selectInto("SELECT permission_id FROM TABUSERS WHERE username = :username INTO :permission", new NVPair("username", userName), new NVPair("permission", ih));
 
     return CODES.getCodeType(UserRoleCodeType.class).getCode(ih.getValue());
+  }
+
+  @Override
+  public Long[] getUserRoles(Long userId) throws ProcessingException {
+
+    LongArrayHolder roleIds = new LongArrayHolder();
+    SQL.selectInto("SELECT role_id FROM user_role WHERE u_id = :userId INTO :roleIds",
+        new NVPair("userId", userId),
+        new NVPair("roleIds", roleIds));
+
+    return roleIds.getValue();
   }
 }

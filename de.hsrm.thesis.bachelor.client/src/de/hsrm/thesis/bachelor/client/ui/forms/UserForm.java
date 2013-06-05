@@ -9,21 +9,20 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
-import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.client.ui.form.fields.listbox.AbstractListBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
+import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.CancelButton;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.OkButton;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.PasswordField;
-import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.UserRoleField;
+import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.RoleField;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.UsernameField;
 import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.UserCode;
+import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 import de.hsrm.thesis.bachelor.shared.services.process.UserFormData;
 import de.hsrm.thesis.bachelor.shared.util.SharedUserUtility;
@@ -71,8 +70,8 @@ public class UserForm extends AbstractForm {
     return getFieldByClass(PasswordField.class);
   }
 
-  public UserRoleField getUserRoleField() {
-    return getFieldByClass(UserRoleField.class);
+  public RoleField getRoleField() {
+    return getFieldByClass(RoleField.class);
   }
 
   public UsernameField getUsernameField() {
@@ -89,11 +88,6 @@ public class UserForm extends AbstractForm {
 
     @Order(10.0)
     public class UserBox extends AbstractGroupBox {
-
-      @Override
-      protected int getConfiguredGridColumnCount() {
-        return 1;
-      }
 
       @Override
       protected String getConfiguredLabel() {
@@ -156,34 +150,30 @@ public class UserForm extends AbstractForm {
       }
 
       @Order(30.0)
-      public class UserRoleField extends AbstractSmartField<Integer> {
+      public class RoleField extends AbstractListBox<Long> {
+
+        @Override
+        protected int getConfiguredGridH() {
+          return 5;
+        }
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("UserRole");
+          return TEXTS.get("Role");
         }
 
         @Override
-        protected Class<? extends ICodeType<Integer>> getConfiguredCodeType() {
-          return UserRoleCodeType.class;
+        protected Class<? extends LookupCall> getConfiguredLookupCall() {
+          return RoleLookupCall.class;
         }
 
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected void execInitField() throws ProcessingException {
-          setValue(UserCode.ID);
-        }
-      }
-
-      @Order(40.0)
-      public class OkButton extends AbstractOkButton {
       }
 
       @Order(50.0)
+      public class OkButton extends AbstractOkButton {
+      }
+
+      @Order(60.0)
       public class CancelButton extends AbstractCancelButton {
       }
     }

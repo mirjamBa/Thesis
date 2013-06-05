@@ -5,15 +5,18 @@ import java.util.Set;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
+import org.eclipse.scout.service.AbstractService;
 
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
+import de.hsrm.thesis.bachelor.shared.services.IStorageService;
 
 /**
  * class that installs the bachelor DB schema
  */
-public class DbSetup {
-  public static void installDb() throws ProcessingException {
+public class DBStorageService extends AbstractService implements IStorageService {
+
+  @Override
+  public void installStorage() throws ProcessingException {
     Set<String> existingTables = getExistingTables();
 
     if (!existingTables.contains("TABUSERS")) {
@@ -31,9 +34,8 @@ public class DbSetup {
       SQL.commit();
 
       SQL.insert("CREATE TABLE filetype ("
-          + "filetype_id BIGINT NOT NULL PRIMARY KEY,"
+          + "filetype_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILETYPE_PK PRIMARY KEY,"
           + "name        VARCHAR(256) NOT NULL, "
-          + "language    VARCHAR(32),"
           + "version_control  BOOLEAN NOT NULL)");
       SQL.commit();
 
@@ -46,6 +48,7 @@ public class DbSetup {
           + "file_id   BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILE_PK PRIMARY KEY,"
           + "number    BIGINT NOT NULL,"
           + "filetype_id  BIGINT NOT NULL REFERENCES filetype(filetype_id), "
+          + "file_Path  VARCHAR(256) NOT NULL, "
           + "u_id      BIGINT  REFERENCES TABUSERS(u_id))");
       SQL.commit();
 
@@ -70,7 +73,7 @@ public class DbSetup {
       SQL.insert("CREATE TABLE metadata_attribute ("
           + "attribute_id  BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ATTR_PK PRIMARY KEY,"
           + "name          VARCHAR(256) NOT NULL,"
-          + "datatype_id   VARCHAR(256) NOT NULL,"
+          + "datatype      BIGINT NOT NULL,"
           + "filetype_id   BIGINT NOT NULL)");
       SQL.commit();
 
@@ -84,19 +87,47 @@ public class DbSetup {
       SQL.insert("CREATE TABLE fileformat ("
           + "fileformat_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILEFORMAT_PK PRIMARY KEY,"
           + "format        VARCHAR(8) NOT NULL,"
-          + "mimetype      VARCHAR(32) NOT NULL,"
           + "filetype_id   BIGINT REFERENCES filetype(filetype_id))");
       SQL.commit();
 
+      SQL.insert("CREATE TABLE role ("
+          + "role_id       BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ROLE_PK PRIMARY KEY, "
+          + "name          VARCHAR(128) NOT NULL,"
+          + "user_creator_id  BIGINT REFERENCES tabusers(u_id))");
+      SQL.commit();
+
+      SQL.insert("CREATE TABLE user_role ("
+          + "u_id          BIGINT NOT NULL REFERENCES tabusers(u_id),"
+          + "role_id       BIGINT NOT NULL REFERENCES role(role_id),"
+          + "PRIMARY KEY (u_id, role_id))");
+      SQL.commit();
+
+      SQL.insert("CREATE SEQUENCE file_number AS BIGINT START WITH 1000");
+      SQL.commit();
+
+      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + UserUtility.USER_ROLE_ADMIN + "', null)");
+      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + UserUtility.USER_ROLE_USER + "', null)");
+
       // create first admin account
-      UserUtility.createNewUser("admin", "admin", UserRoleCodeType.AdministratorCode.ID);
+      Long[] roles = new Long[]{UserUtility.getAdminRoleId()};
+      UserUtility.createNewUser("admin", "admin", roles);
+
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('text', true)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('image', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('video', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('audio', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('application', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('multipart', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('message', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('model', false)");
+      SQL.insert("INSERT INTO filetype (name, version_control) VALUES ('example', false)");
 
       SQL.commit();
     }
 
   }
 
-  private static Set<String> getExistingTables() throws ProcessingException {
+  private Set<String> getExistingTables() throws ProcessingException {
     Object[][] existingTables = SQL.select("SELECT tablename FROM sys.systables");
     HashSet<String> result = new HashSet<String>(existingTables.length);
     for (Object[] row : existingTables) {
@@ -104,4 +135,5 @@ public class DbSetup {
     }
     return result;
   }
+
 }

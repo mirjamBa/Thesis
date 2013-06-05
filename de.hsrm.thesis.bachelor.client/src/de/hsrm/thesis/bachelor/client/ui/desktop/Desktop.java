@@ -25,6 +25,7 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.AdministrationOutline;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.UserOutline;
 import de.hsrm.thesis.bachelor.shared.Icons;
 import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
 
@@ -40,6 +41,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     ArrayList<Class> outlines = new ArrayList<Class>();
     outlines.add(FileManagementOutline.class);
     outlines.add(AdministrationOutline.class);
+    outlines.add(UserOutline.class);
     return outlines.toArray(new Class[outlines.size()]);
   }
 
@@ -184,15 +186,16 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-//  @Order(30.0)
-//  public class ChatOutlineViewButton extends AbstractOutlineViewButton {
-//    public ChatOutlineViewButton() {
-//      super(Desktop.this, ChatOutline.class);
-//    }
-//
-//    @Override
-//    protected String getConfiguredText() {
-//      return TEXTS.get("Chat");
-//    }
-//  }
+  @Order(30.0)
+  public class UserOutlineViewButton extends AbstractOutlineViewButton {
+    public UserOutlineViewButton() {
+      super(Desktop.this, UserOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("User");
+    }
+  }
+
 }

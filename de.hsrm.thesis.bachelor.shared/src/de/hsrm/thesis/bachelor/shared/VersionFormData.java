@@ -12,18 +12,18 @@ public class VersionFormData extends AbstractFormData {
   public VersionFormData() {
   }
 
-  public FileType0 getFileType0() {
-    return getFieldByClass(FileType0.class);
+  public FileType getFileType() {
+    return getFieldByClass(FileType.class);
   }
 
   public Version getVersion() {
     return getFieldByClass(Version.class);
   }
 
-  public static class FileType0 extends AbstractValueFieldData<Long> {
+  public static class FileType extends AbstractValueFieldData<Long> {
     private static final long serialVersionUID = 1L;
 
-    public FileType0() {
+    public FileType() {
     }
 
     /**

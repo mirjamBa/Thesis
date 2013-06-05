@@ -5,7 +5,7 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
+import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
 
 public class UserFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;
@@ -35,8 +35,8 @@ public class UserFormData extends AbstractFormData {
     return getFieldByClass(Password.class);
   }
 
-  public UserRole getUserRole() {
-    return getFieldByClass(UserRole.class);
+  public Role getRole() {
+    return getFieldByClass(Role.class);
   }
 
   public Username getUsername() {
@@ -67,10 +67,10 @@ public class UserFormData extends AbstractFormData {
     }
   }
 
-  public static class UserRole extends AbstractValueFieldData<Integer> {
+  public static class Role extends AbstractValueFieldData<Long[]> {
     private static final long serialVersionUID = 1L;
 
-    public UserRole() {
+    public Role() {
     }
 
     /**
@@ -79,9 +79,7 @@ public class UserFormData extends AbstractFormData {
     @Override
     protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);
-      ruleMap.put(ValidationRule.CODE_TYPE, UserRoleCodeType.class);
-      ruleMap.put(ValidationRule.MANDATORY, true);
-      ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
+      ruleMap.put(ValidationRule.LOOKUP_CALL, RoleLookupCall.class);
     }
   }
 

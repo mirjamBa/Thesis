@@ -3,21 +3,47 @@ package de.hsrm.thesis.bachelor.shared;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
+import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
-public class FileFormat0FormData extends AbstractFormData {
+public class FileFormatFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;
 
-  public FileFormat0FormData() {
+  public FileFormatFormData() {
+  }
+
+  public IdProperty getIdProperty() {
+    return getPropertyByClass(IdProperty.class);
+  }
+
+  /**
+   * access method for property Id.
+   */
+  public Long getId() {
+    return getIdProperty().getValue();
+  }
+
+  /**
+   * access method for property Id.
+   */
+  public void setId(Long id) {
+    getIdProperty().setValue(id);
   }
 
   public FileFormat getFileFormat() {
     return getFieldByClass(FileFormat.class);
   }
 
-  public FileType0 getFileType0() {
-    return getFieldByClass(FileType0.class);
+  public FileType getFileType() {
+    return getFieldByClass(FileType.class);
+  }
+
+  public class IdProperty extends AbstractPropertyData<Long> {
+    private static final long serialVersionUID = 1L;
+
+    public IdProperty() {
+    }
   }
 
   public static class FileFormat extends AbstractValueFieldData<String> {
@@ -36,10 +62,10 @@ public class FileFormat0FormData extends AbstractFormData {
     }
   }
 
-  public static class FileType0 extends AbstractValueFieldData<Long> {
+  public static class FileType extends AbstractValueFieldData<Long> {
     private static final long serialVersionUID = 1L;
 
-    public FileType0() {
+    public FileType() {
     }
 
     /**

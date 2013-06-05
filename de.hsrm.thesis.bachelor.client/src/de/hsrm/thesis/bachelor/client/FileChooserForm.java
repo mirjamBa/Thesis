@@ -1,5 +1,7 @@
 package de.hsrm.thesis.bachelor.client;
 
+import java.io.File;
+
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
@@ -11,12 +13,14 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.filechooserfield.AbstractFileChooserField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.CancelButton;
-import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.File0Box;
-import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.File0Box.File0Field;
+import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.FileBox;
+import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.FileBox.FileField;
 import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.FileChooserFormData;
+import de.hsrm.thesis.bachelor.shared.IFileService;
 
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileChooserForm extends AbstractForm {
@@ -34,20 +38,16 @@ public class FileChooserForm extends AbstractForm {
     return getFieldByClass(CancelButton.class);
   }
 
-  public void startModify() throws ProcessingException {
-    startInternal(new ModifyHandler());
-  }
-
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
   }
 
-  public File0Box getFile0Box() {
-    return getFieldByClass(File0Box.class);
+  public FileBox getFileBox() {
+    return getFieldByClass(FileBox.class);
   }
 
-  public File0Field getFile0Field() {
-    return getFieldByClass(File0Field.class);
+  public FileField getFileField() {
+    return getFieldByClass(FileField.class);
   }
 
   public MainBox getMainBox() {
@@ -62,19 +62,19 @@ public class FileChooserForm extends AbstractForm {
   public class MainBox extends AbstractGroupBox {
 
     @Order(20.0)
-    public class File0Box extends AbstractGroupBox {
+    public class FileBox extends AbstractGroupBox {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("File0");
+        return TEXTS.get("File");
       }
 
       @Order(10.0)
-      public class File0Field extends AbstractFileChooserField {
+      public class FileField extends AbstractFileChooserField {
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("File0");
+          return TEXTS.get("File");
         }
 
         @Override
@@ -94,9 +94,12 @@ public class FileChooserForm extends AbstractForm {
     }
   }
 
-  public class ModifyHandler extends AbstractFormHandler {
-  }
-
   public class NewHandler extends AbstractFormHandler {
+
+    @Override
+    protected void execStore() throws ProcessingException {
+      File file = getFileField().getValueAsFile();
+      SERVICES.getService(IFileService.class).saveFile(file);
+    }
   }
 }

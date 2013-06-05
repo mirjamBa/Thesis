@@ -8,13 +8,11 @@ import org.eclipse.scout.service.IService2;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IMetadataService extends IService2 {
 
-  MetadataFormData prepareCreate(MetadataFormData formData) throws ProcessingException;
-
   MetadataFormData create(MetadataFormData formData) throws ProcessingException;
 
-  MetadataFormData load(MetadataFormData formData) throws ProcessingException;
+  MetadataFormData delete(MetadataFormData formData) throws ProcessingException;
 
-  MetadataFormData store(MetadataFormData formData) throws ProcessingException;
+  MetadataFormData update(MetadataFormData formData) throws ProcessingException;
 
-  public Object[][] getAttributes() throws ProcessingException;
+  public Object[][] getAttributes(Long filetypeId) throws ProcessingException;
 }

@@ -60,8 +60,8 @@ public class FileFormData extends AbstractFormData {
     return getFieldByClass(CreationDate.class);
   }
 
-  public FileType0 getFileType0() {
-    return getFieldByClass(FileType0.class);
+  public FileType getFileType() {
+    return getFieldByClass(FileType.class);
   }
 
   public Filesize getFilesize() {
@@ -197,10 +197,10 @@ public class FileFormData extends AbstractFormData {
     }
   }
 
-  public static class FileType0 extends AbstractValueFieldData<Long> {
+  public static class FileType extends AbstractValueFieldData<Long> {
     private static final long serialVersionUID = 1L;
 
-    public FileType0() {
+    public FileType() {
     }
 
     /**

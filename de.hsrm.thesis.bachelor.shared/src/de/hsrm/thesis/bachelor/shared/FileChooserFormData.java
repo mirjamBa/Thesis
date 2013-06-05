@@ -10,14 +10,14 @@ public class FileChooserFormData extends AbstractFormData {
   public FileChooserFormData() {
   }
 
-  public File0 getFile0() {
-    return getFieldByClass(File0.class);
+  public File getFile() {
+    return getFieldByClass(File.class);
   }
 
-  public static class File0 extends AbstractValueFieldData<String> {
+  public static class File extends AbstractValueFieldData<String> {
     private static final long serialVersionUID = 1L;
 
-    public File0() {
+    public File() {
     }
 
     /**

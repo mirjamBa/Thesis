@@ -1,5 +1,6 @@
 package de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages;
 
+import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
@@ -9,15 +10,19 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTabl
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.MetadataForm;
 import de.hsrm.thesis.bachelor.shared.IMetadataService;
+import de.hsrm.thesis.bachelor.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.Table> {
+
+  private long m_filetypeNr;
 
   @Override
   protected String getConfiguredTitle() {
@@ -31,7 +36,7 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
 
   @Override
   protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IMetadataService.class).getAttributes();
+    return SERVICES.getService(IMetadataService.class).getAttributes(m_filetypeNr);
   }
 
   @Order(10.0)
@@ -45,12 +50,17 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
       return getColumnSet().getColumnByClass(DatatypeColumn.class);
     }
 
-    public FileType0Column getFileType0Column() {
-      return getColumnSet().getColumnByClass(FileType0Column.class);
+    public FileTypeColumn getFileTypeColumn() {
+      return getColumnSet().getColumnByClass(FileTypeColumn.class);
     }
 
     public AttributIDColumn getAttributIDColumn() {
       return getColumnSet().getColumnByClass(AttributIDColumn.class);
+    }
+
+    @Override
+    protected boolean getConfiguredAutoResizeColumns() {
+      return true;
     }
 
     @Order(10.0)
@@ -82,26 +92,31 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
     }
 
     @Order(30.0)
-    public class DatatypeColumn extends AbstractStringColumn {
+    public class DatatypeColumn extends AbstractSmartColumn<Long> {
 
       @Override
       protected String getConfiguredHeaderText() {
         return TEXTS.get("Datatype");
       }
+
+      @Override
+      protected Class<? extends ICodeType> getConfiguredCodeType() {
+        return DatatypeCodeType.class;
+      }
+
     }
 
     @Order(40.0)
-    public class FileType0Column extends AbstractSmartColumn<Long> {
+    public class FileTypeColumn extends AbstractSmartColumn<Long> {
 
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("FileType0");
+        return TEXTS.get("FileType");
       }
 
       @Override
       protected Class<? extends LookupCall> getConfiguredLookupCall() {
         return FiletypeLookupCall.class;
-
       }
     }
 
@@ -128,5 +143,15 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
         }
       }
     }
+  }
+
+  @FormData
+  public long getFiletypeNr() {
+    return m_filetypeNr;
+  }
+
+  @FormData
+  public void setFiletypeNr(long filetypeNr) {
+    m_filetypeNr = filetypeNr;
   }
 }

@@ -1,6 +1,7 @@
 package de.hsrm.thesis.bachelor.server;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 
@@ -22,10 +23,20 @@ public class VersionService extends AbstractService implements IVersionService {
   }
 
   @Override
-  public Object[][] getVersionControlOfFiletypes() throws ProcessingException {
-    return SQL.select("SELECT FILETYPE_ID, "
-        + "                   NAME, "
-        + "                   VERSION_CONTROL "
-        + "                   FROM FILETYPE ");
+  public Object[][] getVersionControlOfFiletypes(Long filetypeNr) throws ProcessingException {
+    if (filetypeNr == null) {
+      return SQL.select("SELECT FILETYPE_ID, "
+          + "                   NAME, "
+          + "                   VERSION_CONTROL "
+          + "                   FROM FILETYPE ");
+    }
+    else {
+      return SQL.select("SELECT FILETYPE_ID, "
+          + "                   NAME, "
+          + "                   VERSION_CONTROL "
+          + "                   FROM FILETYPE "
+          + "                   WHERE FILETYPE_ID = :filetypeId",
+          new NVPair("filetypeId", filetypeNr));
+    }
   }
 }

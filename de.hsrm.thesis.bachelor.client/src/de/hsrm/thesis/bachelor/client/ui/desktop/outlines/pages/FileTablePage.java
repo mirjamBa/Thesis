@@ -1,9 +1,11 @@
 package de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
@@ -12,17 +14,70 @@ import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMe
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 
-import de.hsrm.testtest.client.FileForm;
 import de.hsrm.thesis.bachelor.client.FileChooserForm;
+import de.hsrm.thesis.bachelor.client.TestForm;
+import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileFormatTablePage.Table.FileFormatColumn;
+import de.hsrm.thesis.bachelor.shared.column.ColumnSpec;
 import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage.Table> {
+  private List<IColumn<?>> m_injectedColumns;
 
   @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("File");
+  }
+
+  @Override
+  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
+    Object[][] o = new Object[][]{{123L, 0L, 1234, "Titel", "Autor", "nochwas", null},
+        {123L, 0L, 1234, "Titel", "Autor", null, "was anderes"}};
+
+    ColumnSpec[] columnSpecs = new ColumnSpec[]{new ColumnSpec("1234", "1.Spalte", "String"), new ColumnSpec("678", "2.Spalte", "String")};
+    updateDynamicColumns(columnSpecs);
+    return o;
+  }
+
+  private void updateDynamicColumns(ColumnSpec[] columnSpecs) throws ProcessingException {
+    if (columnSpecs.length == 0) {
+      return;
+    }
+    Table table = getTable();
+    m_injectedColumns = new ArrayList<IColumn<?>>();
+    for (ColumnSpec spec : columnSpecs) {
+      //XXX switch on spec.getType() or something like that...
+      m_injectedColumns.add(createDynamicStringColumn(spec.getId(), spec.getText()));
+      //...
+    }
+    table.resetColumnConfiguration();
+  }
+
+  private IColumn<?> createDynamicStringColumn(final String columnId, final String label) {
+    return new AbstractStringColumn() {
+      @Override
+      protected String getConfiguredHeaderText() {
+        return label;
+      }
+
+      @Override
+      public String getColumnId() {
+        return columnId;
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 120;
+      }
+
+      @Override
+      protected String execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+        return super.execParseValue(row, rawValue);
+      }
+
+    };
   }
 
   @Order(10.0)
@@ -35,12 +90,13 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
     @Override
     protected void injectColumnsInternal(List<IColumn<?>> columnList) {
-      // TODO Auto-generated method stub
-      super.injectColumnsInternal(columnList);
+      if (m_injectedColumns != null) {
+        columnList.addAll(m_injectedColumns);
+      }
     }
 
-    public FileType0Column getFileType0Column() {
-      return getColumnSet().getColumnByClass(FileType0Column.class);
+    public FileTypeColumn getFileTypeColumn() {
+      return getColumnSet().getColumnByClass(FileTypeColumn.class);
     }
 
     public FileNrColumn getFileNrColumn() {
@@ -51,21 +107,21 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       return getColumnSet().getColumnByClass(TitleColumn.class);
     }
 
-    public TypistColumn getTypistColumn() {
-      return getColumnSet().getColumnByClass(TypistColumn.class);
-    }
-
-    public FilesizeColumn getFilesizeColumn() {
-      return getColumnSet().getColumnByClass(FilesizeColumn.class);
-    }
+//    public TypistColumn getTypistColumn() {
+//      return getColumnSet().getColumnByClass(TypistColumn.class);
+//    }
+//
+//    public FilesizeColumn getFilesizeColumn() {
+//      return getColumnSet().getColumnByClass(FilesizeColumn.class);
+//    }
 
     public FileFormatColumn getFileFormatColumn() {
       return getColumnSet().getColumnByClass(FileFormatColumn.class);
     }
 
-    public MimetypeColumn getMimetypeColumn() {
-      return getColumnSet().getColumnByClass(MimetypeColumn.class);
-    }
+//    public MimetypeColumn getMimetypeColumn() {
+//      return getColumnSet().getColumnByClass(MimetypeColumn.class);
+//    }
 
     public AuthorColumn getAuthorColumn() {
       return getColumnSet().getColumnByClass(AuthorColumn.class);
@@ -95,11 +151,11 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
     }
 
     @Order(20.0)
-    public class FileType0Column extends AbstractSmartColumn<Long> {
+    public class FileTypeColumn extends AbstractSmartColumn<Long> {
 
       @Override
       protected String getConfiguredHeaderText() {
-        return TEXTS.get("FileType0");
+        return TEXTS.get("FileType");
       }
 
       @Override
@@ -136,41 +192,41 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       }
     }
 
-    @Order(70.0)
-    public class TypistColumn extends AbstractSmartColumn<Long> {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Typist");
-      }
-    }
-
-    @Order(80.0)
-    public class FilesizeColumn extends AbstractStringColumn {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Filesize");
-      }
-    }
-
-    @Order(90.0)
-    public class FileFormatColumn extends AbstractStringColumn {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("FileFormat");
-      }
-    }
-
-    @Order(100.0)
-    public class MimetypeColumn extends AbstractStringColumn {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Mimetype");
-      }
-    }
+//    @Order(70.0)
+//    public class TypistColumn extends AbstractSmartColumn<Long> {
+//
+//      @Override
+//      protected String getConfiguredHeaderText() {
+//        return TEXTS.get("Typist");
+//      }
+//    }
+//
+//    @Order(80.0)
+//    public class FilesizeColumn extends AbstractStringColumn {
+//
+//      @Override
+//      protected String getConfiguredHeaderText() {
+//        return TEXTS.get("Filesize");
+//      }
+//    }
+//
+//    @Order(90.0)
+//    public class FileFormatColumn extends AbstractStringColumn {
+//
+//      @Override
+//      protected String getConfiguredHeaderText() {
+//        return TEXTS.get("FileFormat");
+//      }
+//    }
+//
+//    @Order(100.0)
+//    public class MimetypeColumn extends AbstractStringColumn {
+//
+//      @Override
+//      protected String getConfiguredHeaderText() {
+//        return TEXTS.get("Mimetype");
+//      }
+//    }
 
     @Order(10.0)
     public class NewFileMenu extends AbstractExtensibleMenu {
@@ -194,12 +250,19 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
           reloadPage();
         }
 
-        FileForm frm = new FileForm();
-        frm.startNew();
-        frm.waitFor();
-        if (frm.isFormStored()) {
+        TestForm f = new TestForm();
+        f.startNew();
+        f.waitFor();
+        if (f.isFormStored()) {
           reloadPage();
         }
+
+        //        FileForm frm = new FileForm();
+        //        frm.startNew();
+        //        frm.waitFor();
+        //        if (frm.isFormStored()) {
+        //          reloadPage();
+        //        }
       }
     }
   }

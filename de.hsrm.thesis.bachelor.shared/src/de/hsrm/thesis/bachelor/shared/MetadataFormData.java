@@ -21,8 +21,8 @@ public class MetadataFormData extends AbstractFormData {
     return getFieldByClass(Datatype.class);
   }
 
-  public FileType0 getFileType0() {
-    return getFieldByClass(FileType0.class);
+  public FileType getFileType() {
+    return getFieldByClass(FileType.class);
   }
 
   public static class Bezeichnung extends AbstractValueFieldData<String> {
@@ -58,10 +58,10 @@ public class MetadataFormData extends AbstractFormData {
     }
   }
 
-  public static class FileType0 extends AbstractValueFieldData<Long> {
+  public static class FileType extends AbstractValueFieldData<Long> {
     private static final long serialVersionUID = 1L;
 
-    public FileType0() {
+    public FileType() {
     }
 
     /**
