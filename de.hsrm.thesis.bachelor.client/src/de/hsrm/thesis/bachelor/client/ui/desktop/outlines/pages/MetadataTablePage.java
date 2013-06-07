@@ -136,6 +136,9 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
       @Override
       protected void execAction() throws ProcessingException {
         MetadataForm form = new MetadataForm();
+        if (getFiletypeNr() > 0) {
+          form.getFileTypeField().setValue(getFiletypeNr());
+        }
         form.startNew();
         form.waitFor();
         if (form.isFormStored()) {

@@ -114,6 +114,26 @@
             class="de.hsrm.thesis.bachelor.server.services.FileStorageService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.lookup.UserLookupService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.TikaService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.SharedContextService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.lookup.TagLookupService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""

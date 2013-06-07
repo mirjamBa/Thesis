@@ -3,6 +3,7 @@ package de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBooleanColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
@@ -40,6 +41,10 @@ public class FileTypeTablePage extends AbstractExtensiblePageWithTable<FileTypeT
       return getColumnSet().getColumnByClass(NameColumn.class);
     }
 
+    public VersionColumn getVersionColumn() {
+      return getColumnSet().getColumnByClass(VersionColumn.class);
+    }
+
     public IdColumn getIdColumn() {
       return getColumnSet().getColumnByClass(IdColumn.class);
     }
@@ -69,6 +74,20 @@ public class FileTypeTablePage extends AbstractExtensiblePageWithTable<FileTypeT
       @Override
       protected String getConfiguredHeaderText() {
         return TEXTS.get("Name");
+      }
+    }
+
+    @Order(30.0)
+    public class VersionColumn extends AbstractBooleanColumn {
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Version");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 200;
       }
     }
   }

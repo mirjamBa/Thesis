@@ -23,12 +23,8 @@ public class FiletypeAttributesNodePage extends AbstractPageWithNodes {
     metadataTablePage.setFiletypeNr(getFiletypeNr());
     pageList.add(metadataTablePage);
 
-    VersionTablePage versionTablePage = new VersionTablePage();
-    versionTablePage.setFileTypeNr(getFiletypeNr());
-    pageList.add(versionTablePage);
-
     FileFormatTablePage fileFormatTablePage = new FileFormatTablePage();
-    fileFormatTablePage.setFileformatNr(getFiletypeNr());
+    fileFormatTablePage.setFiletypeNr(getFiletypeNr());
     pageList.add(fileFormatTablePage);
 
   }

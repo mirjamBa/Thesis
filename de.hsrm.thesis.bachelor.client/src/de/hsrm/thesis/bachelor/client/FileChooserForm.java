@@ -21,9 +21,12 @@ import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.FileBox.FileField;
 import de.hsrm.thesis.bachelor.client.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.FileChooserFormData;
 import de.hsrm.thesis.bachelor.shared.IFileService;
+import de.hsrm.thesis.bachelor.shared.files.ServerFileData;
 
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileChooserForm extends AbstractForm {
+
+  private ServerFileData m_fileData;
 
   public FileChooserForm() throws ProcessingException {
     super();
@@ -99,7 +102,21 @@ public class FileChooserForm extends AbstractForm {
     @Override
     protected void execStore() throws ProcessingException {
       File file = getFileField().getValueAsFile();
-      SERVICES.getService(IFileService.class).saveFile(file);
+      ServerFileData fileDate = SERVICES.getService(IFileService.class).saveFile(file);
+      setFileData(fileDate);
+
+//      SERVICES.getService(ITikaService.class).extractDataFromFile(file);
+
     }
+  }
+
+  @FormData
+  public ServerFileData getFileData() {
+    return m_fileData;
+  }
+
+  @FormData
+  public void setFileData(ServerFileData fileData) {
+    m_fileData = fileData;
   }
 }

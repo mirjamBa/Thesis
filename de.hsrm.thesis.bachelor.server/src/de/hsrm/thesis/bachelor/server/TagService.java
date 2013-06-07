@@ -12,9 +12,16 @@ public class TagService extends AbstractService implements ITagService {
 
   @Override
   public TagFormData create(TagFormData formData) throws ProcessingException {
-    SQL.insert("INSERT INTO tag (name) VALUES (:tagName)",
-        new NVPair("tagName", formData.getTagName()));
+    create(formData.getTagName().getValue());
     return formData;
+  }
+
+  @Override
+  public void create(String... tagnames) throws ProcessingException {
+    for (String tagname : tagnames) {
+      SQL.insert("INSERT INTO tag (name) VALUES (:tagName)",
+          new NVPair("tagName", tagname));
+    }
   }
 
   @Override
@@ -33,4 +40,5 @@ public class TagService extends AbstractService implements ITagService {
   public void deleteTag(Long[] ids) throws ProcessingException {
     SQL.delete("DELETE FROM tag WHERE tag_id = :ids", new NVPair("ids", ids));
   }
+
 }

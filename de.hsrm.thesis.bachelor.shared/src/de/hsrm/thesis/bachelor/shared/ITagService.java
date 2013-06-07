@@ -10,9 +10,12 @@ public interface ITagService extends IService2 {
 
   TagFormData create(TagFormData formData) throws ProcessingException;
 
+  public void create(String... tagnames) throws ProcessingException;
+
   public Object[][] getTags() throws ProcessingException;
 
   public void updateTag(TagFormData formData) throws ProcessingException;
 
   public void deleteTag(Long[] ids) throws ProcessingException;
+
 }

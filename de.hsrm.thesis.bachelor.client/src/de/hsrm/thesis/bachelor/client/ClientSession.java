@@ -59,4 +59,9 @@ public class ClientSession extends AbstractClientSession {
     ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
     SERVICES.getService(IUserProcessService.class).unregisterUser();
   }
+
+  public Long getUserNr() {
+    return getSharedContextVariable("userNr", Long.class);
+  }
+
 }

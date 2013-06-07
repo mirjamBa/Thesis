@@ -48,7 +48,7 @@ public class DBStorageService extends AbstractService implements IStorageService
           + "file_id   BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILE_PK PRIMARY KEY,"
           + "number    BIGINT NOT NULL,"
           + "filetype_id  BIGINT NOT NULL REFERENCES filetype(filetype_id), "
-          + "file_Path  VARCHAR(256) NOT NULL, "
+          + "file_path  VARCHAR(256) NOT NULL, "
           + "u_id      BIGINT  REFERENCES TABUSERS(u_id))");
       SQL.commit();
 
@@ -56,12 +56,6 @@ public class DBStorageService extends AbstractService implements IStorageService
           + "tag_id    BIGINT NOT NULL REFERENCES tag(tag_id),"
           + "file_id   BIGINT NOT NULL REFERENCES file(file_id),"
           + "PRIMARY KEY(tag_id, file_id))");
-      SQL.commit();
-
-      SQL.insert("CREATE TABLE role_file_permission ("
-          + "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
-          + "permission_id INT NOT NULL,"
-          + "PRIMARY KEY(file_id, permission_id))");
       SQL.commit();
 
       SQL.insert("CREATE TABLE version ("
@@ -94,6 +88,12 @@ public class DBStorageService extends AbstractService implements IStorageService
           + "role_id       BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ROLE_PK PRIMARY KEY, "
           + "name          VARCHAR(128) NOT NULL,"
           + "user_creator_id  BIGINT REFERENCES tabusers(u_id))");
+      SQL.commit();
+
+      SQL.insert("CREATE TABLE role_file_permission ("
+          + "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
+          + "role_id     BIGINT NOT NULL REFERENCES role(role_id),"
+          + "PRIMARY KEY(file_id, role_id))");
       SQL.commit();
 
       SQL.insert("CREATE TABLE user_role ("

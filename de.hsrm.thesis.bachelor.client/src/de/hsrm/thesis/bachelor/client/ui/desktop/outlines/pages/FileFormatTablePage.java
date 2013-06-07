@@ -22,11 +22,11 @@ import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 public class FileFormatTablePage extends AbstractPageWithTable<FileFormatTablePage.Table> {
 
-  private long m_fileformatNr;
+  private long m_filetypeNr;
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("FileType");
+    return TEXTS.get("FileFormat");
   }
 
   @Override
@@ -36,7 +36,7 @@ public class FileFormatTablePage extends AbstractPageWithTable<FileFormatTablePa
 
   @Override
   protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IFileFormatService.class).getFileFormats(getFileformatNr());
+    return SERVICES.getService(IFileFormatService.class).getFileFormats(getFiletypeNr());
   }
 
   @Order(10.0)
@@ -132,6 +132,9 @@ public class FileFormatTablePage extends AbstractPageWithTable<FileFormatTablePa
       @Override
       protected void execAction() throws ProcessingException {
         FileFormatForm form = new FileFormatForm();
+        if (getFiletypeNr() > 0) {
+          form.getFileTypeField().setValue(getFiletypeNr());
+        }
         form.startNew();
         form.waitFor();
         if (form.isFormStored()) {
@@ -178,7 +181,7 @@ public class FileFormatTablePage extends AbstractPageWithTable<FileFormatTablePa
 
       @Override
       protected void execAction() throws ProcessingException {
-        if (MessageBox.showDeleteConfirmationMessage(TEXTS.get("FileType"), getFileFormatColumn().getValues(getSelectedRows()))) {
+        if (MessageBox.showDeleteConfirmationMessage(TEXTS.get("FileFormat"), getFileFormatColumn().getValues(getSelectedRows()))) {
           SERVICES.getService(IFileFormatService.class).delete(getIDColumn().getValues(getSelectedRows()));
           reloadPage();
         }
@@ -187,12 +190,12 @@ public class FileFormatTablePage extends AbstractPageWithTable<FileFormatTablePa
   }
 
   @FormData
-  public long getFileformatNr() {
-    return m_fileformatNr;
+  public long getFiletypeNr() {
+    return m_filetypeNr;
   }
 
   @FormData
-  public void setFileformatNr(long fileformatNr) {
-    m_fileformatNr = fileformatNr;
+  public void setFiletypeNr(long filetypeNr) {
+    m_filetypeNr = filetypeNr;
   }
 }

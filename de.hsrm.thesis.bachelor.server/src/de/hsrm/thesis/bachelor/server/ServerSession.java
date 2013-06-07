@@ -13,6 +13,8 @@ import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.thesis.bachelor.server.util.UserUtility;
+import de.hsrm.thesis.bachelor.shared.services.ISharedContextService;
 import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
 
 public class ServerSession extends AbstractServerSession {
@@ -27,6 +29,19 @@ public class ServerSession extends AbstractServerSession {
    */
   public static ServerSession get() {
     return ServerJob.getCurrentSession(ServerSession.class);
+  }
+
+  @Override
+  public <T> void setSharedContextVariable(String name, Class<T> type, T value) {
+    super.setSharedContextVariable(name, type, value);
+  }
+
+  public Long getUserNr() {
+    return getSharedContextVariable("userNr", Long.class);
+  }
+
+  public void setUserNr(Long newValue) {
+    setSharedContextVariable("userNr", Long.class, newValue);
   }
 
   @SuppressWarnings("unchecked")
@@ -47,6 +62,10 @@ public class ServerSession extends AbstractServerSession {
 
       setPermission(SERVICES.getService(IUserProcessService.class).getUserPermission(getUserId()));
 
+      Long userNr = UserUtility.getUserId(getUserId());
+      setUserNr(userNr);
+
+      SERVICES.getService(ISharedContextService.class).setSharedContextVariable("userNr", Long.class, userNr);
       SERVICES.getService(IUserProcessService.class).registerUser();
 
     }
