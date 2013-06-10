@@ -30,4 +30,6 @@ public interface IUserProcessService extends IService {
   public Set<String> getUsersOnline() throws ProcessingException;
 
   public Long[] getUserRoles(Long userId) throws ProcessingException;
+
+  public long getUserId(String username) throws ProcessingException;
 }

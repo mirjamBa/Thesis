@@ -15,6 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.extension.client;visibility:=reexport,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.svg.client,
- de.hsrm.testtest
+ de.hsrm.mi.administration.client,
+ de.hsrm.mi.administration.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

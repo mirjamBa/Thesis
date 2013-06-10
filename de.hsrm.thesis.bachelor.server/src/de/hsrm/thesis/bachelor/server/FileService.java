@@ -10,6 +10,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.scout.commons.IOUtility;
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -21,12 +24,13 @@ import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 import org.osgi.framework.FrameworkUtil;
 
+import de.hsrm.mi.administration.shared.services.IFiletypeService;
+import de.hsrm.mi.administration.shared.services.ITagService;
 import de.hsrm.thesis.bachelor.server.util.TagUtility;
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
 import de.hsrm.thesis.bachelor.shared.FileFormData;
 import de.hsrm.thesis.bachelor.shared.FileSearchFormData;
 import de.hsrm.thesis.bachelor.shared.IFileService;
-import de.hsrm.thesis.bachelor.shared.ITagService;
 import de.hsrm.thesis.bachelor.shared.files.ServerFileData;
 
 public class FileService extends AbstractService implements IFileService {
@@ -96,6 +100,20 @@ public class FileService extends AbstractService implements IFileService {
   }
 
   @Override
+  public Object[][] getImages() throws ProcessingException {
+    FileSearchFormData data = new FileSearchFormData();
+    MimeType mimetype = new MimeType();
+    try {
+      mimetype.setPrimaryType("image");
+      data.getFileType().setValue(SERVICES.getService(IFiletypeService.class).getFiletypeId(mimetype));
+    }
+    catch (MimeTypeParseException e) {
+      throw new ProcessingException(e.getMessage());
+    }
+    return getFiles(data);
+  }
+
+  @Override
   public Object[][] getFiles(FileSearchFormData searchFormData) throws ProcessingException {
     Long user_id = ServerSession.get().getUserNr();
 
@@ -104,7 +122,8 @@ public class FileService extends AbstractService implements IFileService {
     stringBuilder.append("SELECT F.FILE_ID, "
         + "            F.FILETYPE_ID, "
         + "            F.NUMBER, "
-        + "            F.U_ID "
+        + "            F.U_ID, "
+        + "            F.FILE_PATH "
         + "     FROM   FILE F "
         + "     WHERE  1 = 1 "
         + "     AND    (F.U_ID = :userId " //visible for the typist of the file
@@ -119,24 +138,6 @@ public class FileService extends AbstractService implements IFileService {
     }
 
     return SQL.select(stringBuilder.toString(), new NVPair("userId", user_id), searchFormData);
-
-//    Object[][] files = SQL.select(
-//        "       SELECT F.FILE_ID, "
-//            + "            F.FILETYPE_ID, "
-//            + "            F.NUMBER, "
-//            + "            F.U_ID "
-//            + "     FROM   FILE F "
-//            + "     WHERE  1 = 1 "
-//            + "     AND    (F.U_ID = :userId " //visible for the typist of the file
-//            + "     OR     F.FILE_ID IN "
-//            + "             (SELECT RF.FILE_ID FROM ROLE_FILE_PERMISSION RF WHERE RF.ROLE_ID IN " //visible for users who are a member of those roles, the files are approved for
-//            + "                     (SELECT R.ROLE_ID FROM USER_ROLE R WHERE R.U_ID = :userId) "
-//            + "             ) "
-//            + "             ) ",
-//        new NVPair("userId", user_id));
-//
-//    return files;
-
   }
 
   @Override
@@ -215,6 +216,18 @@ public class FileService extends AbstractService implements IFileService {
     }
     catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException {
+
+    SQL.delete("DELETE FROM role_file_permission WHERE file_id= :fileId", new NVPair("fileId", fildId));
+
+    for (Long roleId : roleIds) {
+      SQL.insert("INSERT INTO role_file_permission (file_id, role_id) VALUES (:fileId, :roleId)",
+          new NVPair("fileId", fildId),
+          new NVPair("roleId", roleId));
     }
   }
 }

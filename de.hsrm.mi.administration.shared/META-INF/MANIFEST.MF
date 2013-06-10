@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Shared
+Bundle-SymbolicName: de.hsrm.mi.administration.shared
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.hsrm.mi.administration.shared.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scout.rt.shared,
+ org.eclipse.osgi
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: de.hsrm.mi.administration.shared.handler,
+ de.hsrm.mi.administration.shared.services,
+ de.hsrm.mi.administration.shared.services.code,
+ de.hsrm.mi.administration.shared.services.formdata,
+ de.hsrm.mi.administration.shared.services.lookup

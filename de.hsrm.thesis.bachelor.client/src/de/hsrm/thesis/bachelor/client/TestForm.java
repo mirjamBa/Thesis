@@ -9,17 +9,23 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.testtest.client.FileForm;
-import de.hsrm.testtest.shared.IFileService;
 import de.hsrm.thesis.bachelor.shared.TestFormData;
 
 @FormData(value = TestFormData.class, sdkCommand = SdkCommand.CREATE)
 public class TestForm extends FileForm {
 
-  public TestForm() throws ProcessingException {
-    super();
+//  public TestForm() throws ProcessingException {
+////    super();
+//  }
+
+  /**
+   * @param fileNr
+   * @throws ProcessingException
+   */
+  public TestForm(Long fileNr) throws ProcessingException {
+    super(fileNr);
+    // TODO Auto-generated constructor stub
   }
 
   @Override
@@ -55,7 +61,7 @@ public class TestForm extends FileForm {
 
     @Override
     public void execStore() throws ProcessingException {
-      IFileService service = SERVICES.getService(IFileService.class);
+//      IFileService service = SERVICES.getService(IFileService.class);
       TestFormData formData = new TestFormData();
       exportFormData(formData);
 //      formData = service.store(formData);
@@ -66,7 +72,7 @@ public class TestForm extends FileForm {
 
     @Override
     public void execStore() throws ProcessingException {
-      IFileService service = SERVICES.getService(IFileService.class);
+//      IFileService service = SERVICES.getService(IFileService.class);
       TestFormData formData = new TestFormData();
       exportFormData(formData);
 //      formData = service.create(formData);

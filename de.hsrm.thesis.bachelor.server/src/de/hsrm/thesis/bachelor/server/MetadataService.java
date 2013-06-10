@@ -5,15 +5,15 @@ import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 
-import de.hsrm.thesis.bachelor.shared.IMetadataService;
-import de.hsrm.thesis.bachelor.shared.MetadataFormData;
+import de.hsrm.mi.administration.shared.services.IMetadataService;
+import de.hsrm.mi.administration.shared.services.formdata.MetadataFormData;
 
 public class MetadataService extends AbstractService implements IMetadataService {
 
   @Override
   public MetadataFormData create(MetadataFormData formData) throws ProcessingException {
     SQL.insert("INSERT INTO metadata_attribute (name, datatype, filetype_id) VALUES(:name, :datatype, :filetype)",
-        new NVPair("name", formData.getBezeichnung()),
+        new NVPair("name", formData.getDescription()),
         new NVPair("datatype", formData.getDatatype().getValue()),
         new NVPair("filetype", formData.getFileType().getValue()));
 

@@ -5,8 +5,8 @@ import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 
-import de.hsrm.thesis.bachelor.shared.ITagService;
-import de.hsrm.thesis.bachelor.shared.TagFormData;
+import de.hsrm.mi.administration.shared.services.ITagService;
+import de.hsrm.mi.administration.shared.services.formdata.TagFormData;
 
 public class TagService extends AbstractService implements ITagService {
 

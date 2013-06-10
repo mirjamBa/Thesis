@@ -2,7 +2,7 @@ package de.hsrm.thesis.bachelor.server.services.lookup;
 
 import org.eclipse.scout.rt.server.services.lookup.AbstractSqlLookupService;
 
-import de.hsrm.thesis.bachelor.shared.services.lookup.IFiletypeLookupService;
+import de.hsrm.mi.administration.shared.services.lookup.IFiletypeLookupService;
 
 public class FiletypeLookupService extends AbstractSqlLookupService implements IFiletypeLookupService {
 

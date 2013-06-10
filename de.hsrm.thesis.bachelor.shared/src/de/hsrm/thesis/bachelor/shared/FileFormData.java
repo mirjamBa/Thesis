@@ -8,10 +8,10 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.mi.administration.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.bachelor.shared.files.ServerFileData;
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 
 public class FileFormData extends AbstractFormData {
@@ -54,6 +54,24 @@ public class FileFormData extends AbstractFormData {
    */
   public void setFileNr(Long fileNr) {
     getFileNrProperty().setValue(fileNr);
+  }
+
+  public FiletypeNrProperty getFiletypeNrProperty() {
+    return getPropertyByClass(FiletypeNrProperty.class);
+  }
+
+  /**
+   * access method for property FiletypeNr.
+   */
+  public long getFiletypeNr() {
+    return (getFiletypeNrProperty().getValue() == null) ? (0L) : (getFiletypeNrProperty().getValue());
+  }
+
+  /**
+   * access method for property FiletypeNr.
+   */
+  public void setFiletypeNr(long filetypeNr) {
+    getFiletypeNrProperty().setValue(filetypeNr);
   }
 
   public Attribute getAttribute() {
@@ -111,6 +129,13 @@ public class FileFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
 
     public FileNrProperty() {
+    }
+  }
+
+  public class FiletypeNrProperty extends AbstractPropertyData<Long> {
+    private static final long serialVersionUID = 1L;
+
+    public FiletypeNrProperty() {
     }
   }
 

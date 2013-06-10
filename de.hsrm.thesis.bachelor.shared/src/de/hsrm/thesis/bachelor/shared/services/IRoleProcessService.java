@@ -13,4 +13,6 @@ public interface IRoleProcessService extends IService {
   public Object[][] getRoles() throws ProcessingException;
 
   public RoleFormData create(RoleFormData formData) throws ProcessingException;
+
+  public Long[] getApprovedRolesForFile(Long fileId) throws ProcessingException;
 }

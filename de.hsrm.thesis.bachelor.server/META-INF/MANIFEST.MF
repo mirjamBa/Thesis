@@ -38,7 +38,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.jaxws216;bundle-version="2.1.6",
  net.sourceforge.tess4j,
  org.codehouse.xstream,
- de.hsrm.thesis.bachelor.shared
+ de.hsrm.thesis.bachelor.shared,
+ de.hsrm.mi.administration.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0",

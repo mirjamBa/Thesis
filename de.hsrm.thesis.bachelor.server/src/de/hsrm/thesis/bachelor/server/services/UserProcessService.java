@@ -144,4 +144,9 @@ public class UserProcessService extends AbstractService implements IUserProcessS
 
     return roleIds.getValue();
   }
+
+  @Override
+  public long getUserId(String username) throws ProcessingException {
+    return UserUtility.getUserId(username);
+  }
 }

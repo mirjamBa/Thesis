@@ -4,7 +4,7 @@ import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
 
 public class VersionFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;

@@ -2,7 +2,7 @@ package de.hsrm.thesis.bachelor.server.services.lookup;
 
 import org.eclipse.scout.rt.server.services.lookup.AbstractSqlLookupService;
 
-import de.hsrm.thesis.bachelor.shared.services.lookup.ITagLookupService;
+import de.hsrm.mi.administration.shared.services.lookup.ITagLookupService;
 
 public class TagLookupService extends AbstractSqlLookupService implements ITagLookupService {
 

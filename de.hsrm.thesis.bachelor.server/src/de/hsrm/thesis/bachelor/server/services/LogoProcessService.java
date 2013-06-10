@@ -11,9 +11,9 @@ public class LogoProcessService extends AbstractService implements ILogoProcessS
   @Override
   public Object[][] getLogoTableData() throws ProcessingException {
     return new Object[][]{
-        new Object[]{"Company 1", "bsi1"},
-        new Object[]{"Company 2", "bsi1"},
-        new Object[]{"Company 3", "bsi1"},
+        new Object[]{"Company 1", "company1"},
+        new Object[]{"Company 2", "company2"},
+        new Object[]{"Company 3", "company3"},
     };
   }
 
@@ -21,7 +21,8 @@ public class LogoProcessService extends AbstractService implements ILogoProcessS
   public byte[] getLogo(String imageId) throws ProcessingException {
     try {
       // TODO get content of image
-      return IOUtility.getContent("c:\\" + imageId + ".png");
+//      String filename = "c:/" + imageId + ".jpg";
+      return IOUtility.getContent(imageId);
     }
     catch (ProcessingException e) {
       // nop

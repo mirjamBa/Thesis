@@ -22,8 +22,8 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.mi.administration.client.ui.desktop.outlines.AdministrationOutline;
 import de.hsrm.thesis.bachelor.client.ClientSession;
-import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.AdministrationOutline;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.UserOutline;
 import de.hsrm.thesis.bachelor.shared.Icons;

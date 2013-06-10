@@ -21,4 +21,8 @@ public interface IFileService extends IService2 {
   public ServerFileData saveFile(File file) throws ProcessingException;
 
   public void openFile(Long fileNr) throws ProcessingException;
+
+  public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException;
+
+  public Object[][] getImages() throws ProcessingException;
 }

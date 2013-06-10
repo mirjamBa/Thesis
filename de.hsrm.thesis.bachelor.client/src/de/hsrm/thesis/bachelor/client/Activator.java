@@ -6,6 +6,8 @@ import java.util.Map;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
+import de.hsrm.thesis.bachelor.client.handler.EmbeddedHandler;
+
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -16,27 +18,6 @@ public class Activator extends Plugin {
 
   // The shared instance
   private static Activator plugin;
-
-  //image cache
-  private Map<String, byte[]> m_imageCache = new HashMap<String, byte[]>();
-
-  public void cacheImage(String imageId, byte[] content) {
-    if (content != null) {
-      m_imageCache.put(imageId, content);
-    }
-  }
-
-  public boolean isImageCached(String imageId) {
-    return m_imageCache.containsKey(imageId);
-  }
-
-  public byte[] getImageFromCache(String imageId) {
-    byte[] content = m_imageCache.get(imageId);
-    if (content != null && content.length > 0) {
-      return content;
-    }
-    return null;
-  }
 
   /**
    * The constructor
@@ -52,6 +33,8 @@ public class Activator extends Plugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
+
+    de.hsrm.mi.administration.client.Activator.getDefault().addHandler(new EmbeddedHandler());
   }
 
   /*
@@ -71,6 +54,27 @@ public class Activator extends Plugin {
    */
   public static Activator getDefault() {
     return plugin;
+  }
+
+//image cache
+  private Map<String, byte[]> m_imageCache = new HashMap<String, byte[]>();
+
+  public void cacheImage(String imageId, byte[] content) {
+    if (content != null) {
+      m_imageCache.put(imageId, content);
+    }
+  }
+
+  public boolean isImageCached(String imageId) {
+    return m_imageCache.containsKey(imageId);
+  }
+
+  public byte[] getImageFromCache(String imageId) {
+    byte[] content = m_imageCache.get(imageId);
+    if (content != null && content.length > 0) {
+      return content;
+    }
+    return null;
   }
 
 }

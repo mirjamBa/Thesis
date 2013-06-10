@@ -20,6 +20,11 @@ public class ServerFileData implements Serializable {
     m_filesize = kilobytes + " kB";
   }
 
+  public String getFileformat() {
+    String[] parts = m_path.split("\\.");
+    return parts[parts.length - 1];
+  }
+
   /**
    * @return the title
    */

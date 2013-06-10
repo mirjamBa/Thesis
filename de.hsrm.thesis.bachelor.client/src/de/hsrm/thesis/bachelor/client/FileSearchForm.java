@@ -9,25 +9,27 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractResetButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractSearchButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.listbox.AbstractListBox;
 import org.eclipse.scout.rt.client.ui.form.fields.longfield.AbstractLongField;
 import org.eclipse.scout.rt.client.ui.form.fields.sequencebox.AbstractSequenceBox;
+import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
 import org.eclipse.scout.rt.extension.client.ui.form.fields.smartfield.AbstractExtensibleSmartField;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.mi.administration.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.ResetButton;
 import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.SearchButton;
 import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox;
 import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox;
-import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox.FileNrBox;
-import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox.FileNrBox.FileNrFrom;
-import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox.FileNrBox.FileNrTo;
-import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox.FileTypeField;
-import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.FieldBox.TypistField;
+import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.GeneralSearchBox;
+import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
+import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.TagBox;
+import de.hsrm.thesis.bachelor.client.FileSearchForm.MainBox.TabBox.TagBox.TagField;
 import de.hsrm.thesis.bachelor.shared.FileSearchFormData;
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 
 @FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.CREATE)
@@ -59,20 +61,12 @@ public class FileSearchForm extends AbstractSearchForm {
     return getFieldByClass(FieldBox.class);
   }
 
-  public FileNrBox getFileNrBox() {
-    return getFieldByClass(FileNrBox.class);
+  public GeneralSearchBox getGeneralSearchBox() {
+    return getFieldByClass(GeneralSearchBox.class);
   }
 
-  public FileNrFrom getFileNrFrom() {
-    return getFieldByClass(FileNrFrom.class);
-  }
-
-  public FileNrTo getFileNrTo() {
-    return getFieldByClass(FileNrTo.class);
-  }
-
-  public FileTypeField getFileTypeField() {
-    return getFieldByClass(FileTypeField.class);
+  public GeneralSearchField getGeneralSearchField() {
+    return getFieldByClass(GeneralSearchField.class);
   }
 
   public MainBox getMainBox() {
@@ -91,8 +85,12 @@ public class FileSearchForm extends AbstractSearchForm {
     return getFieldByClass(TabBox.class);
   }
 
-  public TypistField getTypistField() {
-    return getFieldByClass(TypistField.class);
+  public TagBox getTagBox() {
+    return getFieldByClass(TagBox.class);
+  }
+
+  public TagField getTagField() {
+    return getFieldByClass(TagField.class);
   }
 
   @Order(10.0)
@@ -102,11 +100,30 @@ public class FileSearchForm extends AbstractSearchForm {
     public class TabBox extends AbstractTabBox {
 
       @Order(10.0)
+      public class GeneralSearchBox extends AbstractGroupBox {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("GeneralSearch");
+        }
+
+        @Order(10.0)
+        public class GeneralSearchField extends AbstractStringField {
+
+          @Override
+          protected String getConfiguredTooltipText() {
+            return TEXTS.get("GeneralSearchFieldToolTip");
+          }
+
+        }
+      }
+
+      @Order(20.0)
       public class FieldBox extends AbstractGroupBox {
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("searchCriteria");
+          return TEXTS.get("Detailsearch");
         }
 
         @Order(20.0)
@@ -161,6 +178,34 @@ public class FileSearchForm extends AbstractSearchForm {
           @Override
           protected Class<? extends LookupCall> getConfiguredLookupCall() {
             return UserLookupCall.class;
+          }
+        }
+      }
+
+      @Order(30.0)
+      public class TagBox extends AbstractGroupBox {
+
+        @Override
+        protected String getConfiguredLabel() {
+          return TEXTS.get("Tag");
+        }
+
+        @Order(10.0)
+        public class TagField extends AbstractListBox<Long> {
+
+          @Override
+          protected int getConfiguredGridH() {
+            return 5;
+          }
+
+          @Override
+          protected String getConfiguredLabel() {
+            return TEXTS.get("Tag");
+          }
+
+          @Override
+          protected Class<? extends LookupCall> getConfiguredLookupCall() {
+            return TagLookupCall.class;
           }
         }
       }

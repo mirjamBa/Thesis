@@ -1,5 +1,8 @@
 package de.hsrm.thesis.bachelor.client;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
@@ -28,6 +31,10 @@ import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.mi.administration.shared.services.IMetadataService;
+import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.mi.administration.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.bachelor.client.FileForm.MainBox.CancelButton;
 import de.hsrm.thesis.bachelor.client.FileForm.MainBox.File0Box;
 import de.hsrm.thesis.bachelor.client.FileForm.MainBox.File0Box.AuthorityBox;
@@ -49,28 +56,35 @@ import de.hsrm.thesis.bachelor.client.FileForm.MainBox.File0Box.TagBox.NewTagFie
 import de.hsrm.thesis.bachelor.client.FileForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.shared.FileFormData;
 import de.hsrm.thesis.bachelor.shared.IFileService;
-import de.hsrm.thesis.bachelor.shared.IMetadataService;
 import de.hsrm.thesis.bachelor.shared.files.ServerFileData;
-import de.hsrm.thesis.bachelor.shared.services.code.DatatypeCodeType;
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 
 @FormData(value = FileFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileForm extends AbstractForm {
 
-  private Long fileNr;
+  private Long m_fileNr;
   private ServerFileData m_fileData;
+  private long m_filetypeNr;
 
-  public FileForm(ServerFileData fileData) throws ProcessingException {
+  public FileForm(Long fileNr) throws ProcessingException {
     super();
+    m_fileNr = fileNr;
+  }
+
+  public FileForm(ServerFileData fileData, long filetypeNr) throws ProcessingException {
+    super();
+    m_filetypeNr = filetypeNr;
     m_fileData = fileData;
   }
 
   @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("File");
+  }
+
+  public void startUpdateAuthorities() throws ProcessingException {
+    startInternal(new RoleHandler());
   }
 
   public AttributeField getAttributeField() {
@@ -99,12 +113,12 @@ public class FileForm extends AbstractForm {
 
   @FormData
   public Long getFileNr() {
-    return fileNr;
+    return m_fileNr;
   }
 
   @FormData
   public void setFileNr(Long fileNr) {
-    this.fileNr = fileNr;
+    this.m_fileNr = fileNr;
   }
 
   public void startModify() throws ProcessingException {
@@ -113,6 +127,10 @@ public class FileForm extends AbstractForm {
 
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
+  }
+
+  public void startRoleModify() throws ProcessingException {
+    startInternal(new RoleHandler());
   }
 
   public CreationDateField getCreationDateField() {
@@ -329,7 +347,6 @@ public class FileForm extends AbstractForm {
 
               @Override
               protected IFormField execPrepareEdit(final ITableRow row) throws ProcessingException {
-                getTable().getColumnSet().getColumnCount();
                 Long datatype = (Long) row.getCellValue(getTable().getColumnSet().getColumnCount() - 1);
                 if (datatype.equals(DatatypeCodeType.DateCode.ID)) {
                   return new AbstractDateField() {
@@ -353,23 +370,20 @@ public class FileForm extends AbstractForm {
 
               @Override
               protected void execCompleteEdit(ITableRow row, IFormField editingField) throws ProcessingException {
-                //                super.execCompleteEdit(row, editingField);
 
                 Object value = (Object) ((AbstractValueField) editingField).getValue();
-                System.out.println(value);
 
-                getValueColumn().setValue(row, value.toString());
+                if (value != null) {
+                  if (editingField instanceof AbstractDateField) {
+                    Date date = ((AbstractDateField) editingField).getValue();
+                    SimpleDateFormat formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
+                    getValueColumn().setValue(row, formatter.format(date));
+                  }
+                  else {
+                    getValueColumn().setValue(row, value.toString());
+                  }
+                }
 
-                //                getValueColumn().setValue(row, "Default");
-                //                getValueColumn().setValue(row, ((AbstractStringField) editingField).getValue());
-
-                //                Cell cell = (Cell) row.getCell(getValueColumn());
-                //                row.getCellForUpdate(1).setValue("Testitest");
-                //                cell.setValue("Test");
-                //                System.out.println(editingField.getFieldId());
-                //                System.out.println(editingField.getLabel());
-                //                System.out.println(editingField.getXML());
-                //                System.out.println(editingField.getMasterValue());
               }
 
               @Order(10)
@@ -449,6 +463,10 @@ public class FileForm extends AbstractForm {
       @Order(40.0)
       public class AuthorityBox extends AbstractGroupBox {
 
+        public RolesField getRolesField() {
+          return getFieldByClass(RolesField.class);
+        }
+
         @Override
         protected String getConfiguredLabel() {
           return TEXTS.get("Authority");
@@ -456,6 +474,11 @@ public class FileForm extends AbstractForm {
 
         @Order(10.0)
         public class RolesField extends AbstractListBox<Long> {
+
+          @Override
+          protected int getConfiguredGridH() {
+            return 5;
+          }
 
           @Override
           protected String getConfiguredLabel() {
@@ -533,7 +556,7 @@ public class FileForm extends AbstractForm {
     @Override
     protected void execLoad() throws ProcessingException {
       AttributeField.Table table = getFile0Box().getDetailedBox().getAttributeField().getTable();
-      Object[][] attr = SERVICES.getService(IMetadataService.class).getAttributes(1L);
+      Object[][] attr = SERVICES.getService(IMetadataService.class).getAttributes(getFiletypeNr());
       for (int i = 0; i < attr.length; i++) {
         ITableRow row = table.createRow();
         table.getAttributeColumn().setValue(row, (String) attr[i][1]);
@@ -551,6 +574,17 @@ public class FileForm extends AbstractForm {
     }
   }
 
+  public class RoleHandler extends AbstractFormHandler {
+
+    @Override
+    protected void execStore() throws ProcessingException {
+      IFileService service = SERVICES.getService(IFileService.class);
+      FileFormData formData = new FileFormData();
+      exportFormData(formData);
+      service.updateRoleFilePermission(getFileNr(), formData.getRoles().getValue());
+    }
+  }
+
   @FormData
   public ServerFileData getFileData() {
     return m_fileData;
@@ -559,5 +593,15 @@ public class FileForm extends AbstractForm {
   @FormData
   public void setFileData(ServerFileData fileData) {
     m_fileData = fileData;
+  }
+
+  @FormData
+  public long getFiletypeNr() {
+    return m_filetypeNr;
+  }
+
+  @FormData
+  public void setFiletypeNr(long filetypeNr) {
+    m_filetypeNr = filetypeNr;
   }
 }

@@ -15,6 +15,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.CancelButton;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.OkButton;
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox;
@@ -22,7 +23,6 @@ import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox.FileTypeFie
 import de.hsrm.thesis.bachelor.client.VersionForm.MainBox.VersionBox.VersionField;
 import de.hsrm.thesis.bachelor.shared.IVersionService;
 import de.hsrm.thesis.bachelor.shared.VersionFormData;
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
 
 @FormData(value = VersionFormData.class, sdkCommand = SdkCommand.CREATE)
 public class VersionForm extends AbstractForm {

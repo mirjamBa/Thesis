@@ -20,18 +20,26 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.mi.administration.client.ui.forms.FileFormatForm;
+import de.hsrm.mi.administration.shared.services.IFileFormatService;
+import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
 import de.hsrm.thesis.bachelor.client.FileChooserForm;
 import de.hsrm.thesis.bachelor.client.FileForm;
 import de.hsrm.thesis.bachelor.client.FileSearchForm;
-import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.pages.FileFormatTablePage.Table.FileFormatColumn;
+import de.hsrm.thesis.bachelor.client.FiletypeChooserForm;
 import de.hsrm.thesis.bachelor.shared.FileSearchFormData;
 import de.hsrm.thesis.bachelor.shared.IFileService;
 import de.hsrm.thesis.bachelor.shared.column.ColumnSpec;
-import de.hsrm.thesis.bachelor.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.thesis.bachelor.shared.files.ServerFileData;
+import de.hsrm.thesis.bachelor.shared.services.IRoleProcessService;
 import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 
-public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage.Table> {
+public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage.FileTable> {
   private List<IColumn<?>> m_injectedColumns;
+
+  public FileTablePage() {
+    super();
+  }
 
   @Override
   protected String getConfiguredTitle() {
@@ -61,7 +69,7 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
     if (columnSpecs.length == 0) {
       return;
     }
-    Table table = getTable();
+    FileTable table = getTable();
     m_injectedColumns = new ArrayList<IColumn<?>>();
     for (ColumnSpec spec : columnSpecs) {
       //XXX switch on spec.getType() or something like that...
@@ -97,7 +105,7 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
   }
 
   @Order(10.0)
-  public class Table extends AbstractExtensibleTable {
+  public class FileTable extends AbstractExtensibleTable {
 
     @Override
     protected boolean getConfiguredAutoResizeColumns() {
@@ -119,29 +127,13 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       return getColumnSet().getColumnByClass(FileNrColumn.class);
     }
 
-    //    public TitleColumn getTitleColumn() {
-    //      return getColumnSet().getColumnByClass(TitleColumn.class);
-    //    }
-
     public TypistColumn getTypistColumn() {
       return getColumnSet().getColumnByClass(TypistColumn.class);
     }
 
-    //    public FilesizeColumn getFilesizeColumn() {
-    //      return getColumnSet().getColumnByClass(FilesizeColumn.class);
-    //    }
-
-    public FileFormatColumn getFileFormatColumn() {
-      return getColumnSet().getColumnByClass(FileFormatColumn.class);
+    public FilePathColumn getFilePathColumn() {
+      return getColumnSet().getColumnByClass(FilePathColumn.class);
     }
-
-    //    public MimetypeColumn getMimetypeColumn() {
-    //      return getColumnSet().getColumnByClass(MimetypeColumn.class);
-    //    }
-
-    //    public AuthorColumn getAuthorColumn() {
-    //      return getColumnSet().getColumnByClass(AuthorColumn.class);
-    //    }
 
     public FileIdColumn getFileIdColumn() {
       return getColumnSet().getColumnByClass(FileIdColumn.class);
@@ -190,25 +182,7 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       }
     }
 
-    //    @Order(50.0)
-    //    public class TitleColumn extends AbstractStringColumn {
-    //
-    //      @Override
-    //      protected String getConfiguredHeaderText() {
-    //        return TEXTS.get("Title");
-    //      }
-    //    }
-    //
-    //    @Order(60.0)
-    //    public class AuthorColumn extends AbstractStringColumn {
-    //
-    //      @Override
-    //      protected String getConfiguredHeaderText() {
-    //        return TEXTS.get("Author");
-    //      }
-    //    }
-
-    @Order(70.0)
+    @Order(40.0)
     public class TypistColumn extends AbstractSmartColumn<Long> {
 
       @Override
@@ -222,33 +196,24 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       }
     }
 
-    //
-    //    @Order(80.0)
-    //    public class FilesizeColumn extends AbstractStringColumn {
-    //
-    //      @Override
-    //      protected String getConfiguredHeaderText() {
-    //        return TEXTS.get("Filesize");
-    //      }
-    //    }
-    //
-    //    @Order(90.0)
-    //    public class FileFormatColumn extends AbstractStringColumn {
-    //
-    //      @Override
-    //      protected String getConfiguredHeaderText() {
-    //        return TEXTS.get("FileFormat");
-    //      }
-    //    }
-    //
-    //    @Order(100.0)
-    //    public class MimetypeColumn extends AbstractStringColumn {
-    //
-    //      @Override
-    //      protected String getConfiguredHeaderText() {
-    //        return TEXTS.get("Mimetype");
-    //      }
-    //    }
+    @Order(50.0)
+    public class FilePathColumn extends AbstractStringColumn {
+
+      @Override
+      protected boolean getConfiguredDisplayable() {
+        return false;
+      }
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("FilePath");
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return false;
+      }
+    }
 
     @Order(10.0)
     public class NewFileMenu extends AbstractExtensibleMenu {
@@ -265,6 +230,9 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
       @Override
       protected void execAction() throws ProcessingException {
+        IFileFormatService fileFormatService = SERVICES.getService(IFileFormatService.class);
+
+        //choose file from filesystem
         FileChooserForm form = new FileChooserForm();
         form.startNew();
         form.waitFor();
@@ -272,12 +240,54 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
           reloadPage();
         }
 
-        if (form.getFileData() != null) {
-          FileForm frm = new FileForm(form.getFileData());
+        //extract data
+        ServerFileData fileData = form.getFileData();
 
-          //FIXME
-//        frm.getTypistField().setValue();
-          //        frm.getTypistField().setEnabled(false);
+        //check for operation cancelled //FIXME 
+        if (form.getFileData() != null) {
+          String fileformat = fileData.getFileformat();
+          Long filetypeNr = null;
+
+          //check if format is registered and linked with filetype
+          if (!fileFormatService.isFileformatRegistered(fileformat)) {
+            //force to register fileformat
+            //TODO
+            FileFormatForm fileformatForm = new FileFormatForm();
+            fileformatForm.getFileFormatField().setValue(fileformat);
+            fileformatForm.getFileFormatField().setEnabled(false);
+            fileformatForm.startNew();
+            fileformatForm.waitFor();
+            if (fileformatForm.isFormStored()) {
+              reloadPage();
+            }
+          }
+          else {
+            //check if fileformat is assigned to filetype multiple
+            if (fileFormatService.isFormatMultipleAssigned(fileformat)) {
+              //force choosing one of the assigned filetypes
+              FiletypeChooserForm ft = new FiletypeChooserForm();
+              ft.setFileformat(fileformat);
+              ft.startNew();
+              ft.waitFor();
+              if (ft.isFormStored()) {
+                reloadPage();
+              }
+              filetypeNr = ft.getFiletypeNr();
+            }
+          }
+
+          //extract filetype 
+          if (filetypeNr == null) {
+            filetypeNr = fileFormatService.getFiletypeForFileFormat(fileformat);
+          }
+
+          //open and prepare fileform
+          FileForm frm = new FileForm(form.getFileData(), filetypeNr);
+
+          //          frm.getTypistField().setValue(SERVICES.getService(IUserProcessService.class).getUserId(ClientSession.get().getUserId()));
+          //          frm.getTypistField().setEnabled(false);
+          frm.getFileTypeField().setValue(filetypeNr);
+          frm.getFileTypeField().setEnabled(false);
           frm.getCreationDateField().setValue(new Date());
           frm.getCreationDateField().setEnabled(false);
           frm.getFilesizeField().setValue(form.getFileData().getFilesize());
@@ -303,6 +313,65 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
       @Override
       protected void execAction() throws ProcessingException {
         SERVICES.getService(IFileService.class).openFile(getFileIdColumn().getSelectedValue());
+      }
+    }
+
+    @Order(30.0)
+    public class DeleteMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("DeleteMenu");
+      }
+    }
+
+    @Order(40.0)
+    public class AuthorityMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Unfreeze");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        FileForm form = new FileForm(getFileIdColumn().getSelectedValue());
+
+        form.getMetadataBox().setVisible(false);
+        form.getDetailedBox().setVisible(false);
+        form.getTagBox().setVisible(false);
+        form.getRemarkBox().setVisible(false);
+
+        form.getAuthorityBox().getRolesField().setValue(SERVICES.getService(IRoleProcessService.class).getApprovedRolesForFile(getFileIdColumn().getSelectedValue()));
+
+        form.startUpdateAuthorities();
+        form.waitFor();
+        if (form.isFormStored()) {
+          reloadPage();
+        }
+      }
+    }
+
+    @Order(50.0)
+    public class ModifyMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Modify");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        FileForm form = new FileForm(getFileIdColumn().getSelectedValue());
+
+        form.getTypistField().setValue(getTypistColumn().getSelectedValue());
+        form.getFileTypeField().setValue(getFileTypeColumn().getSelectedValue());
+
+        form.startModify();
+        form.waitFor();
+        if (form.isFormStored()) {
+          reloadPage();
+        }
       }
     }
   }

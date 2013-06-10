@@ -1,6 +1,7 @@
 package de.hsrm.thesis.bachelor.server.services;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.holders.LongArrayHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
@@ -24,5 +25,14 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
         new NVPair("rolename", formData.getName()),
         new NVPair("creator", UserUtility.getUserId(ServerSession.get().getUserId())));
     return formData;
+  }
+
+  @Override
+  public Long[] getApprovedRolesForFile(Long fileId) throws ProcessingException {
+    LongArrayHolder longArrayHolder = new LongArrayHolder();
+    SQL.selectInto("SELECT role_id FROM role_file_permission WHERE file_id = :fileId INTO :longArray",
+        new NVPair("fileId", fileId),
+        new NVPair("longArray", longArrayHolder));
+    return longArrayHolder.getValue();
   }
 }

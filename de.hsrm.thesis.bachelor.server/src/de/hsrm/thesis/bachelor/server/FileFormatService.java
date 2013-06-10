@@ -1,12 +1,14 @@
 package de.hsrm.thesis.bachelor.server;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.holders.IntegerHolder;
+import org.eclipse.scout.commons.holders.LongHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 
-import de.hsrm.thesis.bachelor.shared.FileFormatFormData;
-import de.hsrm.thesis.bachelor.shared.IFileFormatService;
+import de.hsrm.mi.administration.shared.services.IFileFormatService;
+import de.hsrm.mi.administration.shared.services.formdata.FileFormatFormData;
 
 public class FileFormatService extends AbstractService implements IFileFormatService {
 
@@ -48,5 +50,35 @@ public class FileFormatService extends AbstractService implements IFileFormatSer
       return SQL.select("SELECT fileformat_id, format, filetype_id FROM fileformat WHERE filetype_id = :filetypeId",
           new NVPair("filetypeId", filetypeNr));
     }
+  }
+
+  @Override
+  public boolean isFormatMultipleAssigned(String fileformat) throws ProcessingException {
+    return getFileformatCount(fileformat) > 1;
+  }
+
+  @Override
+  public Long getFiletypeForFileFormat(String fileformat) throws ProcessingException {
+    LongHolder filetype = new LongHolder();
+    SQL.selectInto("SELECT filetype_id FROM fileformat WHERE UPPER(format) = UPPER(:fileformat) INTO :filetype ",
+        new NVPair("fileformat", fileformat),
+        new NVPair("filetype", filetype));
+
+    return filetype.getValue();
+  }
+
+  private int getFileformatCount(String fileformat) throws ProcessingException {
+    IntegerHolder countFormats = new IntegerHolder();
+
+    SQL.selectInto("SELECT COUNT(fileformat_id) FROM fileformat WHERE UPPER(format) LIKE UPPER(:fileformat) INTO :countFormats",
+        new NVPair("fileformat", fileformat),
+        new NVPair("countFormats", countFormats));
+
+    return countFormats.getValue();
+  }
+
+  @Override
+  public boolean isFileformatRegistered(String fileformat) throws ProcessingException {
+    return getFileformatCount(fileformat) > 0;
   }
 }

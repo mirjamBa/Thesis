@@ -36,15 +36,15 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.IFileFormatService">
+            class="de.hsrm.mi.administration.shared.services.IFileFormatService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.ITagService">
+            class="de.hsrm.mi.administration.shared.services.ITagService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.IMetadataService">
+            class="de.hsrm.mi.administration.shared.services.IMetadataService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
@@ -52,7 +52,7 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.services.IFiletypeService">
+            class="de.hsrm.mi.administration.shared.services.IFiletypeService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
@@ -60,11 +60,11 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.services.lookup.IFiletypeLookupService">
+            class="de.hsrm.mi.administration.shared.services.lookup.IFiletypeLookupService">
       </proxy>
       <service
             factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
-            class="de.hsrm.thesis.bachelor.client.services.IconProviderService"
+            class="de.hsrm.thesis.bachelor.client.services.CustomIconProviderService"
             session="de.hsrm.thesis.bachelor.client.ClientSession">
       </service>
       <proxy
@@ -101,7 +101,15 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.services.lookup.ITagLookupService">
+            class="de.hsrm.mi.administration.shared.services.lookup.ITagLookupService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.IFiletypeChooserService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.bachelor.shared.services.lookup.IFiletypeForFileformatsLookupService">
       </proxy>
    </extension>
    <extension

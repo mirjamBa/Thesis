@@ -29,6 +29,7 @@ Export-Package: de.hsrm.thesis.bachelor.shared;
    org.eclipse.scout.rt.shared.data.form",
  de.hsrm.thesis.bachelor.shared.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.scout.rt.shared;visibility:=reexport
+ org.eclipse.scout.rt.shared;visibility:=reexport,
+ de.hsrm.mi.administration.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
