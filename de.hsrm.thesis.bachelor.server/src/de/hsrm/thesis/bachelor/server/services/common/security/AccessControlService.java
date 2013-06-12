@@ -8,16 +8,16 @@ import org.eclipse.scout.rt.shared.services.common.code.ICode;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
 import de.hsrm.thesis.bachelor.shared.security.CreateNotificationPermission;
-import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.ReadUsersPermission;
-import de.hsrm.thesis.bachelor.shared.security.RegisterUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
-import de.hsrm.thesis.bachelor.shared.security.UnregisterUserPermission;
 import de.hsrm.thesis.bachelor.shared.security.UpdateIconPermission;
-import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.AdministratorCode;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.UserCode;
+import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ReadUsersPermission;
+import de.hsrm.thesis.filemanagement.shared.security.RegisterUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UnregisterUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 
 public class AccessControlService extends AbstractAccessControlService {
 

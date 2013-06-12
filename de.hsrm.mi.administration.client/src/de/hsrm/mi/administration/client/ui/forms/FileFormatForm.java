@@ -12,7 +12,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
+import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.FileFormatForm.MainBox.CancelButton;
@@ -22,7 +22,7 @@ import de.hsrm.mi.administration.client.ui.forms.FileFormatForm.MainBox.FileForm
 import de.hsrm.mi.administration.client.ui.forms.FileFormatForm.MainBox.OkButton;
 import de.hsrm.mi.administration.shared.services.IFileFormatService;
 import de.hsrm.mi.administration.shared.services.formdata.FileFormatFormData;
-import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 @FormData(value = FileFormatFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileFormatForm extends AbstractForm {
@@ -116,9 +116,9 @@ public class FileFormatForm extends AbstractForm {
         }
 
         @Override
-        protected Class<? extends LookupCall> getConfiguredLookupCall() {
-          return FiletypeLookupCall.class;
-        }
+		protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+			return FileTypeCodeType.class;
+		}
       }
     }
 

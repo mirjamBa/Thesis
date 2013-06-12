@@ -26,8 +26,8 @@ import de.hsrm.mi.administration.client.ui.desktop.outlines.AdministrationOutlin
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.UserOutline;
-import de.hsrm.thesis.bachelor.shared.Icons;
 import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
+import de.hsrm.thesis.filemanagement.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);

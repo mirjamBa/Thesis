@@ -24,4 +24,6 @@ public boolean isFormatMultipleAssigned(String fileformat) throws ProcessingExce
 public Long getFiletypeForFileFormat(String fileformat) throws ProcessingException;
 
 public boolean isFileformatRegistered(String fileformat) throws ProcessingException;
+
+public Long[] getFiletypesForFileFormat(String fileformat) throws ProcessingException;
 }

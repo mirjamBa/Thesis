@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.rt.server.services.common.session.IServerSessionRegistryService;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.shared.services.IStorageService;
+import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
 
 /**
  * Dummy application in order to manage server side product configurations in *.product files.
@@ -56,8 +56,6 @@ public class ServerApplication implements IApplication {
         }
 
         try {
-//          SERVICES.getService(IFiletypeService.class).initFiletypeXML();
-//          SERVICES.getService(IFiletypeService.class).organizeFiletypes();
         }
         catch (Throwable t) {
           return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while initiating filetypes", t);

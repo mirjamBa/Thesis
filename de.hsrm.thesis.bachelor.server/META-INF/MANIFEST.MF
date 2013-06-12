@@ -15,7 +15,6 @@ Export-Package: de.hsrm.thesis.bachelor.server;
    org.eclipse.equinox.app,
    org.osgi.framework,
    javax.security.auth",
- de.hsrm.thesis.bachelor.server.filetype,
  de.hsrm.thesis.bachelor.server.security;uses:="javax.servlet,org.eclipse.scout.http.servletfilter.security,javax.servlet.http",
  de.hsrm.thesis.bachelor.server.services;
   uses:="de.hsrm.thesis.bachelor.shared.services,
@@ -27,7 +26,6 @@ Export-Package: de.hsrm.thesis.bachelor.server;
  de.hsrm.thesis.bachelor.server.services.common.security;uses:="org.eclipse.scout.rt.server.services.common.security",
  de.hsrm.thesis.bachelor.server.services.common.sql;uses:="org.eclipse.scout.service,org.eclipse.scout.rt.services.common.jdbc",
  de.hsrm.thesis.bachelor.server.services.lookup;uses:="de.hsrm.thesis.bachelor.shared.services.lookup,org.eclipse.scout.rt.server.services.lookup",
- de.hsrm.thesis.bachelor.server.services.outline;uses:="org.eclipse.scout.service,de.hsrm.thesis.bachelor.shared.services.outline",
  de.hsrm.thesis.bachelor.server.servlet;uses:="org.eclipse.scout.http.servletfilter,javax.servlet.http",
  de.hsrm.thesis.bachelor.server.util;uses:="de.hsrm.thesis.bachelor.shared.util"
 Require-Bundle: org.eclipse.core.runtime,
@@ -39,12 +37,12 @@ Require-Bundle: org.eclipse.core.runtime,
  net.sourceforge.tess4j,
  org.codehouse.xstream,
  de.hsrm.thesis.bachelor.shared,
- de.hsrm.mi.administration.shared
+ de.hsrm.mi.administration.shared,
+ org.eclipse.scout.rt.shared,
+ tikanearlyall;bundle-version="1.0.0",
+ de.hsrm.thesis.filemanagement.shared,
+ de.hsrm.thesis.filemanagement.server
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet;version="2.4.0",
- javax.servlet.http;version="2.4.0",
- org.apache.pdfbox.pdmodel.common.function.type4,
- org.apache.tika.exception,
- org.apache.tika.metadata,
- org.apache.tika.parser
+ javax.servlet.http;version="2.4.0"
 Bundle-ActivationPolicy: lazy

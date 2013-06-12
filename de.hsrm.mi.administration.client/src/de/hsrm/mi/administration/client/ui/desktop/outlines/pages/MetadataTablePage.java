@@ -12,13 +12,12 @@ import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTa
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
-import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm;
 import de.hsrm.mi.administration.shared.services.IMetadataService;
 import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
-import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.Table> {
 
@@ -115,9 +114,9 @@ public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.T
       }
 
       @Override
-      protected Class<? extends LookupCall> getConfiguredLookupCall() {
-        return FiletypeLookupCall.class;
-      }
+		protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+			return FileTypeCodeType.class;
+		}
     }
 
     @Order(10.0)

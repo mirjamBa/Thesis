@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server
+Bundle-SymbolicName: de.hsrm.thesis.filemanagement.server
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.hsrm.thesis.filemanagement.server.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ tikanearlyall,
+ de.hsrm.thesis.filemanagement.shared,
+ org.eclipse.scout.service,
+ org.eclipse.scout.commons,
+ org.eclipse.scout.rt.server
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: de.hsrm.thesis.filemanagement.server,
+ de.hsrm.thesis.filemanagement.server.services

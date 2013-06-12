@@ -68,6 +68,9 @@
       <plugin id="org.eclipse.scout.rt.shared"/>
       <plugin id="org.eclipse.scout.service"/>
       <plugin id="org.eclipse.update.configurator"/>
+      <plugin id="tikaaddon"/>
+      <plugin id="tikaohnevorbis"/>
+      <plugin id="tikaxx"/>
    </plugins>
 
 

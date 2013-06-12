@@ -6,9 +6,15 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
+import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import de.hsrm.mi.administration.client.ui.desktop.outlines.pages.FileTypeTablePage;
 import de.hsrm.mi.administration.client.ui.desktop.outlines.pages.TagTablePage;
+import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 
 public class AdministrationOutline extends AbstractOutline {
 
@@ -24,10 +30,10 @@ public class AdministrationOutline extends AbstractOutline {
 		pageList.add(new TagTablePage());
 	}
 
-//  @Override
-//  protected void execInitTree() throws ProcessingException {
-//    setVisible(UserAgentUtility.isDesktopDevice() &&
-//        (ACCESS.check(new CreateUserPermission()) || ACCESS.check(new DeleteUserPermission()) ||
-//            ACCESS.check(new ResetPasswordPermission()) || ACCESS.check(new UpdateUserPermission())));
-//  }
+  @Override
+  protected void execInitTree() throws ProcessingException {
+    setVisible(UserAgentUtility.isDesktopDevice() &&
+        (ACCESS.check(new CreateUserPermission()) || ACCESS.check(new DeleteUserPermission()) ||
+            ACCESS.check(new ResetPasswordPermission()) || ACCESS.check(new UpdateUserPermission())));
+  }
 }

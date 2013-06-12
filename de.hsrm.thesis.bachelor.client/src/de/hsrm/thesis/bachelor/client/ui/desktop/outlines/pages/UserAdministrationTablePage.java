@@ -15,12 +15,12 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm;
-import de.hsrm.thesis.bachelor.shared.Icons;
-import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
-import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
-import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.Icons;
+import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdministrationTablePage.Table> {
 

@@ -11,7 +11,7 @@ import org.eclipse.scout.service.SERVICES;
 import org.osgi.framework.ServiceRegistration;
 
 import de.hsrm.thesis.bachelor.client.ClientSession;
-import de.hsrm.thesis.bachelor.shared.IIconProcessService;
+import de.hsrm.thesis.bachelor.shared.services.IIconProcessService;
 
 public class BuddyIconProviderService extends IconProviderService implements IBuddyIconProviderService {
 

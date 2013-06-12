@@ -41,7 +41,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.IconProcessService"
+            class="de.hsrm.thesis.bachelor.server.services.IconProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -51,22 +51,22 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.FileFormatService"
+            class="de.hsrm.thesis.bachelor.server.services.FileFormatService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.TagService"
+            class="de.hsrm.thesis.bachelor.server.services.TagService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.MetadataService"
+            class="de.hsrm.thesis.bachelor.server.services.MetadataService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.VersionService"
+            class="de.hsrm.thesis.bachelor.server.services.VersionService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -76,22 +76,12 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.FileService"
+            class="de.hsrm.thesis.bachelor.server.services.FileService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.lookup.FiletypeLookupService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.LogoProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.TestService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -106,7 +96,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.DBStorageService"
+            class="de.hsrm.thesis.bachelor.server.services.DBStorageService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -121,7 +111,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.TikaService"
+            class="de.hsrm.thesis.filemanagement.server.services.TikaService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -136,12 +126,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.FiletypeChooserService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.lookup.FiletypeForFileformatsLookupService"
+            class="de.hsrm.thesis.bachelor.server.services.ImageProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
    </extension>

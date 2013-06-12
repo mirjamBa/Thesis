@@ -19,5 +19,7 @@ public interface ITagService extends IService2 {
   public void updateTag(TagFormData formData) throws ProcessingException;
 
   public void deleteTag(Long[] ids) throws ProcessingException;
+  
+  public Long[] getTagsForFile(Long fileId) throws ProcessingException;
 
 }

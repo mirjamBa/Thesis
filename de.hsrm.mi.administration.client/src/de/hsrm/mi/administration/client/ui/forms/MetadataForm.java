@@ -13,19 +13,18 @@ import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
-import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.CancelButton;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DescriptionField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DatatypeField;
+import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DescriptionField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.FileTypeField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.OkButton;
 import de.hsrm.mi.administration.shared.services.IMetadataService;
 import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
 import de.hsrm.mi.administration.shared.services.formdata.MetadataFormData;
-import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 @FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
 public class MetadataForm extends AbstractForm {
@@ -119,10 +118,9 @@ public class MetadataForm extends AbstractForm {
         }
 
         @Override
-        protected Class<? extends LookupCall> getConfiguredLookupCall() {
-          return FiletypeLookupCall.class;
-
-        }
+		protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+			return FileTypeCodeType.class;
+		}
       }
     }
 

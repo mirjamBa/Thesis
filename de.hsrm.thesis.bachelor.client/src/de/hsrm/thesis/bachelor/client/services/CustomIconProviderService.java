@@ -7,6 +7,9 @@ import org.osgi.framework.Bundle;
 
 import de.hsrm.thesis.bachelor.client.Activator;
 
+/**
+ * Custom Icon provider service accessing icon cache
+ */
 public class CustomIconProviderService extends AbstractService implements IIconProviderService {
 
   @Override

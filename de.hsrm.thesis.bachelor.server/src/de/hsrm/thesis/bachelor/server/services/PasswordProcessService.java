@@ -15,9 +15,9 @@ import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.osgi.framework.ServiceRegistration;
 
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.security.ResetPasswordPermission;
-import de.hsrm.thesis.bachelor.shared.services.process.IPasswordProcessService;
 import de.hsrm.thesis.bachelor.shared.util.SharedUserUtility;
+import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 
 public class PasswordProcessService extends AbstractPasswordManagementService implements IPasswordProcessService {
 

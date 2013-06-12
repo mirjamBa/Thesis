@@ -12,19 +12,33 @@ public class RoleLookupService extends AbstractSqlLookupService implements IRole
   @Override
   protected String getConfiguredSqlSelect() {
 
+    //FIXME
     Long userId;
     try {
 
       //select only roles which are created by the logged in user [except of admin & user role]
       userId = UserUtility.getUserId(ServerSession.get().getUserId());
-      return "" +
-          "SELECT  R.ROLE_ID, " +
-          "        R.NAME " +
-          "FROM    ROLE R " +
-          "WHERE   R.USER_CREATOR_ID = " + userId + " OR R.USER_CREATOR_ID IS NULL " +
-          "<key>   AND R.ROLE_ID = :key </key> " +
-          "<text>  AND UPPER(R.NAME) LIKE UPPER(:text||'%') </text> " +
-          "<all> </all> ";
+      //FIXME userid should not be null
+      if (userId == null) {
+        return "" +
+            "SELECT  R.ROLE_ID, " +
+            "        R.NAME " +
+            "FROM    ROLE R " +
+            "WHERE   R.USER_CREATOR_ID IS NULL " +
+            "<key>   AND R.ROLE_ID = :key </key> " +
+            "<text>  AND UPPER(R.NAME) LIKE UPPER(:text||'%') </text> " +
+            "<all> </all> ";
+      }
+      else {
+        return "" +
+            "SELECT  R.ROLE_ID, " +
+            "        R.NAME " +
+            "FROM    ROLE R " +
+            "WHERE   R.USER_CREATOR_ID = " + userId + " OR R.USER_CREATOR_ID IS NULL " +
+            "<key>   AND R.ROLE_ID = :key </key> " +
+            "<text>  AND UPPER(R.NAME) LIKE UPPER(:text||'%') </text> " +
+            "<all> </all> ";
+      }
     }
     catch (ProcessingException e) {
       return "" +

@@ -20,18 +20,18 @@ import org.osgi.framework.ServiceRegistration;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.DeleteUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.ReadUsersPermission;
-import de.hsrm.thesis.bachelor.shared.security.RegisterUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.UnregisterUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.AdministratorCode;
 import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.UserCode;
 import de.hsrm.thesis.bachelor.shared.services.process.INotificationProcessService;
-import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
-import de.hsrm.thesis.bachelor.shared.services.process.UserFormData;
+import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
+import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ReadUsersPermission;
+import de.hsrm.thesis.filemanagement.shared.security.RegisterUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UnregisterUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class UserProcessService extends AbstractService implements IUserProcessService {
 
@@ -86,6 +86,12 @@ public class UserProcessService extends AbstractService implements IUserProcessS
         throw new VetoException(TEXTS.get("CannotDeleteYourself"));
       }
     }
+
+    SQL.delete("DELETE FROM user_role WHERE u_id = :ids", new NVPair("ids", u_id));
+
+    SQL.delete("DELETE FROM role WHERE user_creator_id = :ids", new NVPair("ids", u_id));
+
+    SQL.delete("DELETE FROM file WHERE u_id = :ids", new NVPair("ids", u_id));
 
     SQL.delete("DELETE FROM TABUSERS WHERE u_id = :ids", new NVPair("ids", u_id));
 

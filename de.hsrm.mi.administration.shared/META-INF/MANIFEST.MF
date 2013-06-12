@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.shared.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared,
- org.eclipse.osgi
+ org.eclipse.osgi,
+ de.hsrm.thesis.filemanagement.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: de.hsrm.mi.administration.shared.handler,

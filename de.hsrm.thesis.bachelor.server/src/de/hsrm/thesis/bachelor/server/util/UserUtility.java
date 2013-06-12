@@ -56,7 +56,13 @@ public class UserUtility extends SharedUserUtility {
       String salt = Base64Utility.encode(bSalt);
       String digest = Base64Utility.encode(bHash);
 
-      Integer permission = isAdmin(roleIds) ? AdministratorCode.ID : UserCode.ID;
+      Integer permission;
+      if (roleIds != null) {
+        permission = isAdmin(roleIds) ? AdministratorCode.ID : UserCode.ID;
+      }
+      else {
+        permission = UserCode.ID;
+      }
 
       SQL.insert("INSERT INTO TABUSERS (username, pass, salt, permission_id) VALUES (:username, :pass, :salt, :permission)",
           new NVPair("username", username),
@@ -68,8 +74,9 @@ public class UserUtility extends SharedUserUtility {
       Long userId = getUserId(username);
 
       //save user roles
-      setUserRoles(userId, roleIds);
-
+      if (roleIds != null) {
+        setUserRoles(userId, roleIds);
+      }
       return true;
     }
     catch (NoSuchAlgorithmException e) {

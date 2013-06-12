@@ -3,6 +3,30 @@
 <plugin>
    <extension
          point="org.eclipse.scout.service.services">
+         <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.lookup.ITagLookupService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.IFiletypeService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.lookup.IFiletypeLookupService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.IFileFormatService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.ITagService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.mi.administration.shared.services.IMetadataService">
+      </proxy>
    </extension>
 
 </plugin>

@@ -14,7 +14,8 @@ public class FiletypeService extends AbstractService implements IFiletypeService
 
   @Override
   public Object[][] getFiletypes() throws ProcessingException {
-    return SQL.select("SELECT filetype_id, name, version_control FROM filetype");
+    Object[][] res = SQL.select("SELECT filetype_id, version_control FROM filetype_version_control");
+    return res;
   }
 
   @Override

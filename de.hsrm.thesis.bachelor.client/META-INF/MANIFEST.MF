@@ -16,6 +16,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.svg.client,
  de.hsrm.mi.administration.client,
- de.hsrm.mi.administration.shared
+ de.hsrm.mi.administration.shared,
+ de.hsrm.thesis.filemanagement.client,
+ de.hsrm.thesis.filemanagement.shared;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

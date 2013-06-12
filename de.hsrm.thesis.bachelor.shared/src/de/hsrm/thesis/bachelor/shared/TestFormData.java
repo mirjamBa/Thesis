@@ -3,6 +3,8 @@ package de.hsrm.thesis.bachelor.shared;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 
+import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
+
 public class TestFormData extends FileFormData {
   private static final long serialVersionUID = 1L;
 

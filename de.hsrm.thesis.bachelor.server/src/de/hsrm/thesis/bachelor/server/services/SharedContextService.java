@@ -5,7 +5,7 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.service.AbstractService;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
-import de.hsrm.thesis.bachelor.shared.services.ISharedContextService;
+import de.hsrm.thesis.filemanagement.shared.services.ISharedContextService;
 
 @Priority(-1)
 public class SharedContextService extends AbstractService implements ISharedContextService {

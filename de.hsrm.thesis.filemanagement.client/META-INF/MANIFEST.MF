@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Client
+Bundle-SymbolicName: de.hsrm.thesis.filemanagement.client;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.hsrm.thesis.filemanagement.client.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scout.rt.extension.client,
+ de.hsrm.thesis.bachelor.shared,
+ de.hsrm.mi.administration.shared,
+ de.hsrm.mi.administration.client,
+ de.hsrm.thesis.filemanagement.shared;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: de.hsrm.thesis.filemanagement.client,
+ de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages,
+ de.hsrm.thesis.filemanagement.client.ui.forms

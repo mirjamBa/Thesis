@@ -14,8 +14,8 @@ import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.services.ISharedContextService;
-import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.ISharedContextService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class ServerSession extends AbstractServerSession {
   private static IScoutLogger logger = ScoutLogManager.getLogger(ServerSession.class);

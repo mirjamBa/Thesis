@@ -12,14 +12,14 @@ import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
-import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.Activator;
 import de.hsrm.mi.administration.client.ui.forms.FileFormatForm;
 import de.hsrm.mi.administration.shared.services.IFileFormatService;
-import de.hsrm.mi.administration.shared.services.lookup.FiletypeLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 public class FileFormatTablePage extends
 		AbstractPageWithTable<FileFormatTablePage.Table> {
@@ -113,11 +113,12 @@ public class FileFormatTablePage extends
 			protected boolean getConfiguredAutoOptimizeWidth() {
 				return true;
 			}
-
+			
 			@Override
-			protected Class<? extends LookupCall> getConfiguredLookupCall() {
-				return FiletypeLookupCall.class;
+			protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+				return FileTypeCodeType.class;
 			}
+
 		}
 
 		@Order(10.0)

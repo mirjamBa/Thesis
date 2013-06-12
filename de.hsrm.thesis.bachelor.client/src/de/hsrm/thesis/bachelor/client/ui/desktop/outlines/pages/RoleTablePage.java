@@ -11,8 +11,8 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.client.RoleForm;
-import de.hsrm.thesis.bachelor.shared.services.IRoleProcessService;
+import de.hsrm.thesis.bachelor.client.ui.forms.RoleForm;
+import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 
 public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
 
@@ -93,6 +93,42 @@ public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
       protected void execAction() throws ProcessingException {
         RoleForm form = new RoleForm();
         form.startNew();
+        form.waitFor();
+        if (form.isFormStored()) {
+          reloadPage();
+        }
+      }
+    }
+
+    @Order(20.0)
+    public class DeleteMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("DeleteMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        SERVICES.getService(IRoleProcessService.class).deleteRoles(getRoleIdColumn().getSelectedValues());
+        reloadPage();
+      }
+    }
+
+    @Order(30.0)
+    public class ModifyMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("Modify");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        RoleForm form = new RoleForm();
+        form.getNameField().setValue(getRoleColumn().getSelectedValue());
+        form.setRoleId(getRoleIdColumn().getSelectedValue());
+        form.startModify();
         form.waitFor();
         if (form.isFormStored()) {
           reloadPage();

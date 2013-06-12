@@ -20,12 +20,12 @@ import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.OkButton
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.PasswordField;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.RoleField;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.UsernameField;
-import de.hsrm.thesis.bachelor.shared.security.CreateUserPermission;
-import de.hsrm.thesis.bachelor.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.process.IUserProcessService;
-import de.hsrm.thesis.bachelor.shared.services.process.UserFormData;
 import de.hsrm.thesis.bachelor.shared.util.SharedUserUtility;
+import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
+import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 @FormData(value = UserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class UserForm extends AbstractForm {

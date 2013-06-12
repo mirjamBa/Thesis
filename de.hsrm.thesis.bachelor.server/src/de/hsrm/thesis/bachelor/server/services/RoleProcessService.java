@@ -8,8 +8,8 @@ import org.eclipse.scout.service.AbstractService;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
 import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.RoleFormData;
-import de.hsrm.thesis.bachelor.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.formdata.RoleFormData;
+import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 
 public class RoleProcessService extends AbstractService implements IRoleProcessService {
 
@@ -34,5 +34,25 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
         new NVPair("fileId", fileId),
         new NVPair("longArray", longArrayHolder));
     return longArrayHolder.getValue();
+  }
+
+  @Override
+  public void deleteRoles(Long[] roleIds) throws ProcessingException {
+    SQL.delete("DELETE FROM role_file_permission WHERE role_id = :ids",
+        new NVPair("ids", roleIds));
+
+    SQL.delete("DELETE FROM user_role WHERE role_id = :ids",
+        new NVPair("ids", roleIds));
+
+    SQL.delete("DELETE FROM role WHERE role_id = :ids",
+        new NVPair("ids", roleIds));
+  }
+
+  @Override
+  public RoleFormData update(RoleFormData formData) throws ProcessingException {
+    SQL.update("UPDATE role SET name = :roleName WHERE role_id = :roleId",
+        new NVPair("roleName", formData.getName().getValue()),
+        new NVPair("roleId", formData.getRoleId()));
+    return formData;
   }
 }
