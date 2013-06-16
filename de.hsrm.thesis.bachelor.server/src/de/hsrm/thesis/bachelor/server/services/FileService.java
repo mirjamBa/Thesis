@@ -312,7 +312,7 @@ public class FileService extends AbstractService implements IFileService {
       stringBuilder.append(" AND T.TAG_ID = :tag ");
     }
 
-    return SQL.select(stringBuilder.toString(), new NVPair("userId", user_id), searchFormData);
+    return SQL.select(stringBuilder.toString(), new NVPair("userId", user_id), bindings, searchFormData);
   }
 
   @Override
