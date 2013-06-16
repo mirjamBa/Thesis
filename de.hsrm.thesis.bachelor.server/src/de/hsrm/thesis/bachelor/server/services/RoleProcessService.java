@@ -5,11 +5,12 @@ import org.eclipse.scout.commons.holders.LongArrayHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
+import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
-import de.hsrm.thesis.bachelor.server.util.UserUtility;
 import de.hsrm.thesis.filemanagement.shared.formdata.RoleFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class RoleProcessService extends AbstractService implements IRoleProcessService {
 
@@ -23,7 +24,7 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
 
     SQL.insert("INSERT INTO role (name, user_creator_id) VALUES(:rolename, :creator)",
         new NVPair("rolename", formData.getName()),
-        new NVPair("creator", UserUtility.getUserId(ServerSession.get().getUserId())));
+        new NVPair("creator", SERVICES.getService(IUserProcessService.class).getUserId(ServerSession.get().getUserId())));
     return formData;
   }
 
@@ -54,5 +55,10 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
         new NVPair("roleName", formData.getName().getValue()),
         new NVPair("roleId", formData.getRoleId()));
     return formData;
+  }
+
+  @Override
+  public void deleteRolesForFile(Long fileId) throws ProcessingException {
+    SQL.delete("DELETE FROM role_file_permission WHERE file_id = :fileId", new NVPair("fileId", fileId));
   }
 }

@@ -19,8 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.eclipse.scout.commons.logger.IScoutLogger;
 import org.eclipse.scout.commons.logger.ScoutLogManager;
 import org.eclipse.scout.http.servletfilter.HttpServletEx;
+import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.server.util.UserUtility;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 /**
  * 
@@ -45,7 +46,7 @@ public class BahBahAuthenticationServlet extends HttpServletEx {
     try {
       String user = req.getHeader("User");
       String pass = req.getHeader("Pass");
-      if (UserUtility.isValidUser(user, pass)) {
+      if (SERVICES.getService(IUserProcessService.class).isValidUser(user, pass)) {
         //OK
         return;
       }

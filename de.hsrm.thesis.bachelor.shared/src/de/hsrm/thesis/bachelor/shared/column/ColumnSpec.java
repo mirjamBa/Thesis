@@ -6,9 +6,9 @@ package de.hsrm.thesis.bachelor.shared.column;
 public class ColumnSpec {
   private String id;
   private String text;
-  private String type;
+  private Long type;
 
-  public ColumnSpec(String id, String text, String type) {
+  public ColumnSpec(String id, String text, Long type) {
     this.id = id;
     this.text = text;
     this.type = type;
@@ -47,7 +47,7 @@ public class ColumnSpec {
   /**
    * @return the type
    */
-  public String getType() {
+  public Long getType() {
     return type;
   }
 
@@ -55,7 +55,7 @@ public class ColumnSpec {
    * @param type
    *          the type to set
    */
-  public void setType(String type) {
+  public void setType(Long type) {
     this.type = type;
   }
 

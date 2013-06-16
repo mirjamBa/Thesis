@@ -21,10 +21,10 @@ import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.Password
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.RoleField;
 import de.hsrm.thesis.bachelor.client.ui.forms.UserForm.MainBox.UserBox.UsernameField;
 import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
-import de.hsrm.thesis.bachelor.shared.util.SharedUserUtility;
 import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 @FormData(value = UserFormData.class, sdkCommand = SdkCommand.CREATE)
@@ -114,7 +114,7 @@ public class UserForm extends AbstractForm {
 
         @Override
         protected String execValidateValue(String rawValue) throws ProcessingException {
-          SharedUserUtility.checkUsername(rawValue);
+          SERVICES.getService(IUserProcessService.class).checkUsername(rawValue);
           return rawValue;
         }
       }
@@ -144,7 +144,7 @@ public class UserForm extends AbstractForm {
 
         @Override
         protected String execValidateValue(String rawValue) throws ProcessingException {
-          SharedUserUtility.checkPassword(rawValue);
+          SERVICES.getService(IPasswordProcessService.class).checkPassword(rawValue);
           return rawValue;
         }
       }

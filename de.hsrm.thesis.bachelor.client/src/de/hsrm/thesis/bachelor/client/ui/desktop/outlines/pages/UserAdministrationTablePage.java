@@ -171,6 +171,9 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       @Override
       protected void execAction() throws ProcessingException {
         UserForm frm = new UserForm();
+        frm.getRoleField().setValue(new Long[]{SERVICES.getService(IUserProcessService.class).getUserRoleId()});
+        //TODO set User Role enabled
+//        frm.getRoleField().getCheckedLookupRow().setEnabled(false); triggers nullpointer
         frm.startNew();
         frm.waitFor();
         if (frm.isFormStored()) {

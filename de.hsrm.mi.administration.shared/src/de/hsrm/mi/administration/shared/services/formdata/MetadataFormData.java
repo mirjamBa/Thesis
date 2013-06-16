@@ -3,6 +3,7 @@ package de.hsrm.mi.administration.shared.services.formdata;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
+import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
@@ -11,6 +12,24 @@ public class MetadataFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
 	public MetadataFormData() {
+	}
+
+	public AttributeIdProperty getAttributeIdProperty() {
+		return getPropertyByClass(AttributeIdProperty.class);
+	}
+
+	/**
+	 * access method for property AttributeId.
+	 */
+	public Long getAttributeId() {
+		return getAttributeIdProperty().getValue();
+	}
+
+	/**
+	 * access method for property AttributeId.
+	 */
+	public void setAttributeId(Long attributeId) {
+		getAttributeIdProperty().setValue(attributeId);
 	}
 
 	public Datatype getDatatype() {
@@ -23,6 +42,13 @@ public class MetadataFormData extends AbstractFormData {
 
 	public FileType getFileType() {
 		return getFieldByClass(FileType.class);
+	}
+
+	public class AttributeIdProperty extends AbstractPropertyData<Long> {
+		private static final long serialVersionUID = 1L;
+
+		public AttributeIdProperty() {
+		}
 	}
 
 	public static class Datatype extends AbstractValueFieldData<Long> {

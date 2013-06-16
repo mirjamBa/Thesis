@@ -19,141 +19,184 @@ import de.hsrm.mi.administration.shared.services.IMetadataService;
 import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
-public class MetadataTablePage extends AbstractPageWithTable<MetadataTablePage.Table> {
+public class MetadataTablePage extends
+		AbstractPageWithTable<MetadataTablePage.Table> {
 
-  private long m_filetypeNr;
+	private long m_filetypeNr;
 
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("Metadata");
-  }
+	@Override
+	protected String getConfiguredTitle() {
+		return TEXTS.get("Metadata");
+	}
 
-  @Override
-  protected boolean getConfiguredLeaf() {
-    return true;
-  }
+	@Override
+	protected boolean getConfiguredLeaf() {
+		return true;
+	}
 
-  @Override
-  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IMetadataService.class).getAttributes(m_filetypeNr);
-  }
+	@Override
+	protected Object[][] execLoadTableData(SearchFilter filter)
+			throws ProcessingException {
+		return SERVICES.getService(IMetadataService.class).getAttributes(
+				m_filetypeNr);
+	}
 
-  @Order(10.0)
-  public class Table extends AbstractExtensibleTable {
+	@Order(10.0)
+	public class Table extends AbstractExtensibleTable {
 
-    public NameColumn getNameColumn() {
-      return getColumnSet().getColumnByClass(NameColumn.class);
-    }
-
-    public DatatypeColumn getDatatypeColumn() {
-      return getColumnSet().getColumnByClass(DatatypeColumn.class);
-    }
-
-    public FileTypeColumn getFileTypeColumn() {
-      return getColumnSet().getColumnByClass(FileTypeColumn.class);
-    }
-
-    public AttributIDColumn getAttributIDColumn() {
-      return getColumnSet().getColumnByClass(AttributIDColumn.class);
-    }
-
-    @Override
-    protected boolean getConfiguredAutoResizeColumns() {
-      return true;
-    }
-
-    @Order(10.0)
-    public class AttributIDColumn extends AbstractLongColumn {
-
-      @Override
-      protected boolean getConfiguredDisplayable() {
-        return false;
-      }
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("AttributID");
-      }
-
-      @Override
-      protected boolean getConfiguredVisible() {
-        return false;
-      }
-    }
-
-    @Order(20.0)
-    public class NameColumn extends AbstractStringColumn {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Name");
-      }
-    }
-
-    @Order(30.0)
-    public class DatatypeColumn extends AbstractSmartColumn<Long> {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Datatype");
-      }
-
-      @Override
-      protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
-        return DatatypeCodeType.class;
-      }
-
-    }
-
-    @Order(40.0)
-    public class FileTypeColumn extends AbstractSmartColumn<Long> {
-
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("FileType");
-      }
-
-      @Override
-		protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
-			return FileTypeCodeType.class;
+		public NameColumn getNameColumn() {
+			return getColumnSet().getColumnByClass(NameColumn.class);
 		}
-    }
 
-    @Order(10.0)
-    public class NewMetadataattributeMenu extends AbstractExtensibleMenu {
+		public DatatypeColumn getDatatypeColumn() {
+			return getColumnSet().getColumnByClass(DatatypeColumn.class);
+		}
 
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("NewMetadataattribute");
-      }
+		public FileTypeColumn getFileTypeColumn() {
+			return getColumnSet().getColumnByClass(FileTypeColumn.class);
+		}
 
-      @Override
-      protected boolean getConfiguredEmptySpaceAction() {
-        return true;
-      }
+		public AttributIDColumn getAttributIDColumn() {
+			return getColumnSet().getColumnByClass(AttributIDColumn.class);
+		}
 
-      @Override
-      protected void execAction() throws ProcessingException {
-        MetadataForm form = new MetadataForm();
-        if (getFiletypeNr() > 0) {
-          form.getFileTypeField().setValue(getFiletypeNr());
-        }
-        form.startNew();
-        form.waitFor();
-        if (form.isFormStored()) {
-          reloadPage();
-        }
-      }
-    }
-  }
+		@Override
+		protected boolean getConfiguredAutoResizeColumns() {
+			return true;
+		}
 
-  @FormData
-  public long getFiletypeNr() {
-    return m_filetypeNr;
-  }
+		@Order(10.0)
+		public class AttributIDColumn extends AbstractLongColumn {
 
-  @FormData
-  public void setFiletypeNr(long filetypeNr) {
-    m_filetypeNr = filetypeNr;
-  }
+			@Override
+			protected boolean getConfiguredDisplayable() {
+				return false;
+			}
+
+			@Override
+			protected String getConfiguredHeaderText() {
+				return TEXTS.get("AttributID");
+			}
+
+			@Override
+			protected boolean getConfiguredVisible() {
+				return false;
+			}
+		}
+
+		@Order(20.0)
+		public class NameColumn extends AbstractStringColumn {
+
+			@Override
+			protected String getConfiguredHeaderText() {
+				return TEXTS.get("Name");
+			}
+		}
+
+		@Order(30.0)
+		public class DatatypeColumn extends AbstractSmartColumn<Long> {
+
+			@Override
+			protected String getConfiguredHeaderText() {
+				return TEXTS.get("Datatype");
+			}
+
+			@Override
+			protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+				return DatatypeCodeType.class;
+			}
+
+		}
+
+		@Order(40.0)
+		public class FileTypeColumn extends AbstractSmartColumn<Long> {
+
+			@Override
+			protected String getConfiguredHeaderText() {
+				return TEXTS.get("FileType");
+			}
+
+			@Override
+			protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+				return FileTypeCodeType.class;
+			}
+		}
+
+		@Order(10.0)
+		public class NewMetadataattributeMenu extends AbstractExtensibleMenu {
+
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("NewMetadataattribute");
+			}
+
+			@Override
+			protected boolean getConfiguredEmptySpaceAction() {
+				return true;
+			}
+
+			@Override
+			protected void execAction() throws ProcessingException {
+				MetadataForm form = new MetadataForm();
+				if (getFiletypeNr() > 0) {
+					form.getFileTypeField().setValue(getFiletypeNr());
+				}
+				form.startNew();
+				form.waitFor();
+				if (form.isFormStored()) {
+					reloadPage();
+				}
+			}
+		}
+
+		@Order(20.0)
+		public class ModifyMenu extends AbstractExtensibleMenu {
+
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("Modify");
+			}
+			
+			@Override
+			protected void execAction() throws ProcessingException {
+				MetadataForm form = new MetadataForm();
+				form.setAttributeId(getAttributIDColumn().getSelectedValue());
+				form.getDescriptionField().setValue(getNameColumn().getSelectedValue());
+				form.getDatatypeField().setValue(getDatatypeColumn().getSelectedValue());
+				form.getDatatypeField().setEnabled(false);
+				form.getFileTypeField().setValue(getFileTypeColumn().getSelectedValue());
+				form.getFileTypeField().setEnabled(false);
+				form.startModify();
+				form.waitFor();
+				if(form.isFormStored()){
+					reloadPage();
+				}
+			}
+		}
+
+		@Order(30.0)
+		public class DeleteMenu extends AbstractExtensibleMenu {
+
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("DeleteMenu");
+			}
+			
+			@Override
+			protected void execAction() throws ProcessingException {
+				SERVICES.getService(IMetadataService.class).delete(getAttributIDColumn().getSelectedValues());
+				reloadPage();
+			}
+		}
+	}
+
+	@FormData
+	public long getFiletypeNr() {
+		return m_filetypeNr;
+	}
+
+	@FormData
+	public void setFiletypeNr(long filetypeNr) {
+		m_filetypeNr = filetypeNr;
+	}
 }

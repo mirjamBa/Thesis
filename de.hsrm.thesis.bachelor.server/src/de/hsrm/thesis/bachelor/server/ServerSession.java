@@ -13,7 +13,6 @@ import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.server.util.UserUtility;
 import de.hsrm.thesis.filemanagement.shared.services.ISharedContextService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
@@ -62,7 +61,7 @@ public class ServerSession extends AbstractServerSession {
 
       setPermission(SERVICES.getService(IUserProcessService.class).getUserPermission(getUserId()));
 
-      Long userNr = UserUtility.getUserId(getUserId());
+      Long userNr = SERVICES.getService(IUserProcessService.class).getUserId(getUserId());
       setUserNr(userNr);
 
       SERVICES.getService(ISharedContextService.class).setSharedContextVariable("userNr", Long.class, userNr);

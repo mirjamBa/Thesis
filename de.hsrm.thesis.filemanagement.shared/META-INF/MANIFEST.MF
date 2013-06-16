@@ -13,4 +13,5 @@ Export-Package: de.hsrm.thesis.filemanagement.shared,
  de.hsrm.thesis.filemanagement.shared.formdata,
  de.hsrm.thesis.filemanagement.shared.security,
  de.hsrm.thesis.filemanagement.shared.services,
- de.hsrm.thesis.filemanagement.shared.services.code
+ de.hsrm.thesis.filemanagement.shared.services.code,
+ de.hsrm.thesis.filemanagement.shared.utility

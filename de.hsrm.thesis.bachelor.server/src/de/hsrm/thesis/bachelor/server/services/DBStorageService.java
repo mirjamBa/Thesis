@@ -6,12 +6,17 @@ import java.util.Set;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
+import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.AbstractService;
+import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.server.util.UserUtility;
+import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
+import de.hsrm.thesis.bachelor.shared.services.code.DublinCoreMetadataElementSetCodeType;
+import de.hsrm.thesis.bachelor.shared.services.code.ICategorizable;
 import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 /**
@@ -71,14 +76,14 @@ public class DBStorageService extends AbstractService implements IStorageService
           + "attribute_id  BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT ATTR_PK PRIMARY KEY,"
           + "name          VARCHAR(256) NOT NULL,"
           + "datatype      BIGINT NOT NULL,"
-          + "filetype_id   BIGINT NOT NULL)");
+          + "filetype_id   BIGINT)");
       SQL.commit();
 
       SQL.insert("CREATE TABLE metadata ("
           + "metadata_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT METADATA_PK PRIMARY KEY,"
           + "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
           + "attribute_id  BIGINT NOT NULL REFERENCES metadata_attribute(attribute_id),"
-          + "value       BLOB)");
+          + "value       VARCHAR(512))");
       SQL.commit();
 
       SQL.insert("CREATE TABLE fileformat ("
@@ -108,12 +113,12 @@ public class DBStorageService extends AbstractService implements IStorageService
       SQL.insert("CREATE SEQUENCE file_number AS BIGINT START WITH 1000");
       SQL.commit();
 
-      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + UserUtility.USER_ROLE_ADMIN + "', null)");
-      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + UserUtility.USER_ROLE_USER + "', null)");
+      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + IUserProcessService.USER_ROLE_ADMIN + "', null)");
+      SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('" + IUserProcessService.USER_ROLE_USER + "', null)");
 
       // create first admin account
-      Long[] roles = new Long[]{UserUtility.getAdminRoleId()};
-      UserUtility.createNewUser("admin", "admin", roles);
+      Long[] roles = new Long[]{SERVICES.getService(IUserProcessService.class).getAdminRoleId()};
+      SERVICES.getService(IUserProcessService.class).createNewUser("admin", "admin", roles);
 
       SQL.commit();
 
@@ -124,6 +129,27 @@ public class DBStorageService extends AbstractService implements IStorageService
             new NVPair("filetypeId", code.getId()));
         SQL.commit();
       }
+
+      @SuppressWarnings("unchecked")
+      ICode<Long>[] meta = CODES.getCodeType(DublinCoreMetadataElementSetCodeType.class).getCodes();
+      for (ICode<Long> code : meta) {
+        SQL.insert("INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+            new NVPair("name", code.getText()),
+            new NVPair("datatype", ((ICategorizable) code).getCategory()));
+        SQL.commit();
+      }
+
+      SQL.insert("INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+          new NVPair("name", TEXTS.get("EntryDate")),
+          new NVPair("datatype", DatatypeCodeType.DateCode.ID));
+
+      SQL.insert("INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+          new NVPair("name", TEXTS.get("Filesize")),
+          new NVPair("datatype", DatatypeCodeType.StringCode.ID));
+
+      SQL.insert("INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+          new NVPair("name", TEXTS.get("FileExtension")),
+          new NVPair("datatype", DatatypeCodeType.StringCode.ID));
 
     }
 

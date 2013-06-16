@@ -3,6 +3,7 @@ package de.hsrm.thesis.bachelor.server.services;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.eclipse.scout.commons.StringUtility;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.commons.holders.NVPair;
@@ -12,14 +13,16 @@ import org.eclipse.scout.rt.server.services.common.pwd.AbstractPasswordManagemen
 import org.eclipse.scout.rt.server.services.common.pwd.IPasswordPolicy;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
+import org.eclipse.scout.service.SERVICES;
 import org.osgi.framework.ServiceRegistration;
 
-import de.hsrm.thesis.bachelor.server.util.UserUtility;
-import de.hsrm.thesis.bachelor.shared.util.SharedUserUtility;
 import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class PasswordProcessService extends AbstractPasswordManagementService implements IPasswordProcessService {
+
+  public static final int MIN_PASSWORD_LENGTH = 3;
 
   @Override
   public void initializeService(ServiceRegistration registration) {
@@ -32,8 +35,8 @@ public class PasswordProcessService extends AbstractPasswordManagementService im
 
       @Override
       public void check(String userId, String newPassword, String userName, int historyIndex) throws ProcessingException {
-        SharedUserUtility.checkPassword(newPassword);
-        SharedUserUtility.checkUsername(userName);
+        SERVICES.getService(IPasswordProcessService.class).checkPassword(newPassword);
+        SERVICES.getService(IUserProcessService.class).checkUsername(userName);
       }
     });
   }
@@ -68,6 +71,13 @@ public class PasswordProcessService extends AbstractPasswordManagementService im
   @Override
   protected void resetPasswordInternal(String userId, String newPassword) throws ProcessingException {
     Long u_id = Long.parseLong(userId);
-    UserUtility.resetPassword(u_id, newPassword);
+    SERVICES.getService(IUserProcessService.class).resetPassword(u_id, newPassword);
+  }
+
+  @Override
+  public void checkPassword(String password) throws VetoException {
+    if (StringUtility.length(password) < MIN_PASSWORD_LENGTH) {
+      throw new VetoException(TEXTS.get("PasswordMinLength", "" + MIN_PASSWORD_LENGTH));
+    }
   }
 }

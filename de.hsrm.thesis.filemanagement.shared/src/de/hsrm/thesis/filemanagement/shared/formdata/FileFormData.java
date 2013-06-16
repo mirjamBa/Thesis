@@ -8,6 +8,9 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
+import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+
 public class FileFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
@@ -21,14 +24,14 @@ public class FileFormData extends AbstractFormData {
 	/**
 	 * access method for property FileData.
 	 */
-	public Object getFileData() {
+	public ServerFileData getFileData() {
 		return getFileDataProperty().getValue();
 	}
 
 	/**
 	 * access method for property FileData.
 	 */
-	public void setFileData(Object fileData) {
+	public void setFileData(ServerFileData fileData) {
 		getFileDataProperty().setValue(fileData);
 	}
 
@@ -58,8 +61,7 @@ public class FileFormData extends AbstractFormData {
 	 * access method for property FiletypeNr.
 	 */
 	public long getFiletypeNr() {
-		return (getFiletypeNrProperty().getValue() == null) ? (0L)
-				: (getFiletypeNrProperty().getValue());
+		return (getFiletypeNrProperty().getValue() == null) ? (0L) : (getFiletypeNrProperty().getValue());
 	}
 
 	/**
@@ -99,6 +101,10 @@ public class FileFormData extends AbstractFormData {
 
 	public Description getDescription() {
 		return getFieldByClass(Description.class);
+	}
+
+	public FileExtension getFileExtension() {
+		return getFieldByClass(FileExtension.class);
 	}
 
 	public Filesize getFilesize() {
@@ -157,7 +163,7 @@ public class FileFormData extends AbstractFormData {
 		return getFieldByClass(Typist.class);
 	}
 
-	public class FileDataProperty extends AbstractPropertyData<Object> {
+	public class FileDataProperty extends AbstractPropertyData<ServerFileData> {
 		private static final long serialVersionUID = 1L;
 
 		public FileDataProperty() {
@@ -184,9 +190,18 @@ public class FileFormData extends AbstractFormData {
 		public Attribute() {
 		}
 
-		public static final int ATTRIBUTE_COLUMN_ID = 0;
-		public static final int VALUE_COLUMN_ID = 1;
-		public static final int DATATYPE_COLUMN_ID = 2;
+		public static final int ATTRIBUT_ID_COLUMN_ID = 0;
+		public static final int ATTRIBUTE_COLUMN_ID = 1;
+		public static final int VALUE_COLUMN_ID = 2;
+		public static final int DATATYPE_COLUMN_ID = 3;
+
+		public void setAttributID(int row, Long attributID) {
+			setValueInternal(row, ATTRIBUT_ID_COLUMN_ID, attributID);
+		}
+
+		public Long getAttributID(int row) {
+			return (Long) getValueInternal(row, ATTRIBUT_ID_COLUMN_ID);
+		}
 
 		public void setAttribute(int row, String attribute) {
 			setValueInternal(row, ATTRIBUTE_COLUMN_ID, attribute);
@@ -214,12 +229,14 @@ public class FileFormData extends AbstractFormData {
 
 		@Override
 		public int getColumnCount() {
-			return 3;
+			return 4;
 		}
 
 		@Override
 		public Object getValueAt(int row, int column) {
 			switch (column) {
+			case ATTRIBUT_ID_COLUMN_ID:
+				return getAttributID(row);
 			case ATTRIBUTE_COLUMN_ID:
 				return getAttribute(row);
 			case VALUE_COLUMN_ID:
@@ -234,6 +251,9 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		public void setValueAt(int row, int column, Object value) {
 			switch (column) {
+			case ATTRIBUT_ID_COLUMN_ID:
+				setAttributID(row, (Long) value);
+				break;
 			case ATTRIBUTE_COLUMN_ID:
 				setAttribute(row, (String) value);
 				break;
@@ -259,6 +279,14 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
+			/**
+			 * XXX not processed ValidationRule(lookupCall)
+			 * 'TagLookupCall.class' is not accessible from here.
+			 * generatedSourceCode: null at
+			 * de.hsrm.thesis.filemanagement.client.
+			 * ui.forms.FileForm.MainBox.File0Box.TagBox.AvailableTagsBox #
+			 * getConfiguredLookupCall
+			 */
 		}
 	}
 
@@ -328,6 +356,22 @@ public class FileFormData extends AbstractFormData {
 		private static final long serialVersionUID = 1L;
 
 		public Description() {
+		}
+
+		/**
+		 * list of derived validation rules.
+		 */
+		@Override
+		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+			super.initValidationRules(ruleMap);
+			ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
+		}
+	}
+
+	public static class FileExtension extends AbstractValueFieldData<String> {
+		private static final long serialVersionUID = 1L;
+
+		public FileExtension() {
 		}
 
 		/**
@@ -480,6 +524,14 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
+			/**
+			 * XXX not processed ValidationRule(lookupCall)
+			 * 'RoleLookupCall.class' is not accessible from here.
+			 * generatedSourceCode: null at
+			 * de.hsrm.thesis.filemanagement.client.
+			 * ui.forms.FileForm.MainBox.File0Box.AuthorityBox.RolesField #
+			 * getConfiguredLookupCall
+			 */
 		}
 	}
 
@@ -527,6 +579,7 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
+			ruleMap.put(ValidationRule.MANDATORY, true);
 			ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
 		}
 	}
@@ -543,6 +596,7 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
+			ruleMap.put(ValidationRule.CODE_TYPE, FileTypeCodeType.class);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}
@@ -559,6 +613,14 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
+			/**
+			 * XXX not processed ValidationRule(lookupCall)
+			 * 'UserLookupCall.class' is not accessible from here.
+			 * generatedSourceCode: null at
+			 * de.hsrm.thesis.filemanagement.client.
+			 * ui.forms.FileForm.MainBox.File0Box.MetadataBox.TypistField #
+			 * getConfiguredLookupCall
+			 */
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}

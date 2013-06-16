@@ -3,6 +3,7 @@
 
 <product name="bachelor Server" id="de.hsrm.thesis.bachelor.server.product" application="de.hsrm.thesis.bachelor.server.app" useFeatures="false" includeLaunchers="true">
 
+
    <configIni use="default">
       <linux>/de.hsrm.thesis.bachelor.server/products/development/config.ini</linux>
       <macosx>/de.hsrm.thesis.bachelor.server/products/development/config.ini</macosx>
@@ -17,12 +18,14 @@
 
    <windowImages/>
 
+
    <launcher>
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
@@ -35,7 +38,6 @@
       <plugin id="net.sourceforge.tess4j"/>
       <plugin id="org.apache.commons.codec"/>
       <plugin id="org.apache.derby.jdbc_1091.fragment" fragment="true"/>
-      <plugin id="org.apache.tika"/>
       <plugin id="org.codehouse.xstream"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.jobs"/>
@@ -68,9 +70,7 @@
       <plugin id="org.eclipse.scout.rt.shared"/>
       <plugin id="org.eclipse.scout.service"/>
       <plugin id="org.eclipse.update.configurator"/>
-      <plugin id="tikaaddon"/>
-      <plugin id="tikaohnevorbis"/>
-      <plugin id="tikaxx"/>
+      <plugin id="tikanearlyall"/>
    </plugins>
 
 

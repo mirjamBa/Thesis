@@ -29,7 +29,9 @@ import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 @FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
 public class MetadataForm extends AbstractForm {
 
-  public MetadataForm() throws ProcessingException {
+  private Long m_attributeId;
+
+public MetadataForm() throws ProcessingException {
     super();
   }
 
@@ -154,4 +156,14 @@ public class MetadataForm extends AbstractForm {
       formData = service.create(formData);
     }
   }
+
+@FormData
+public Long getAttributeId() {
+	return m_attributeId;
+}
+
+@FormData
+public void setAttributeId(Long attributeId) {
+	m_attributeId = attributeId;
+}
 }

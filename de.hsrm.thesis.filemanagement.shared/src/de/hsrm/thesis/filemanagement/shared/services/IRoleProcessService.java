@@ -19,4 +19,6 @@ public interface IRoleProcessService extends IService {
   public void deleteRoles(Long[] roleIds) throws ProcessingException;
 
   public RoleFormData update(RoleFormData formData) throws ProcessingException;
+
+public void deleteRolesForFile(Long fileId) throws ProcessingException;
 }

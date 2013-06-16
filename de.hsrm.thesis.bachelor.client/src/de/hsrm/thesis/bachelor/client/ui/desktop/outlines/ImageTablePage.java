@@ -78,7 +78,8 @@ public class ImageTablePage extends FileTablePage {
 
   @Override
   protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IFileService.class).getImages();
+    Object[][] images = SERVICES.getService(IFileService.class).getImages();
+    return images;
   }
 
   @Order(10.0)

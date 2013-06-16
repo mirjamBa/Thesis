@@ -10,16 +10,26 @@ import de.hsrm.mi.administration.shared.services.formdata.TagFormData;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface ITagService extends IService2 {
 
-  TagFormData create(TagFormData formData) throws ProcessingException;
+	public static final String TAG_SEPERATOR = ";";
 
-  public void create(String... tagnames) throws ProcessingException;
+	TagFormData create(TagFormData formData) throws ProcessingException;
 
-  public Object[][] getTags() throws ProcessingException;
+	public void create(String... tagnames) throws ProcessingException;
 
-  public void updateTag(TagFormData formData) throws ProcessingException;
+	public Object[][] getTags() throws ProcessingException;
 
-  public void deleteTag(Long[] ids) throws ProcessingException;
-  
-  public Long[] getTagsForFile(Long fileId) throws ProcessingException;
+	public void updateTag(TagFormData formData) throws ProcessingException;
+
+	public void deleteTag(Long[] ids) throws ProcessingException;
+
+	public Long[] getTagsForFile(Long fileId) throws ProcessingException;
+	
+	public String[] filterTagnames(String newTags);
+	
+	public Long getTagId(String name) throws ProcessingException;
+	
+	public boolean tagsExisting() throws ProcessingException;
+
+	public void deleteTagsForFile(Long fileId) throws ProcessingException;
 
 }
