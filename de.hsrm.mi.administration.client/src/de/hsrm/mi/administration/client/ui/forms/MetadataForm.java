@@ -92,7 +92,7 @@ public MetadataForm() throws ProcessingException {
 
         @Override
         protected String getConfiguredLabel() {
-          return TEXTS.get("Bezeichnung");
+          return TEXTS.get("Description");
         }
       }
 

@@ -172,7 +172,7 @@ public class FileTypeCodeType extends AbstractCodeType<Long> {
 
     @Override
     protected String getConfiguredText() {
-      return TEXTS.get("PhysikalischesObjekt");
+      return TEXTS.get("PhysicalObject");
     }
 
     @Override

@@ -417,7 +417,7 @@ public class FileForm extends AbstractForm {
 
 						@Override
 						protected String getConfiguredLabel() {
-							return TEXTS.get("Subject0");
+							return TEXTS.get("Subject");
 						}
 
 						@Override
@@ -516,7 +516,7 @@ public class FileForm extends AbstractForm {
 
 						@Override
 						protected String getConfiguredLabel() {
-							return TEXTS.get("Identifikator");
+							return TEXTS.get("Identifier");
 						}
 
 						@Override
@@ -530,7 +530,7 @@ public class FileForm extends AbstractForm {
 
 						@Override
 						protected String getConfiguredLabel() {
-							return TEXTS.get("Source0");
+							return TEXTS.get("Source");
 						}
 
 						@Override
@@ -657,7 +657,7 @@ public class FileForm extends AbstractForm {
 
 							@Override
 							protected String getConfiguredHeaderText() {
-								return TEXTS.get("AttributID");
+								return TEXTS.get("AttributId");
 							}
 
 							@Override
