@@ -170,7 +170,7 @@ public class FileSearchForm extends AbstractSearchForm {
 
 						@Override
 						protected String getConfiguredLabel() {
-							return TEXTS.get("from");
+							return TEXTS.get("From");
 						}
 					}
 
@@ -179,7 +179,7 @@ public class FileSearchForm extends AbstractSearchForm {
 
 						@Override
 						protected String getConfiguredLabel() {
-							return TEXTS.get("to");
+							return TEXTS.get("To");
 						}
 					}
 				}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.scout.service.services">
+      <service
+            factory="org.eclipse.scout.service.DefaultServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.common.text.FilemanagementTextProviderService">
+      </service>
+   </extension>
+
+</plugin>
