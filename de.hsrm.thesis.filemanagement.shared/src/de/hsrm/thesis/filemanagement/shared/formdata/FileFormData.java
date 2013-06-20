@@ -8,8 +8,11 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
 public class FileFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
@@ -279,14 +282,7 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'TagLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.filemanagement.client.
-			 * ui.forms.FileForm.MainBox.File0Box.TagBox.AvailableTagsBox #
-			 * getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, TagLookupCall.class);
 		}
 	}
 
@@ -524,14 +520,7 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'RoleLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.filemanagement.client.
-			 * ui.forms.FileForm.MainBox.File0Box.AuthorityBox.RolesField #
-			 * getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, RoleLookupCall.class);
 		}
 	}
 
@@ -613,14 +602,7 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'UserLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.filemanagement.client.
-			 * ui.forms.FileForm.MainBox.File0Box.MetadataBox.TypistField #
-			 * getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, UserLookupCall.class);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}

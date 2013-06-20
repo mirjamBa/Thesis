@@ -6,13 +6,11 @@ import org.eclipse.scout.commons.logger.IScoutLogger;
 import org.eclipse.scout.commons.logger.ScoutLogManager;
 import org.eclipse.scout.rt.client.AbstractClientSession;
 import org.eclipse.scout.rt.client.ClientJob;
-import org.eclipse.scout.rt.client.services.common.clientnotification.IClientNotificationConsumerService;
 import org.eclipse.scout.rt.client.servicetunnel.http.HttpServiceTunnel;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.client.services.IBahBahNotificationConsumerService;
 import de.hsrm.thesis.bachelor.client.ui.desktop.Desktop;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
@@ -47,8 +45,8 @@ public class ClientSession extends AbstractClientSession {
     getServiceTunnel().setClientNotificationPollInterval(1000L);
 
     // set the notification listener service (this service will be called when the client receives a notification)
-    IBahBahNotificationConsumerService notificationHandlerService = SERVICES.getService(IBahBahNotificationConsumerService.class);
-    SERVICES.getService(IClientNotificationConsumerService.class).addClientNotificationConsumerListener(this, notificationHandlerService);
+//    IBahBahNotificationConsumerService notificationHandlerService = SERVICES.getService(IBahBahNotificationConsumerService.class);
+//    SERVICES.getService(IClientNotificationConsumerService.class).addClientNotificationConsumerListener(this, notificationHandlerService);
 
     setDesktop(new Desktop());
   }

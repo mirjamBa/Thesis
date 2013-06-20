@@ -13,7 +13,7 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.TagForm;
-import de.hsrm.mi.administration.shared.services.ITagService;
+import de.hsrm.thesis.filemanagement.shared.services.ITagService;
 
 public class TagTablePage extends AbstractPageWithTable<TagTablePage.Table> {
 

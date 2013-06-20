@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Shared
+Bundle-SymbolicName: de.hsrm.mi.user.shared;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.hsrm.mi.user.shared.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scout.rt.shared
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy

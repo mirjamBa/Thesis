@@ -18,8 +18,7 @@ public interface IUserProcessService extends IService {
 	public static final String USER_ROLE_USER = "User";
 	static final String PERMISSION_KEY = "permission_id";
 
-	ICode<Integer> getUserPermission(String userName)
-			throws ProcessingException;
+	ICode<Integer> getUserPermission(String userName) throws ProcessingException;
 
 	Object[][] getUsers() throws ProcessingException;
 
@@ -39,31 +38,26 @@ public interface IUserProcessService extends IService {
 
 	public long getUserId(String username) throws ProcessingException;
 
-	public boolean createNewUser(String username, String password)
-			throws ProcessingException;
+	public boolean createNewUser(String username, String password) throws ProcessingException;
 
 	public boolean isAdmin(Long[] roles) throws ProcessingException;
 
-	public boolean createNewUser(String username, String password,
-			Long[] roleIds) throws ProcessingException;
+	public boolean createNewUser(String username, String password, Long[] roleIds) throws ProcessingException;
 
-	public void resetPassword(Long u_Id, String newPassword)
-			throws ProcessingException;
+	public void resetPassword(Long u_Id, String newPassword) throws ProcessingException;
 
-	public boolean isValidUser(String username, String password)
-			throws ProcessingException;
+	public boolean isValidUser(String username, String password) throws ProcessingException;
 
 	public Long getRoleId(String name) throws ProcessingException;
 
-	public void setUserRoles(Long userId, Long[] roleIds)
-			throws ProcessingException;
+	public void setUserRoles(Long userId, Long[] roleIds) throws ProcessingException;
 
 	public Long getAdminRoleId() throws ProcessingException;
 
 	public Long getUserRoleId() throws ProcessingException;
 
 	public void checkUsername(String username) throws VetoException;
-	
+
 	public Long getCurrentUserId();
 
 }

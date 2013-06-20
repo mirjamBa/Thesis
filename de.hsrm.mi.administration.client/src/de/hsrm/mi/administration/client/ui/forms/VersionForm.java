@@ -20,9 +20,9 @@ import de.hsrm.mi.administration.client.ui.forms.VersionForm.MainBox.OkButton;
 import de.hsrm.mi.administration.client.ui.forms.VersionForm.MainBox.VersionBox;
 import de.hsrm.mi.administration.client.ui.forms.VersionForm.MainBox.VersionBox.FileTypeField;
 import de.hsrm.mi.administration.client.ui.forms.VersionForm.MainBox.VersionBox.VersionField;
-import de.hsrm.mi.administration.shared.services.IVersionService;
-import de.hsrm.mi.administration.shared.services.formdata.VersionFormData;
+import de.hsrm.thesis.filemanagement.shared.services.IVersionService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.VersionFormData;
 
 @FormData(value = VersionFormData.class, sdkCommand = SdkCommand.CREATE)
 public class VersionForm extends AbstractForm {

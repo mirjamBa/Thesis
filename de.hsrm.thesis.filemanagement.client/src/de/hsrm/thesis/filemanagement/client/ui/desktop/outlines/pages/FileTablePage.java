@@ -25,25 +25,26 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.forms.FileFormatForm;
-import de.hsrm.mi.administration.shared.services.IFileFormatService;
-import de.hsrm.mi.administration.shared.services.IMetadataService;
-import de.hsrm.mi.administration.shared.services.ITagService;
-import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
-import de.hsrm.thesis.bachelor.shared.column.ColumnSpec;
-import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
+import de.hsrm.thesis.filemanagement.client.services.IClientFileService;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileFormatForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm;
 import de.hsrm.thesis.filemanagement.client.util.ColumnUtility;
 import de.hsrm.thesis.filemanagement.shared.Icons;
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
+import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.ITagService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
 
 public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage.FileTable> {
@@ -344,7 +345,7 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				SERVICES.getService(IFileService.class).openFile(getFileIdColumn().getSelectedValue());
+				SERVICES.getService(IClientFileService.class).openFile(getFileIdColumn().getSelectedValue());
 			}
 		}
 

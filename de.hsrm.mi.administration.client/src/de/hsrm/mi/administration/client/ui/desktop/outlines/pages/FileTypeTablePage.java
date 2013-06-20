@@ -15,7 +15,7 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.VersionForm;
-import de.hsrm.mi.administration.shared.services.IFiletypeService;
+import de.hsrm.thesis.filemanagement.shared.services.IFiletypeService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 public class FileTypeTablePage extends

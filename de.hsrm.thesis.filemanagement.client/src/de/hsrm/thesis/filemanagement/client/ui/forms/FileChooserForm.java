@@ -19,8 +19,8 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.Can
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox.FileField;
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileChooserFormData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 

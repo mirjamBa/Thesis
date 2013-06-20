@@ -21,10 +21,10 @@ import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBo
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DescriptionField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.FileTypeField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.OkButton;
-import de.hsrm.mi.administration.shared.services.IMetadataService;
-import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
-import de.hsrm.mi.administration.shared.services.formdata.MetadataFormData;
+import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
 
 @FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
 public class MetadataForm extends AbstractForm {

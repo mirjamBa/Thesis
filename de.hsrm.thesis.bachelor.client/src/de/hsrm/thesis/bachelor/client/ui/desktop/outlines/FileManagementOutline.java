@@ -8,6 +8,7 @@ import org.eclipse.scout.rt.extension.client.ui.desktop.outline.AbstractExtensib
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages.FileTablePage;
+import de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages.ImageTablePage;
 
 public class FileManagementOutline extends AbstractExtensibleOutline {
 

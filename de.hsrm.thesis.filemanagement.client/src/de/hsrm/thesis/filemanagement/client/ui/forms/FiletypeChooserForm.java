@@ -20,13 +20,13 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FileTypeField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FiletypeChooserFormField;
 import de.hsrm.thesis.filemanagement.shared.formdata.FiletypeChooserFormData;
+import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 @FormData(value = FiletypeChooserFormData.class, sdkCommand = SdkCommand.CREATE)

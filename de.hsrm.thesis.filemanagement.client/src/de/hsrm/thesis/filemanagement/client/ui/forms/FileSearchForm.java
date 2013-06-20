@@ -35,10 +35,6 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.shared.services.IMetadataService;
-import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
-import de.hsrm.mi.administration.shared.services.lookup.TagLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.ResetButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.SearchButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox;
@@ -49,7 +45,11 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabB
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
 @FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileSearchForm extends AbstractSearchForm {

@@ -23,11 +23,7 @@ Export-Package: de.hsrm.thesis.bachelor.server;
    org.eclipse.scout.service,
    org.eclipse.scout.rt.shared.services.common.code,
    org.osgi.framework",
- de.hsrm.thesis.bachelor.server.services.common.security;uses:="org.eclipse.scout.rt.server.services.common.security",
- de.hsrm.thesis.bachelor.server.services.common.sql;uses:="org.eclipse.scout.service,org.eclipse.scout.rt.services.common.jdbc",
- de.hsrm.thesis.bachelor.server.services.lookup;uses:="de.hsrm.thesis.bachelor.shared.services.lookup,org.eclipse.scout.rt.server.services.lookup",
- de.hsrm.thesis.bachelor.server.servlet;uses:="org.eclipse.scout.http.servletfilter,javax.servlet.http",
- de.hsrm.thesis.bachelor.server.util;uses:="de.hsrm.thesis.bachelor.shared.util"
+ de.hsrm.thesis.bachelor.server.services.common.security;uses:="org.eclipse.scout.rt.server.services.common.security"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.server,
  org.eclipse.scout.http.servletfilter,
@@ -40,7 +36,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared,
  tikanearlyall;bundle-version="1.0.0",
  de.hsrm.thesis.filemanagement.shared,
- de.hsrm.thesis.filemanagement.server
+ de.hsrm.thesis.filemanagement.server,
+ de.hsrm.mi.user.server;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"

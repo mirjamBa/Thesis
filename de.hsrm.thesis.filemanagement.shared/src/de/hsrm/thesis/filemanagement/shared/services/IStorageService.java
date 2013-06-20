@@ -9,4 +9,5 @@ import org.eclipse.scout.service.IService2;
 public interface IStorageService extends IService2 {
 
   public void installStorage() throws ProcessingException;
+  
 }

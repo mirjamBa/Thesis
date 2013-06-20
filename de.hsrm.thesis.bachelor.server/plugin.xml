@@ -21,57 +21,28 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.UserProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.PasswordProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.common.sql.DerbySqlService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.NotificationProcessService"
+            class="de.hsrm.thesis.bachelor.server.services.UserProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
-      <service
+      
+      <!--service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.bachelor.server.services.NotificationProcessService"
+            session="de.hsrm.thesis.bachelor.server.ServerSession">
+      </service-->
+      <!--service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.IconProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
+      </service-->
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.OCRProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.FileFormatService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.TagService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.MetadataService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.VersionService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.FiletypeService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -81,32 +52,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.lookup.FiletypeLookupService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.lookup.RoleLookupService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.RoleProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.DBStorageService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.FileStorageService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.lookup.UserLookupService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service
@@ -119,23 +65,14 @@
             class="de.hsrm.thesis.bachelor.server.services.SharedContextService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.lookup.TagLookupService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.ImageProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
    </extension>
+   
    <extension
          name=""
          point="org.eclipse.equinox.http.registry.servlets">
       <servlet
             alias="/auth"
-            class="de.hsrm.thesis.bachelor.server.servlet.BahBahAuthenticationServlet">
+            class="de.hsrm.thesis.bachelor.server.security.BahBahAuthenticationServlet">
       </servlet>
       <servlet
             alias="/process"
@@ -174,6 +111,7 @@
             class="org.eclipse.scout.rt.server.ServiceTunnelServlet">
       </servlet>
    </extension>
+   
    <extension
          name=""
          point="org.eclipse.scout.http.servletfilter.filters">
@@ -196,6 +134,7 @@
          </init-param>
       </filter>
    </extension>
+   
    <extension
          id="app"
          name="Server Application"

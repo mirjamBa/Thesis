@@ -32,11 +32,6 @@ import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.shared.services.IMetadataService;
-import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
-import de.hsrm.mi.administration.shared.services.lookup.TagLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.lookup.RoleLookupCall;
-import de.hsrm.thesis.bachelor.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.AuthorityBox;
@@ -68,10 +63,16 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.T
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.TagBox.AvailableTagsBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.TagBox.NewTagField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
+import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
 @FormData(value = FileFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileForm extends AbstractForm {
@@ -833,6 +834,11 @@ public class FileForm extends AbstractForm {
 					protected Class<? extends LookupCall> getConfiguredLookupCall() {
 						return RoleLookupCall.class;
 					}
+					
+					@Override
+			        protected void execPrepareLookup(LookupCall call) throws ProcessingException {
+			        	((RoleLookupCall) call).setUserId(SERVICES.getService(IUserProcessService.class).getCurrentUserId());
+			        }
 
 					@Override
 					public String getTooltipText() {

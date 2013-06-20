@@ -1,12 +1,10 @@
 package de.hsrm.thesis.bachelor.server.services;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +13,6 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileSystemView;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.scout.commons.IOUtility;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.LongHolder;
@@ -30,24 +27,32 @@ import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
-import org.osgi.framework.FrameworkUtil;
 
-import de.hsrm.mi.administration.shared.services.IMetadataService;
-import de.hsrm.mi.administration.shared.services.ITagService;
-import de.hsrm.mi.administration.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.bachelor.server.ServerSession;
-import de.hsrm.thesis.bachelor.shared.services.code.DublinCoreMetadataElementSetCodeType;
-import de.hsrm.thesis.bachelor.shared.services.code.ICategorizable;
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
+import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.ITagService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.code.ICategorizable;
 
 public class FileService extends AbstractService implements IFileService {
   private SimpleDateFormat m_formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
+  private String filePath;
+
+  public void setFilePath(String path) {
+    this.filePath = path;
+  }
+
+  public String getFilePath() {
+    return filePath;
+  }
 
   @Override
   public FileFormData update(FileFormData formData) throws ProcessingException {
@@ -317,28 +322,24 @@ public class FileService extends AbstractService implements IFileService {
 
   @Override
   public ServerFileData saveFile(File file) throws ProcessingException {
-    URL filePath = FrameworkUtil.getBundle(getClass()).getResource("files/");
+
     byte[] content;
     File serverFile;
 
     String fileEnding = file.getName().split("\\.")[file.getName().split("\\.").length - 1];
-    String currentDate = generateCurrentDate("yyyy/MM/dd:HHmm");
+    String currentDate = generateCurrentDate(TEXTS.get("StorageDirectory"));
     String[] parts = currentDate.split(":");
 
-    String serverPath;
     String fileServerPath;
-
     Long nextFileNr = getNextFileNumber();
+    String newDirectory = getFilePath() + parts[0];
 
     try {
-      //generate directories on server
-      serverPath = FileLocator.toFileURL(filePath).getFile() +
-          parts[0];
-      File dir = new File(serverPath);
+      File dir = new File(newDirectory);
       dir.mkdirs();
 
       //create new file on server
-      fileServerPath = serverPath + "/" + parts[1] + "_" + nextFileNr + "." + fileEnding;
+      fileServerPath = newDirectory + "/" + parts[1] + "_" + nextFileNr + "." + fileEnding;
       serverFile = new File(fileServerPath);
       serverFile.createNewFile();
 
@@ -372,7 +373,8 @@ public class FileService extends AbstractService implements IFileService {
     return fileNumber;
   }
 
-  private File getServerFile(Long fileNr) throws ProcessingException {
+  @Override
+  public File getServerFile(Long fileNr) throws ProcessingException {
     StringHolder path = new StringHolder();
     SQL.selectInto("SELECT file_path FROM file WHERE file_id = :fileNr INTO :path",
         new NVPair("fileNr", fileNr),
@@ -380,19 +382,6 @@ public class FileService extends AbstractService implements IFileService {
 
     return new File(path.getValue());
 
-  }
-
-  @Override
-  public void openFile(Long fileNr) throws ProcessingException {
-    File file = getServerFile(fileNr);
-
-    Desktop desktop = Desktop.getDesktop();
-    try {
-      desktop.open(file);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
   @Override
@@ -430,4 +419,5 @@ public class FileService extends AbstractService implements IFileService {
     File file = new File(path.getValue());
     return file.delete();
   }
+
 }

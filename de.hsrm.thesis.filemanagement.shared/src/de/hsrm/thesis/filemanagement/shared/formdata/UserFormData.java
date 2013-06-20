@@ -5,6 +5,8 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
+import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
+
 public class UserFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
@@ -77,13 +79,7 @@ public class UserFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'RoleLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.bachelor.client.ui.forms
-			 * .UserForm.MainBox.UserBox.RoleField # getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, RoleLookupCall.class);
 		}
 	}
 

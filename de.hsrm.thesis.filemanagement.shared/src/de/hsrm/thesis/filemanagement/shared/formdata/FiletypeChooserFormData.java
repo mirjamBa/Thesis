@@ -39,8 +39,7 @@ public class FiletypeChooserFormData extends AbstractFormData {
 	 * access method for property FiletypeNr.
 	 */
 	public long getFiletypeNr() {
-		return (getFiletypeNrProperty().getValue() == null) ? (0L)
-				: (getFiletypeNrProperty().getValue());
+		return (getFiletypeNrProperty().getValue() == null) ? (0L) : (getFiletypeNrProperty().getValue());
 	}
 
 	/**
@@ -89,8 +88,7 @@ public class FiletypeChooserFormData extends AbstractFormData {
 		}
 	}
 
-	public static class FiletypeChooserForm extends
-			AbstractValueFieldData<String> {
+	public static class FiletypeChooserForm extends AbstractValueFieldData<String> {
 		private static final long serialVersionUID = 1L;
 
 		public FiletypeChooserForm() {

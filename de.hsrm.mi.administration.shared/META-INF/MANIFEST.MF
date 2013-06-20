@@ -5,14 +5,9 @@ Bundle-SymbolicName: de.hsrm.mi.administration.shared;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.shared.Activator
 Export-Package: de.hsrm.mi.administration.shared.handler,
- de.hsrm.mi.administration.shared.services,
- de.hsrm.mi.administration.shared.services.code,
- de.hsrm.mi.administration.shared.services.common.text,
- de.hsrm.mi.administration.shared.services.formdata,
- de.hsrm.mi.administration.shared.services.lookup
+ de.hsrm.mi.administration.shared.services.common.text
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared,
- org.eclipse.osgi,
- de.hsrm.thesis.filemanagement.shared
+ org.eclipse.osgi
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

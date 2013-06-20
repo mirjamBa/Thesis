@@ -17,8 +17,8 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.Activator;
-import de.hsrm.mi.administration.client.ui.forms.FileFormatForm;
-import de.hsrm.mi.administration.shared.services.IFileFormatService;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileFormatForm;
+import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 public class FileFormatTablePage extends

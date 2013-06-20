@@ -19,8 +19,8 @@ import de.hsrm.mi.administration.client.ui.forms.TagForm.MainBox.OkButton;
 import de.hsrm.mi.administration.client.ui.forms.TagForm.MainBox.TagBox;
 import de.hsrm.mi.administration.client.ui.forms.TagForm.MainBox.TagBox.TagIdField;
 import de.hsrm.mi.administration.client.ui.forms.TagForm.MainBox.TagBox.TagNameField;
-import de.hsrm.mi.administration.shared.services.ITagService;
-import de.hsrm.mi.administration.shared.services.formdata.TagFormData;
+import de.hsrm.thesis.filemanagement.shared.services.ITagService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.TagFormData;
 
 @FormData(value = TagFormData.class, sdkCommand = SdkCommand.CREATE)
 public class TagForm extends AbstractForm {

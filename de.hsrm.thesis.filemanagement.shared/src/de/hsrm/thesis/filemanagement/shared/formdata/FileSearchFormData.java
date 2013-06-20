@@ -6,6 +6,8 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
 public class FileSearchFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
@@ -183,14 +185,7 @@ public class FileSearchFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'TagLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.filemanagement.client.
-			 * ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField #
-			 * getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, TagLookupCall.class);
 		}
 	}
 
@@ -206,14 +201,7 @@ public class FileSearchFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			/**
-			 * XXX not processed ValidationRule(lookupCall)
-			 * 'UserLookupCall.class' is not accessible from here.
-			 * generatedSourceCode: null at
-			 * de.hsrm.thesis.filemanagement.client.
-			 * ui.forms.FileSearchForm.MainBox.TabBox.FieldBox.TypistField #
-			 * getConfiguredLookupCall
-			 */
+			ruleMap.put(ValidationRule.LOOKUP_CALL, UserLookupCall.class);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}

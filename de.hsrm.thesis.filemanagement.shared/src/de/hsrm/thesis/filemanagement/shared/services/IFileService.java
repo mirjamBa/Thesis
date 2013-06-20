@@ -7,9 +7,9 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService2;
 
-import de.hsrm.thesis.filemanagement.shared.files.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFileService extends IService2 {
@@ -22,11 +22,11 @@ public interface IFileService extends IService2 {
 
   public ServerFileData saveFile(File file) throws ProcessingException;
 
-  public void openFile(Long fileNr) throws ProcessingException;
-
   public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException;
 
   public Object[][] getImages() throws ProcessingException;
 
   public boolean deleteFile(Long fileId) throws ProcessingException;
+  
+  public File getServerFile(Long fileId) throws ProcessingException;
 }

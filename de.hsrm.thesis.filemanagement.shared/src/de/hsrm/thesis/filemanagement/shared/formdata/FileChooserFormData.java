@@ -5,6 +5,8 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
+import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+
 public class FileChooserFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
@@ -18,14 +20,14 @@ public class FileChooserFormData extends AbstractFormData {
 	/**
 	 * access method for property FileData.
 	 */
-	public Object getFileData() {
+	public ServerFileData getFileData() {
 		return getFileDataProperty().getValue();
 	}
 
 	/**
 	 * access method for property FileData.
 	 */
-	public void setFileData(Object fileData) {
+	public void setFileData(ServerFileData fileData) {
 		getFileDataProperty().setValue(fileData);
 	}
 
@@ -33,7 +35,7 @@ public class FileChooserFormData extends AbstractFormData {
 		return getFieldByClass(File.class);
 	}
 
-	public class FileDataProperty extends AbstractPropertyData<Object> {
+	public class FileDataProperty extends AbstractPropertyData<ServerFileData> {
 		private static final long serialVersionUID = 1L;
 
 		public FileDataProperty() {

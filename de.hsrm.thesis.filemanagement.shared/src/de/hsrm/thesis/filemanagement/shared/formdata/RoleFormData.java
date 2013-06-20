@@ -19,8 +19,7 @@ public class RoleFormData extends AbstractFormData {
 	 * access method for property RoleId.
 	 */
 	public long getRoleId() {
-		return (getRoleIdProperty().getValue() == null) ? (0L)
-				: (getRoleIdProperty().getValue());
+		return (getRoleIdProperty().getValue() == null) ? (0L) : (getRoleIdProperty().getValue());
 	}
 
 	/**

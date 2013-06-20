@@ -26,11 +26,7 @@ import org.eclipse.scout.service.SERVICES;
 import org.osgi.framework.ServiceRegistration;
 
 import de.hsrm.thesis.bachelor.server.ServerSession;
-import de.hsrm.thesis.bachelor.server.util.HashUtility;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.AdministratorCode;
-import de.hsrm.thesis.bachelor.shared.services.code.UserRoleCodeType.UserCode;
-import de.hsrm.thesis.bachelor.shared.services.process.INotificationProcessService;
+import de.hsrm.thesis.filemanagement.server.util.HashUtility;
 import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
@@ -40,6 +36,9 @@ import de.hsrm.thesis.filemanagement.shared.security.UnregisterUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType.AdministratorCode;
+import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType.UserCode;
 
 public class UserProcessService extends AbstractService implements IUserProcessService {
 
@@ -60,7 +59,7 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     }
 
     m_users.add(ServerSession.get().getUserId());
-    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
+//    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
   }
 
   @Override
@@ -70,7 +69,7 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     }
 
     m_users.remove(ServerSession.get().getUserId());
-    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
+//    SERVICES.getService(INotificationProcessService.class).sendRefreshBuddies();
   }
 
   @Override

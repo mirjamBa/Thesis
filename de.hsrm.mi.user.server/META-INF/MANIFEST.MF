@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Server
+Bundle-SymbolicName: de.hsrm.mi.user.server;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: de.hsrm.mi.user.server.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ javax.servlet,
+ de.hsrm.thesis.filemanagement.shared,
+ org.eclipse.scout.service,
+ org.eclipse.scout.commons,
+ org.eclipse.scout.http.servletfilter
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
