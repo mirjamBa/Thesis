@@ -8,6 +8,7 @@ import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
+import org.eclipse.scout.rt.client.ui.form.fields.checkbox.AbstractCheckBox;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
@@ -20,8 +21,9 @@ import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBo
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DatatypeField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DescriptionField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.FileTypeField;
+import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.ShowInFileTableField;
 import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
@@ -29,141 +31,156 @@ import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
 @FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
 public class MetadataForm extends AbstractForm {
 
-  private Long m_attributeId;
+	private Long m_attributeId;
 
-public MetadataForm() throws ProcessingException {
-    super();
-  }
+	public MetadataForm() throws ProcessingException {
+		super();
+	}
 
-  public DescriptionField getDescriptionField() {
-    return getFieldByClass(DescriptionField.class);
-  }
+	public DescriptionField getDescriptionField() {
+		return getFieldByClass(DescriptionField.class);
+	}
 
-  public CancelButton getCancelButton() {
-    return getFieldByClass(CancelButton.class);
-  }
+	public CancelButton getCancelButton() {
+		return getFieldByClass(CancelButton.class);
+	}
 
-  public void startModify() throws ProcessingException {
-    startInternal(new ModifyHandler());
-  }
+	public void startModify() throws ProcessingException {
+		startInternal(new ModifyHandler());
+	}
 
-  public void startNew() throws ProcessingException {
-    startInternal(new NewHandler());
-  }
+	public void startNew() throws ProcessingException {
+		startInternal(new NewHandler());
+	}
 
-  public DatatypeField getDatatypeField() {
-    return getFieldByClass(DatatypeField.class);
-  }
+	public DatatypeField getDatatypeField() {
+		return getFieldByClass(DatatypeField.class);
+	}
 
-  public FileTypeField getFileTypeField() {
-    return getFieldByClass(FileTypeField.class);
-  }
+	public FileTypeField getFileTypeField() {
+		return getFieldByClass(FileTypeField.class);
+	}
 
-  public MainBox getMainBox() {
-    return getFieldByClass(MainBox.class);
-  }
+	public MainBox getMainBox() {
+		return getFieldByClass(MainBox.class);
+	}
 
-  public MetadataBox getMetadataBox() {
-    return getFieldByClass(MetadataBox.class);
-  }
+	public MetadataBox getMetadataBox() {
+		return getFieldByClass(MetadataBox.class);
+	}
 
-  public OkButton getOkButton() {
-    return getFieldByClass(OkButton.class);
-  }
+	public OkButton getOkButton() {
+		return getFieldByClass(OkButton.class);
+	}
 
-  @Order(10.0)
-  public class MainBox extends AbstractGroupBox {
+	public ShowInFileTableField getShowInFileTableField() {
+		return getFieldByClass(ShowInFileTableField.class);
+	}
 
-    @Override
-    protected int getConfiguredGridColumnCount() {
-      return 1;
-    }
+	@Order(10.0)
+	public class MainBox extends AbstractGroupBox {
 
-    @Order(30.0)
-    public class MetadataBox extends AbstractGroupBox {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Metadata");
-      }
-
-      @Order(10.0)
-      public class DescriptionField extends AbstractStringField {
-
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Description");
-        }
-      }
-
-      @Order(20.0)
-      public class DatatypeField extends AbstractSmartField<Long> {
-
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Datatype");
-        }
-
-        @Override
-        protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
-          return DatatypeCodeType.class;
-        }
-
-      }
-
-      @Order(30.0)
-      public class FileTypeField extends AbstractSmartField<Long> {
-
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("FileType");
-        }
-
-        @Override
-		protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
-			return FileTypeCodeType.class;
+		@Override
+		protected int getConfiguredGridColumnCount() {
+			return 1;
 		}
-      }
-    }
 
-    @Order(40.0)
-    public class OkButton extends AbstractOkButton {
-    }
+		@Order(30.0)
+		public class MetadataBox extends AbstractGroupBox {
 
-    @Order(50.0)
-    public class CancelButton extends AbstractCancelButton {
-    }
-  }
+			@Override
+			protected String getConfiguredLabel() {
+				return TEXTS.get("Metadata");
+			}
 
-  public class ModifyHandler extends AbstractFormHandler {
+			@Order(10.0)
+			public class DescriptionField extends AbstractStringField {
 
-    @Override
-    public void execStore() throws ProcessingException {
-      IMetadataService service = SERVICES.getService(IMetadataService.class);
-      MetadataFormData formData = new MetadataFormData();
-      exportFormData(formData);
-      formData = service.update(formData);
-    }
-  }
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("Description");
+				}
+			}
 
-  public class NewHandler extends AbstractFormHandler {
+			@Order(20.0)
+			public class ShowInFileTableField extends AbstractCheckBox {
 
-    @Override
-    public void execStore() throws ProcessingException {
-      IMetadataService service = SERVICES.getService(IMetadataService.class);
-      MetadataFormData formData = new MetadataFormData();
-      exportFormData(formData);
-      formData = service.create(formData);
-    }
-  }
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("ShowInFileTable");
+				}
+			}
 
-@FormData
-public Long getAttributeId() {
-	return m_attributeId;
-}
+			@Order(30.0)
+			public class DatatypeField extends AbstractSmartField<Long> {
 
-@FormData
-public void setAttributeId(Long attributeId) {
-	m_attributeId = attributeId;
-}
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("Datatype");
+				}
+
+				@Override
+				protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
+					return DatatypeCodeType.class;
+				}
+
+			}
+
+			@Order(40.0)
+			public class FileTypeField extends AbstractSmartField<Long> {
+
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("FileType");
+				}
+
+				@Override
+				protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+					return FileTypeCodeType.class;
+				}
+			}
+		}
+
+		@Order(40.0)
+		public class OkButton extends AbstractOkButton {
+		}
+
+		@Order(50.0)
+		public class CancelButton extends AbstractCancelButton {
+		}
+	}
+
+	public class ModifyHandler extends AbstractFormHandler {
+
+		@Override
+		public void execStore() throws ProcessingException {
+			IUserDefinedAttributesService service = SERVICES
+					.getService(IUserDefinedAttributesService.class);
+			MetadataFormData formData = new MetadataFormData();
+			exportFormData(formData);
+			formData = service.update(formData);
+		}
+	}
+
+	public class NewHandler extends AbstractFormHandler {
+
+		@Override
+		public void execStore() throws ProcessingException {
+			IUserDefinedAttributesService service = SERVICES
+					.getService(IUserDefinedAttributesService.class);
+			MetadataFormData formData = new MetadataFormData();
+			exportFormData(formData);
+			formData = service.create(formData);
+		}
+	}
+
+	@FormData
+	public Long getAttributeId() {
+		return m_attributeId;
+	}
+
+	@FormData
+	public void setAttributeId(Long attributeId) {
+		m_attributeId = attributeId;
+	}
 }

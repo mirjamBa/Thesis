@@ -2,6 +2,7 @@ package de.hsrm.thesis.bachelor.server.services;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.LongArrayHolder;
+import org.eclipse.scout.commons.holders.LongHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
@@ -61,4 +62,25 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
   public void deleteRolesForFile(Long fileId) throws ProcessingException {
     SQL.delete("DELETE FROM role_file_permission WHERE file_id = :fileId", new NVPair("fileId", fileId));
   }
+
+  @Override
+  public Long getRoleId(String name) throws ProcessingException {
+    LongHolder idHolder = new LongHolder();
+    SQL.selectInto("SELECT role_id FROM role WHERE UPPER(name) = UPPER(:rolename) INTO :id",
+        new NVPair("rolename", name),
+        new NVPair("id", idHolder));
+
+    return idHolder.getValue();
+  }
+
+  @Override
+  public Long getAdminRoleId() throws ProcessingException {
+    return getRoleId(USER_ROLE_ADMIN);
+  }
+
+  @Override
+  public Long getUserRoleId() throws ProcessingException {
+    return getRoleId(USER_ROLE_USER);
+  }
+
 }

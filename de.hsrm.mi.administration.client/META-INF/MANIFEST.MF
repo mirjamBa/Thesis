@@ -4,17 +4,18 @@ Bundle-Name: Administration-client
 Bundle-SymbolicName: de.hsrm.mi.administration.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.client.Activator
+Export-Package: de.hsrm.mi.administration.client,
+ de.hsrm.mi.administration.client.handler,
+ de.hsrm.mi.administration.client.ui.desktop.outlines,
+ de.hsrm.mi.administration.client.ui.desktop.outlines.pages,
+ de.hsrm.mi.administration.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client,
  org.eclipse.scout.rt.shared,
  org.eclipse.scout.rt.extension.client,
  de.hsrm.mi.administration.shared,
- de.hsrm.thesis.bachelor.shared,
  de.hsrm.thesis.filemanagement.shared,
- de.hsrm.thesis.filemanagement.client
+ de.hsrm.thesis.filemanagement.client,
+ de.hsrm.mi.user.client
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: de.hsrm.mi.administration.client,
- de.hsrm.mi.administration.client.handler,
- de.hsrm.mi.administration.client.ui.desktop.outlines,
- de.hsrm.mi.administration.client.ui.forms

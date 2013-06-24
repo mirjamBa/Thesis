@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +23,6 @@ import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractFormFieldData;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
-import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.AbstractService;
@@ -31,15 +31,16 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.thesis.bachelor.server.ServerSession;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.formdata.MetadataTableFieldData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
-import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.ICategorizable;
 
 public class FileService extends AbstractService implements IFileService {
@@ -75,18 +76,27 @@ public class FileService extends AbstractService implements IFileService {
     ///////////////METADATA/////////////////
 
     //individual metadata
-    AbstractTableFieldData attributeTable = formData.getAttribute();
-    int rows = attributeTable.getRowCount();
-    for (int i = 0; i < rows; i++) {
-      Long attributeId = formData.getAttribute().getAttributID(i);
-      String metadata = formData.getAttribute().getValue(i);
-      SERVICES.getService(IMetadataService.class).updateOrInsertMetadata(attributeId, fileId, metadata);
-    }
+    MetadataTableFieldData tableFieldData = formData.getFileFormMetadataTable();
+    insertUserMetadata(tableFieldData, true, fileId);
 
     //standardMetadata
     updateDCMIMetadata(formData, fileId);
 
     return formData;
+  }
+
+  private void insertUserMetadata(MetadataTableFieldData tableData, boolean update, Long fileId) throws ProcessingException {
+    int rows = tableData.getRowCount();
+    for (int i = 0; i < rows; i++) {
+      Long attributeId = tableData.getAttributID(i);
+      String metadata = tableData.getValue(i);
+      if (update) {
+        SERVICES.getService(IMetadataService.class).updateOrInsertMetadata(attributeId, fileId, metadata);
+      }
+      else {
+        SERVICES.getService(IMetadataService.class).addMetadata(attributeId, fileId, metadata);
+      }
+    }
   }
 
   private void insertDCMIMetadata(FileFormData formData, Long fileId) throws ProcessingException {
@@ -128,9 +138,9 @@ public class FileService extends AbstractService implements IFileService {
 
     //filemanagement metadata
     //TODO check for Labelnames
-    Long entryDateId = SERVICES.getService(IMetadataService.class).getAttributeId(TEXTS.get("EntryDate"));
-    Long filesizeId = SERVICES.getService(IMetadataService.class).getAttributeId(TEXTS.get("Filesize"));
-    Long fileExtensionId = SERVICES.getService(IMetadataService.class).getAttributeId(TEXTS.get("FileExtension"));
+    Long entryDateId = SERVICES.getService(IUserDefinedAttributesService.class).getAttributeId(TEXTS.get("EntryDate"));
+    Long filesizeId = SERVICES.getService(IUserDefinedAttributesService.class).getAttributeId(TEXTS.get("Filesize"));
+    Long fileExtensionId = SERVICES.getService(IUserDefinedAttributesService.class).getAttributeId(TEXTS.get("FileExtension"));
     SERVICES.getService(IMetadataService.class).addMetadata(entryDateId, fileId.getValue(), m_formatter.format(formData.getCreationDate().getValue()));
     SERVICES.getService(IMetadataService.class).addMetadata(filesizeId, fileId.getValue(), formData.getFilesize().getValue());
     SERVICES.getService(IMetadataService.class).addMetadata(fileExtensionId, fileId.getValue(), formData.getFileExtension().getValue());
@@ -138,14 +148,9 @@ public class FileService extends AbstractService implements IFileService {
     //dcmi metadata
     insertDCMIMetadata(formData, fileId.getValue());
 
-    //insert individual metadata
-    AbstractTableFieldData attributeTable = formData.getAttribute();
-    int rows = attributeTable.getRowCount();
-    for (int i = 0; i < rows; i++) {
-      Long attributeId = formData.getAttribute().getAttributID(i);
-      String metadata = formData.getAttribute().getValue(i);
-      SERVICES.getService(IMetadataService.class).addMetadata(attributeId, fileId.getValue(), metadata);
-    }
+    //insert individual metadata 
+    MetadataTableFieldData tableData = formData.getFileFormMetadataTable();
+    insertUserMetadata(tableData, false, fileId.getValue());
 
     return formData;
   }
@@ -241,20 +246,13 @@ public class FileService extends AbstractService implements IFileService {
 
   private Long getAttributeId(ICode code) throws ProcessingException {
     String text = code.getText();
-    return SERVICES.getService(IMetadataService.class).getAttributeId(text);
+    return SERVICES.getService(IUserDefinedAttributesService.class).getAttributeId(text);
   }
 
   private void createTagFileConnection(Long fileId, Long tagId) throws ProcessingException {
     SQL.insert("INSERT INTO tag_file (tag_id, file_id) VALUES (:tagId, :fileId)",
         new NVPair("tagId", tagId),
         new NVPair("fileId", fileId));
-  }
-
-  @Override
-  public Object[][] getImages() throws ProcessingException {
-    FileSearchFormData data = new FileSearchFormData();
-    data.getFileType().setValue(FileTypeCodeType.ImageCode.ID);
-    return getFiles(data);
   }
 
   @Override
@@ -300,12 +298,12 @@ public class FileService extends AbstractService implements IFileService {
       stringBuilder.append(" AND F.NUMBER <= :fileNrTo ");
     }
     //detailed search
-    int rows = searchFormData.getMetadata().getRowCount();
+    int rows = searchFormData.getFileSearchMetadataTable().getRowCount();
     Map<String, Object> bindings = new HashMap<String, Object>();
     for (int i = 0; i < rows; i++) {
-      String value = (String) searchFormData.getMetadata().getValueAt(i, 2);
+      String value = (String) searchFormData.getFileSearchMetadataTable().getValueAt(i, 2);
       if (value != null) {
-        Long attrId = (Long) searchFormData.getMetadata().getValueAt(i, 0);
+        Long attrId = (Long) searchFormData.getFileSearchMetadataTable().getValueAt(i, 0);
         stringBuilder.append(" AND UPPER(M.VALUE) LIKE UPPER('%' || :value" + i + " || '%') "
             + "                AND M.ATTRIBUTE_ID = :attrId" + i + " ");
         bindings.put("value" + i, value);
@@ -356,6 +354,13 @@ public class FileService extends AbstractService implements IFileService {
     }
     Icon icon = FileSystemView.getFileSystemView().getSystemIcon(serverFile);
     ServerFileData fileData = new ServerFileData(serverFile.getAbsolutePath(), nextFileNr, serverFile.length(), icon);
+    fileData.setOldName(file.getName().split("\\.")[0]);
+    try {
+      fileData.setLastModified(m_formatter.parse(m_formatter.format(file.lastModified())));
+    }
+    catch (ParseException e) {
+      //no date set
+    }
 
     return fileData;
   }

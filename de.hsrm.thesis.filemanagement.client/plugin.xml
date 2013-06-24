@@ -14,10 +14,6 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.filemanagement.shared.services.IFiletypeChooserService">
-      </proxy>
-      <proxy
-            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.IFileFormatService">
       </proxy>
       <proxy
@@ -85,6 +81,14 @@
             factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
             class="de.hsrm.thesis.filemanagement.client.services.ClientFileService">
       </service>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.IAttributeService">
+      </proxy>
    </extension>
 
 </plugin>

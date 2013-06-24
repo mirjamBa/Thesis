@@ -10,15 +10,90 @@ import de.hsrm.thesis.filemanagement.shared.formdata.RoleFormData;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IRoleProcessService extends IService {
 
-  public Object[][] getRoles() throws ProcessingException;
+	public static final String USER_ROLE_ADMIN = "Administrator";
+	public static final String USER_ROLE_USER = "User";
 
-  public RoleFormData create(RoleFormData formData) throws ProcessingException;
+	/**
+	 * Fetches all roles from storage [role id, name]
+	 * 
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
+	public Object[][] getRoles() throws ProcessingException;
 
-  public Long[] getApprovedRolesForFile(Long fileId) throws ProcessingException;
+	/**
+	 * Saves new role into storage
+	 * 
+	 * @param formData
+	 *            RoleFormData
+	 * @return RoleFormData
+	 * @throws ProcessingException
+	 */
+	public RoleFormData create(RoleFormData formData)
+			throws ProcessingException;
 
-  public void deleteRoles(Long[] roleIds) throws ProcessingException;
+	/**
+	 * Fetches all role ids, the assigned file is freed for
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @return Long[]
+	 * @throws ProcessingException
+	 */
+	public Long[] getApprovedRolesForFile(Long fileId)
+			throws ProcessingException;
 
-  public RoleFormData update(RoleFormData formData) throws ProcessingException;
+	/**
+	 * Deletes all roles with one of the assigned role ids
+	 * 
+	 * @param roleIds
+	 * @throws ProcessingException
+	 */
+	public void deleteRoles(Long[] roleIds) throws ProcessingException;
 
-public void deleteRolesForFile(Long fileId) throws ProcessingException;
+	/**
+	 * Modifies a role in the storage
+	 * 
+	 * @param formData
+	 *            RoleFormData
+	 * @return RoleFormData
+	 * @throws ProcessingException
+	 */
+	public RoleFormData update(RoleFormData formData)
+			throws ProcessingException;
+
+	/**
+	 * Deletes all approvals for the assigned file
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @throws ProcessingException
+	 */
+	public void deleteRolesForFile(Long fileId) throws ProcessingException;
+
+	/**
+	 * Fetches the role id for the assigned role name
+	 * 
+	 * @param name
+	 *            String
+	 * @return Long
+	 * @throws ProcessingException
+	 */
+	public Long getRoleId(String name) throws ProcessingException;
+
+	/**
+	 * Returns the admin role id
+	 * 
+	 * @return Long
+	 * @throws ProcessingException
+	 */
+	public Long getAdminRoleId() throws ProcessingException;
+
+	/**
+	 * Returns the user role id
+	 * 
+	 * @return Long
+	 * @throws ProcessingException
+	 */
+	public Long getUserRoleId() throws ProcessingException;
 }

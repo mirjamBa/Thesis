@@ -7,35 +7,98 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService2;
 
-import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
-
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IMetadataService extends IService2 {
 
-	MetadataFormData create(MetadataFormData formData) throws ProcessingException;
-
-	void delete(Long[] ids) throws ProcessingException;
-
-	MetadataFormData update(MetadataFormData formData) throws ProcessingException;
-
-	public Object[][] getAttributes(Long filetypeId) throws ProcessingException;
-
+	/**
+	 * Adds a meta data value to a file represented by the assigned file id.
+	 * meta data value belongs to meta data attribute with the assigned
+	 * attribute id
+	 * 
+	 * @param attributeId
+	 *            Long
+	 * @param fileId
+	 *            Long
+	 * @param metadata
+	 *            String
+	 * @throws ProcessingException
+	 */
 	public void addMetadata(Long attributeId, Long fileId, String metadata) throws ProcessingException;
 
+	/**
+	 * Fetches all meta data values for one file [attribute id, name, value,
+	 * data type]
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
 	public Object[][] getMetadata(Long fileId) throws ProcessingException;
 
-	Object[][] getMetadataAttributeMatrix(Long fileId, Long filetypeId, boolean onlyAttributesForFiletyp)
+	/**
+	 * Fetches a matrix of user defined attributes for one or all file types
+	 * [attribute id, name, value, data type]
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @param filetypeId
+	 *            Long
+	 * @param onlyAttributesForFiletyp
+	 *            boolean
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
+	public Object[][] getMetadataAttributeMatrix(Long fileId, Long filetypeId, boolean onlyAttributesForFiletyp)
 			throws ProcessingException;
 
-	public Long getAttributeId(String attributeName) throws ProcessingException;
-
+	/**
+	 * Returns the meta data value for one attribute and one file
+	 * 
+	 * @param attributeName
+	 *            String
+	 * @param fileId
+	 *            Long
+	 * @return Object
+	 * @throws ProcessingException
+	 */
 	public Object getMetadataValue(String attributeName, Long fileId) throws ProcessingException;
 
+	/**
+	 * Returns a map of attribute name and value-pairs for one file
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @param filetypeId
+	 *            Long
+	 * @return Map<String, Object>
+	 * @throws ProcessingException
+	 */
 	public Map<String, Object> getMetdataMapForFile(Long fileId, Long filetypeId) throws ProcessingException;
 
+	/**
+	 * Modifies or creates meta data value for one file
+	 * 
+	 * @param attributeId
+	 *            Long
+	 * @param fileId
+	 *            Long
+	 * @param metadata
+	 *            String
+	 * @throws ProcessingException
+	 */
 	public void updateOrInsertMetadata(Long attributeId, Long fileId, String metadata) throws ProcessingException;
 
-	public Object[][] getDetailedMetadataForAllFileTypes() throws ProcessingException;
-	
+	/**
+	 * Fetches meta data for all files with one of the assigned file ids. Only
+	 * meta data belonging to the assigned attribute names will be fetched
+	 * 
+	 * @param fileIds
+	 *            Long[]
+	 * @param attributeNames
+	 *            String...
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
 	public Object[][] getMetadataForFiles(Long[] fileIds, String... attributeNames) throws ProcessingException;
 }

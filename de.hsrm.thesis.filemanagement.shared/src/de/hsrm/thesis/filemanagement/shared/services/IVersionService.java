@@ -10,6 +10,15 @@ import de.hsrm.thesis.filemanagement.shared.services.formdata.VersionFormData;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IVersionService extends IService2 {
 
-  public VersionFormData updateFileTypeVersionControl(VersionFormData formData) throws ProcessingException;
+	/**
+	 * Modifies version control in the storage
+	 * 
+	 * @param formData
+	 *            VersionFormData
+	 * @return VersionFormData
+	 * @throws ProcessingException
+	 */
+	public VersionFormData updateFileTypeVersionControl(VersionFormData formData)
+			throws ProcessingException;
 
 }

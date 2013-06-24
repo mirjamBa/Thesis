@@ -8,5 +8,22 @@ import org.eclipse.scout.service.IService;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IImageProcessService extends IService {
 
-  public byte[] getImage(String imageId) throws ProcessingException;
+	/**
+	 * Returns the content of the image which belongs to the assigned id
+	 * 
+	 * @param imageId
+	 *            String
+	 * @return byte[]
+	 * @throws ProcessingException
+	 */
+	public byte[] getImage(String imageId) throws ProcessingException;
+
+	/**
+	 * Scales the image-content
+	 * 
+	 * @param content byte[]
+	 * @param height int
+	 * @return byte[]
+	 */
+	public byte[] scaleImage(byte[] content, int height);
 }

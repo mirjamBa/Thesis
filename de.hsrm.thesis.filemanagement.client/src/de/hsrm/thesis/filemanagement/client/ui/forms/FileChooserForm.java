@@ -23,11 +23,13 @@ import de.hsrm.thesis.filemanagement.shared.formdata.FileChooserFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
+import java.util.Map;
 
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileChooserForm extends AbstractForm {
 
   private ServerFileData m_fileData;
+private Map<String, String> m_metaValues;
 
   public FileChooserForm() throws ProcessingException {
     super();
@@ -75,7 +77,7 @@ public class FileChooserForm extends AbstractForm {
 
       @Order(10.0)
       public class FileField extends AbstractFileChooserField {
-
+    	  
         @Override
         protected String getConfiguredLabel() {
           return TEXTS.get("File");
@@ -106,7 +108,7 @@ public class FileChooserForm extends AbstractForm {
       ServerFileData fileDate = SERVICES.getService(IFileService.class).saveFile(file);
       setFileData(fileDate);
 
-      SERVICES.getService(ITikaService.class).extractDataFromFile(file);
+      setMetaValues(SERVICES.getService(ITikaService.class).extractDataFromFile(file));
 
     }
   }
@@ -120,4 +122,14 @@ public class FileChooserForm extends AbstractForm {
   public void setFileData(ServerFileData fileData) {
     m_fileData = fileData;
   }
+
+@FormData
+public Map<String, String> getMetaValues() {
+	return m_metaValues;
+}
+
+@FormData
+public void setMetaValues(Map<String, String> metaValues) {
+	m_metaValues = metaValues;
+}
 }

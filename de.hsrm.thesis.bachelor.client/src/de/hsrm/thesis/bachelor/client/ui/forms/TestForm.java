@@ -40,7 +40,7 @@ public class TestForm extends FileForm {
   }
 
   @Order(60.0)
-  @InjectFieldTo(FileForm.MainBox.File0Box.class)
+  @InjectFieldTo(FileForm.MainBox.FileBox.class)
   public class TestBox extends AbstractGroupBox {
     @Order(10.0)
     public class Testfield extends AbstractStringField {

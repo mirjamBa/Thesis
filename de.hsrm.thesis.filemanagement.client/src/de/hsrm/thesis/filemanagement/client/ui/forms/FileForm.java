@@ -1,74 +1,62 @@
 package de.hsrm.thesis.filemanagement.client.ui.forms;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
-import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
-import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
-import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.AbstractValueField;
-import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.datefield.AbstractDateField;
-import org.eclipse.scout.rt.client.ui.form.fields.doublefield.AbstractDoubleField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.listbox.AbstractListBox;
-import org.eclipse.scout.rt.client.ui.form.fields.longfield.AbstractLongField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
-import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
-import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.CancelButton;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.AuthorityBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.AuthorityBox.RolesField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.DetailedBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.DetailedBox.AttributeField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.CreationDateField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.ContributorField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.CoverageField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.CreatorField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.DateMetadataField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.DescriptionField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.FormatField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.IdentifierField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.LanguageField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.PublisherField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.RelationField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.RightsField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.Source0Field;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.Subject0Field;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.TitleField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.DCMIBox.TypeField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.FileExtensionField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.FilesizeField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.MetadataBox.TypistField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.TagBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.TagBox.AvailableTagsBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.File0Box.TagBox.NewTagField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.AuthorityBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.AuthorityBox.RolesField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.DetailedBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.DetailedBox.FileFormMetadataTableField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.CreationDateField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.ContributorField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.CoverageField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.CreatorField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.DateField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.DescriptionField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.FormatField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.IdentifierField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.LanguageField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.PublisherField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.RelationField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.RightsField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.SourceField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.SubjectField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.TitleField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.DCMIBox.TypeField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.FileExtensionField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.FilesizeField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox.TypistField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox.AvailableTagsBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox.NewTagField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
+import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
-import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
@@ -86,7 +74,8 @@ public class FileForm extends AbstractForm {
 		m_fileNr = fileNr;
 	}
 
-	public FileForm(ServerFileData fileData, long filetypeNr) throws ProcessingException {
+	public FileForm(ServerFileData fileData, long filetypeNr)
+			throws ProcessingException {
 		super();
 		m_filetypeNr = filetypeNr;
 		m_fileData = fileData;
@@ -101,8 +90,8 @@ public class FileForm extends AbstractForm {
 		startInternal(new RoleHandler());
 	}
 
-	public AttributeField getAttributeField() {
-		return getFieldByClass(AttributeField.class);
+	public FileFormMetadataTableField getFileFormMetadataTableField() {
+		return getFieldByClass(FileFormMetadataTableField.class);
 	}
 
 	public TitleField getTitleField() {
@@ -179,8 +168,8 @@ public class FileForm extends AbstractForm {
 		return getFieldByClass(DCMIBox.class);
 	}
 
-	public DateMetadataField getDateMetadataField() {
-		return getFieldByClass(DateMetadataField.class);
+	public DateField getDateMetadataField() {
+		return getFieldByClass(DateField.class);
 	}
 
 	public DescriptionField getDescriptionField() {
@@ -191,8 +180,8 @@ public class FileForm extends AbstractForm {
 		return getFieldByClass(DetailedBox.class);
 	}
 
-	public File0Box getFile0Box() {
-		return getFieldByClass(File0Box.class);
+	public FileBox getFile0Box() {
+		return getFieldByClass(FileBox.class);
 	}
 
 	public TypeField getFileTypeField() {
@@ -247,12 +236,12 @@ public class FileForm extends AbstractForm {
 		return getFieldByClass(RightsField.class);
 	}
 
-	public Source0Field getSource0Field() {
-		return getFieldByClass(Source0Field.class);
+	public SourceField getSource0Field() {
+		return getFieldByClass(SourceField.class);
 	}
 
-	public Subject0Field getSubject0Field() {
-		return getFieldByClass(Subject0Field.class);
+	public SubjectField getSubjectField() {
+		return getFieldByClass(SubjectField.class);
 	}
 
 	public TagBox getTagBox() {
@@ -263,7 +252,7 @@ public class FileForm extends AbstractForm {
 	public class MainBox extends AbstractGroupBox {
 
 		@Order(10.0)
-		public class File0Box extends AbstractTabBox {
+		public class FileBox extends AbstractTabBox {
 
 			@Override
 			protected String getConfiguredLabel() {
@@ -368,7 +357,7 @@ public class FileForm extends AbstractForm {
 						protected String getConfiguredTooltipText() {
 							return TEXTS.get("TitleToolTip");
 						}
-						
+
 						@Override
 						protected boolean getConfiguredMandatory() {
 							return true;
@@ -406,7 +395,7 @@ public class FileForm extends AbstractForm {
 						protected String getConfiguredTooltipText() {
 							return TEXTS.get("TypeToolTip");
 						}
-						
+
 						@Override
 						protected boolean getConfiguredEnabled() {
 							return false;
@@ -414,7 +403,7 @@ public class FileForm extends AbstractForm {
 					}
 
 					@Order(40.0)
-					public class Subject0Field extends AbstractStringField {
+					public class SubjectField extends AbstractStringField {
 
 						@Override
 						protected String getConfiguredLabel() {
@@ -485,7 +474,7 @@ public class FileForm extends AbstractForm {
 					}
 
 					@Order(80.0)
-					public class DateMetadataField extends AbstractDateField {
+					public class DateField extends AbstractDateField {
 
 						@Override
 						protected String getConfiguredLabel() {
@@ -527,7 +516,7 @@ public class FileForm extends AbstractForm {
 					}
 
 					@Order(110.0)
-					public class Source0Field extends AbstractStringField {
+					public class SourceField extends AbstractStringField {
 
 						@Override
 						protected String getConfiguredLabel() {
@@ -607,155 +596,17 @@ public class FileForm extends AbstractForm {
 					return TEXTS.get("Detailed");
 				}
 
-				public AttributeField getAttributeField() {
-					return getFieldByClass(AttributeField.class);
+				public FileFormMetadataTableField getFileFormMetadataTableField() {
+					return getFieldByClass(FileFormMetadataTableField.class);
 				}
 
 				@Order(10.0)
-				public class AttributeField extends AbstractTableField<AttributeField.Table> {
-
+				public class FileFormMetadataTableField
+						extends
+							MetadataTableField {
 					@Override
 					protected String getConfiguredLabel() {
 						return TEXTS.get("Attribute");
-					}
-
-					@Order(10.0)
-					public class Table extends AbstractExtensibleTable {
-
-						public ValueColumn getValueColumn() {
-							return getColumnSet().getColumnByClass(ValueColumn.class);
-						}
-
-						@Override
-						protected boolean getConfiguredAutoResizeColumns() {
-							return true;
-						}
-
-						@Override
-						protected boolean getConfiguredMultiSelect() {
-							return false;
-						}
-
-						public DatatypeColumn getDatatypeColumn() {
-							return getColumnSet().getColumnByClass(DatatypeColumn.class);
-						}
-
-						public AttributIDColumn getAttributIDColumn() {
-							return getColumnSet().getColumnByClass(AttributIDColumn.class);
-						}
-
-						public AttributeColumn getAttributeColumn() {
-							return getColumnSet().getColumnByClass(AttributeColumn.class);
-						}
-
-						@Order(10.0)
-						public class AttributIDColumn extends AbstractLongColumn {
-
-							@Override
-							protected boolean getConfiguredDisplayable() {
-								return false;
-							}
-
-							@Override
-							protected String getConfiguredHeaderText() {
-								return TEXTS.get("AttributId");
-							}
-
-							@Override
-							protected boolean getConfiguredVisible() {
-								return false;
-							}
-						}
-
-						@Order(20.0)
-						public class AttributeColumn extends AbstractStringColumn {
-
-							@Override
-							protected String getConfiguredHeaderText() {
-								return TEXTS.get("Attribute");
-							}
-						}
-
-						@Order(30.0)
-						public class ValueColumn extends AbstractStringColumn {
-
-							@Override
-							protected String getConfiguredHeaderText() {
-								return TEXTS.get("Value");
-							}
-
-							@Override
-							protected boolean getConfiguredEditable() {
-								return true;
-							}
-
-							@Override
-							protected IFormField execPrepareEdit(final ITableRow row) throws ProcessingException {
-								Long datatype = (Long) row.getCellValue(getTable().getColumnSet().getColumnCount() - 1);
-								if (datatype.equals(DatatypeCodeType.DateCode.ID)) {
-									return new AbstractDateField() {
-									};
-								}
-								if (datatype.equals(DatatypeCodeType.StringCode.ID)) {
-									return new AbstractStringField() {
-									};
-								}
-								if (datatype.equals(DatatypeCodeType.LongCode.ID)) {
-									return new AbstractLongField() {
-									};
-								}
-								if (datatype.equals(DatatypeCodeType.DoubleCode.ID)) {
-									return new AbstractDoubleField() {
-									};
-								}
-								return new AbstractStringField() {
-								};
-							}
-
-							@Override
-							protected void execCompleteEdit(ITableRow row, IFormField editingField)
-									throws ProcessingException {
-
-								@SuppressWarnings("rawtypes")
-								Object value = (Object) ((AbstractValueField) editingField).getValue();
-
-								if (value != null) {
-									if (editingField instanceof AbstractDateField) {
-										Date date = ((AbstractDateField) editingField).getValue();
-										SimpleDateFormat formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
-										getValueColumn().setValue(row, formatter.format(date));
-									} else {
-										getValueColumn().setValue(row, value.toString());
-									}
-								}
-
-							}
-
-							@Order(10)
-							public class StringEditor extends AbstractStringField {
-
-								@Override
-								protected int getConfiguredMaxLength() {
-									return 60;
-								}
-							}
-						}
-
-						// must be always the last column of the table
-						@Order(40.0)
-						public class DatatypeColumn extends AbstractSmartColumn<Long> {
-
-							@Override
-							protected String getConfiguredHeaderText() {
-								return TEXTS.get("Datatype");
-							}
-
-							@Override
-							protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
-								return DatatypeCodeType.class;
-							}
-
-						}
 					}
 				}
 
@@ -834,11 +685,13 @@ public class FileForm extends AbstractForm {
 					protected Class<? extends LookupCall> getConfiguredLookupCall() {
 						return RoleLookupCall.class;
 					}
-					
+
 					@Override
-			        protected void execPrepareLookup(LookupCall call) throws ProcessingException {
-			        	((RoleLookupCall) call).setUserId(SERVICES.getService(IUserProcessService.class).getCurrentUserId());
-			        }
+					protected void execPrepareLookup(LookupCall call)
+							throws ProcessingException {
+						((RoleLookupCall) call).setUserId(SERVICES.getService(
+								IUserProcessService.class).getCurrentUserId());
+					}
 
 					@Override
 					public String getTooltipText() {
@@ -857,28 +710,19 @@ public class FileForm extends AbstractForm {
 		}
 	}
 
-	private void loadMetaAttributeTable() throws ProcessingException {
-		AttributeField.Table table = getFile0Box().getDetailedBox().getAttributeField().getTable();
-		Object[][] attr = SERVICES.getService(IMetadataService.class).getAttributes(getFiletypeNr());
-		for (int i = 0; i < attr.length; i++) {
-			ITableRow row = table.createRow();
-			table.getAttributIDColumn().setValue(row, (Long) attr[i][0]);
-			table.getAttributeColumn().setValue(row, (String) attr[i][1]);
-			table.getDatatypeColumn().setValue(row, (Long) attr[i][2]);
-			table.addRow(row);
-		}
-	}
+	private void loadMetadataTable(Object[][] attributes, boolean withValues)
+			throws ProcessingException {
+		MetadataTableField.Table table = getFileFormMetadataTableField()
+				.getTable();
 
-	private void loadMetaAttributeValueTable() throws ProcessingException {
-		AttributeField.Table table = getFile0Box().getDetailedBox().getAttributeField().getTable();
-		Object[][] attr = SERVICES.getService(IMetadataService.class).getMetadataAttributeMatrix(getFileNr(),
-				getFiletypeNr(), true);
-		for (int i = 0; i < attr.length; i++) {
+		for (int i = 0; i < attributes.length; i++) {
 			ITableRow row = table.createRow();
-			table.getAttributIDColumn().setValue(row, (Long) attr[i][0]);
-			table.getAttributeColumn().setValue(row, (String) attr[i][1]);
-			table.getValueColumn().setValue(row, (String) attr[i][2]);
-			table.getDatatypeColumn().setValue(row, (Long) attr[i][3]);
+			table.getAttributIDColumn().setValue(row, (Long) attributes[i][0]);
+			table.getAttributeColumn().setValue(row, (String) attributes[i][1]);
+			if (withValues) {
+				table.getValueColumn().setValue(row, (String) attributes[i][2]);
+			}
+			table.getDatatypeColumn().setValue(row, (Long) attributes[i][3]);
 			table.addRow(row);
 		}
 	}
@@ -887,7 +731,10 @@ public class FileForm extends AbstractForm {
 
 		@Override
 		protected void execLoad() throws ProcessingException {
-			loadMetaAttributeValueTable();
+			loadMetadataTable(
+					SERVICES.getService(IMetadataService.class)
+							.getMetadataAttributeMatrix(getFileNr(),
+									getFiletypeNr(), true), true);
 		}
 
 		@Override
@@ -903,7 +750,9 @@ public class FileForm extends AbstractForm {
 
 		@Override
 		protected void execLoad() throws ProcessingException {
-			loadMetaAttributeTable();
+			loadMetadataTable(
+					SERVICES.getService(IUserDefinedAttributesService.class)
+							.getAttributes(getFiletypeNr()), false);
 		}
 
 		@Override
@@ -922,7 +771,8 @@ public class FileForm extends AbstractForm {
 			IFileService service = SERVICES.getService(IFileService.class);
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
-			service.updateRoleFilePermission(getFileNr(), formData.getRoles().getValue());
+			service.updateRoleFilePermission(getFileNr(), formData.getRoles()
+					.getValue());
 		}
 	}
 

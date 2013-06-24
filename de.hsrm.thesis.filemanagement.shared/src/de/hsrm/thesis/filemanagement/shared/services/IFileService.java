@@ -14,19 +14,80 @@ import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFileService extends IService2 {
 
-  FileFormData create(FileFormData formData, ServerFileData fileData) throws ProcessingException;
+	/**
+	 * Saves file data into storage
+	 * 
+	 * @param formData
+	 *            FileFormData
+	 * @param fileData
+	 *            ServerFileData
+	 * @return FileFormData
+	 * @throws ProcessingException
+	 */
+	public FileFormData create(FileFormData formData, ServerFileData fileData) throws ProcessingException;
 
-  FileFormData update(FileFormData formData) throws ProcessingException;
+	/**
+	 * Modifies the assigned file data in the storage
+	 * 
+	 * @param formData
+	 *            FileFormData
+	 * @return FileFormData
+	 * @throws ProcessingException
+	 */
+	public FileFormData update(FileFormData formData) throws ProcessingException;
 
-  public Object[][] getFiles(FileSearchFormData searchFormData) throws ProcessingException;
+	/**
+	 * Fetches all files which conforms to the assigned search criteria [file
+	 * id, file type id, file number, user id, file path]
+	 * 
+	 * @param searchFormData
+	 *            FileSearchFormData
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
+	public Object[][] getFiles(FileSearchFormData searchFormData) throws ProcessingException;
 
-  public ServerFileData saveFile(File file) throws ProcessingException;
+	/**
+	 * Extracts content from file, create new file with this content and saves
+	 * this copy to configured storage
+	 * 
+	 * @param file
+	 *            File
+	 * @return ServerFileData
+	 * @throws ProcessingException
+	 */
+	public ServerFileData saveFile(File file) throws ProcessingException;
 
-  public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException;
+	/**
+	 * Modifies file access permission for the assigned files. Access for all
+	 * roles with one of the assigned role ids
+	 * 
+	 * @param fildId
+	 *            Long
+	 * @param roleIds
+	 *            Long[]
+	 * @throws ProcessingException
+	 */
+	public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException;
 
-  public Object[][] getImages() throws ProcessingException;
+	/**
+	 * Delete the file belonging to the assigned file id an all its meta data
+	 * and permissions from storage
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @return boolean
+	 * @throws ProcessingException
+	 */
+	public boolean deleteFile(Long fileId) throws ProcessingException;
 
-  public boolean deleteFile(Long fileId) throws ProcessingException;
-  
-  public File getServerFile(Long fileId) throws ProcessingException;
+	/**
+	 * Returns the file without meta data from storage
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @return File
+	 * @throws ProcessingException
+	 */
+	public File getServerFile(Long fileId) throws ProcessingException;
 }

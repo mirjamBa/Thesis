@@ -4,6 +4,8 @@
 package de.hsrm.thesis.filemanagement.shared.nonFormdataBeans;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.swing.Icon;
 
@@ -14,12 +16,41 @@ public class ServerFileData implements Serializable {
 	private Long m_number;
 	private String m_filesize;
 	private Icon m_icon;
+	private String m_oldName;
+	private Date m_lastModified;
+
+	/**
+	 * @return the m_lastModified
+	 */
+	public Date getLastModified() {
+		return m_lastModified;
+	}
+
+	/**
+	 * @param m_lastModified the m_lastModified to set
+	 */
+	public void setLastModified(Date lastModified) {
+		this.m_lastModified = lastModified;
+	}
 
 	public void setFilesize(long bytes) {
-		// TODO
 		double kilobytes = (bytes / 1024.0);
-		// double megabytes = (kilobytes / 1024);
-		m_filesize = kilobytes + " kB";
+		BigDecimal b = new BigDecimal(String.valueOf(kilobytes)).setScale(2, BigDecimal.ROUND_HALF_UP);
+		m_filesize = b + " kb";
+	}
+
+	/**
+	 * @return the m_oldName
+	 */
+	public String getOldName() {
+		return m_oldName;
+	}
+
+	/**
+	 * @param m_oldName the m_oldName to set
+	 */
+	public void setOldName(String oldName) {
+		this.m_oldName = oldName;
 	}
 
 	public String getFileExtension() {

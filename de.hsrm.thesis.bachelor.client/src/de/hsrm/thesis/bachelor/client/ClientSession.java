@@ -42,11 +42,7 @@ public class ClientSession extends AbstractClientSession {
     CODES.getAllCodeTypes(de.hsrm.thesis.bachelor.shared.Activator.PLUGIN_ID);
 
     // turn client notification polling on
-    getServiceTunnel().setClientNotificationPollInterval(1000L);
-
-    // set the notification listener service (this service will be called when the client receives a notification)
-//    IBahBahNotificationConsumerService notificationHandlerService = SERVICES.getService(IBahBahNotificationConsumerService.class);
-//    SERVICES.getService(IClientNotificationConsumerService.class).addClientNotificationConsumerListener(this, notificationHandlerService);
+//    getServiceTunnel().setClientNotificationPollInterval(1000L);
 
     setDesktop(new Desktop());
   }
@@ -54,12 +50,8 @@ public class ClientSession extends AbstractClientSession {
   @Override
   public void execStoreSession() throws ProcessingException {
     // disable notification polling with -1
-    ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
+//    ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
     SERVICES.getService(IUserProcessService.class).unregisterUser();
-  }
-
-  public Long getUserNr() {
-    return getSharedContextVariable("userNr", Long.class);
   }
 
 }

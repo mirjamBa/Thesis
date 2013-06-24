@@ -1,6 +1,7 @@
 package de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -26,28 +27,31 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.services.IClientFileService;
+import de.hsrm.thesis.filemanagement.client.ui.ColumnFactory;
+import de.hsrm.thesis.filemanagement.client.ui.DatatypeColumnFactory;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileFormatForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm;
-import de.hsrm.thesis.filemanagement.client.util.ColumnUtility;
 import de.hsrm.thesis.filemanagement.shared.Icons;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
-import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
 
-public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage.FileTable> {
+public class FileTablePage
+		extends
+			AbstractExtensiblePageWithTable<FileTablePage.FileTable> {
 	private List<IColumn<?>> m_injectedColumns;
 
 	public FileTablePage() {
@@ -78,46 +82,52 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 	}
 
 	@Override
-	protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-		Object[][] files = SERVICES.getService(IFileService.class).getFiles((FileSearchFormData) filter.getFormData());
+	protected Object[][] execLoadTableData(SearchFilter filter)
+			throws ProcessingException {
+		// standard table data
+		Object[][] fileTableData = SERVICES.getService(IFileService.class)
+				.getFiles((FileSearchFormData) filter.getFormData());
 
-		String[] columnNames = new String[] { TEXTS.get("Title"), TEXTS.get("Filesize"), TEXTS.get("EntryDate"), };
+		// dictionary dynamic columns (attribute name and datatype)
+		Map<Object, Object> map = SERVICES.getService(IAttributeService.class)
+				.getDisplayedAttributeNamesAndDatatype();
 
-		Object[][] columns = SERVICES.getService(IMetadataService.class).getMetadataForFiles(
-				extractIdsFromTableData(files), columnNames);
+		String[] columnNames = Arrays.copyOf(map.keySet().toArray(), map
+				.keySet().toArray().length, String[].class);
 
-		Object[][] all = ArrayUtility.concatArrays(files, columns);
+		ColumnSpec[] columnSpecs = new ColumnSpec[columnNames.length];
+		for (int i = 0; i < columnSpecs.length; i++) {
+			Long datatype = (Long) map.get(columnNames[i]);
+			columnSpecs[i] = new ColumnSpec(
+					((Integer) columnNames[i].hashCode()).toString(),
+					columnNames[i], datatype);
+		}
 
-		ColumnSpec[] columnSpecs = new ColumnSpec[] {
-				new ColumnSpec(((Integer) TEXTS.get("Titel").hashCode()).toString(), TEXTS.get("Title"),
-						DatatypeCodeType.StringCode.ID),
-				new ColumnSpec(((Integer) TEXTS.get("Filesize").hashCode()).toString(), TEXTS.get("Filesize"),
-						DatatypeCodeType.StringCode.ID),
-				new ColumnSpec(((Integer) TEXTS.get("EntryDate").hashCode()).toString(), TEXTS.get("EntryDate"),
-						DatatypeCodeType.DateCode.ID), };
+		// dynamic column data
+		Object[][] dynamicColumnData = SERVICES.getService(
+				IMetadataService.class).getMetadataForFiles(
+				extractIdsFromTableData(fileTableData), columnNames);
+
+		// concat standard and dynamic column data
+		Object[][] allTableData = ArrayUtility.concatArrays(fileTableData,
+				dynamicColumnData);
 
 		updateDynamicColumns(columnSpecs);
 
-		return all;
+		return allTableData;
 
 	}
 
-	private void updateDynamicColumns(ColumnSpec[] columnSpecs) throws ProcessingException {
+	private void updateDynamicColumns(ColumnSpec[] columnSpecs) {
 		if (columnSpecs.length == 0) {
 			return;
 		}
 		FileTable table = getTable();
+		ColumnFactory columnFactory = new DatatypeColumnFactory();
 		m_injectedColumns = new ArrayList<IColumn<?>>();
 		for (ColumnSpec spec : columnSpecs) {
-			if (spec.getType().equals(DatatypeCodeType.StringCode.ID)) {
-				m_injectedColumns.add(ColumnUtility.createDynamicStringColumn(spec.getId(), spec.getText()));
-			} else if (spec.getType().equals(DatatypeCodeType.DateCode.ID)) {
-				m_injectedColumns.add(ColumnUtility.createDynamicDateColumn(spec.getId(), spec.getText()));
-			} else if (spec.getType().equals(DatatypeCodeType.LongCode.ID)) {
-				m_injectedColumns.add(ColumnUtility.createDynamicLongColumn(spec.getId(), spec.getText()));
-			} else if (spec.getType().equals(DatatypeCodeType.DoubleCode.ID)) {
-				m_injectedColumns.add(ColumnUtility.createDynamicDoubleColumn(spec.getId(), spec.getText()));
-			}
+			m_injectedColumns.add(columnFactory.createColumn(spec.getType(),
+					spec.getId(), spec.getText()));
 		}
 		table.resetColumnConfiguration();
 	}
@@ -263,9 +273,10 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				IFileFormatService fileFormatService = SERVICES.getService(IFileFormatService.class);
+				IFileFormatService fileFormatService = SERVICES
+						.getService(IFileFormatService.class);
 
-				// TODO make flexible (chain of responsibility?)
+				// FIXME make flexible (chain of responsibility?)
 
 				// choose file from filesystem
 				FileChooserForm form = new FileChooserForm();
@@ -275,9 +286,7 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 					// extract data
 					ServerFileData fileData = form.getFileData();
-
-					// check for operation cancelled //FIXME
-					// if (form.getFileData() != null) {
+					Map<String, String> metaValues = form.getMetaValues();
 					String fileformat = fileData.getFileformat();
 					Long filetypeNr = null;
 
@@ -285,9 +294,9 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 					// filetype
 					if (!fileFormatService.isFileformatRegistered(fileformat)) {
 						// force to register fileformat
-						// TODO
 						FileFormatForm fileformatForm = new FileFormatForm();
-						fileformatForm.getFileFormatField().setValue(fileformat);
+						fileformatForm.getFileFormatField()
+								.setValue(fileformat);
 						fileformatForm.getFileFormatField().setEnabled(false);
 						fileformatForm.startNew();
 						fileformatForm.waitFor();
@@ -297,7 +306,8 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 					} else {
 						// check if fileformat is assigned to filetype
 						// multiple
-						if (fileFormatService.isFormatMultipleAssigned(fileformat)) {
+						if (fileFormatService
+								.isFormatMultipleAssigned(fileformat)) {
 							// force choosing one of the assigned filetypes
 							FiletypeChooserForm ft = new FiletypeChooserForm();
 							ft.setFileformat(fileformat);
@@ -312,25 +322,57 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 					// extract filetype
 					if (filetypeNr == null) {
-						filetypeNr = fileFormatService.getFiletypeForFileFormat(fileformat);
+						filetypeNr = fileFormatService
+								.getFiletypeForFileFormat(fileformat);
 					}
 
 					// open and prepare fileform
 					FileForm frm = new FileForm(form.getFileData(), filetypeNr);
+					
+					// extracted meta values
+					IFormField[] fields = frm.getDCMIBox().getFields();
+					for (IFormField f : fields) {
+						String elementName = f.getFieldId()
+								.replace("Field", "");
+						AbstractValueField<?> vField = (AbstractValueField<?>) frm
+								.getDCMIBox().getFieldByClass(f.getClass());
+						if (metaValues.containsKey(elementName.toUpperCase())) {
+							vField.parseValue(metaValues.get(elementName.toUpperCase()));
+						} else if (metaValues.containsKey(("dc:" + elementName).toUpperCase())) {
+							vField.parseValue(metaValues.get(("dc:" + elementName).toUpperCase()));
+						}
+						vField.touch();
+					}
+					
+					//most important fields
+					if(frm.getTitleField().isEmpty()){
+						frm.getTitleField().setValue(fileData.getOldName());
+					}
+					if(frm.getFormatField().isEmpty()){
+						frm.getFormatField().setValue(metaValues.get("Content-Type".toUpperCase()));
+					}
+					if(frm.getDateMetadataField().isEmpty()){
+						frm.getDateMetadataField().setValue(fileData.getLastModified());
+					}
 
-					frm.getTypistField().setValue(SERVICES.getService(IUserProcessService.class).getCurrentUserId());
-					frm.getFileExtensionField().setValue(fileData.getFileExtension());
+					frm.getTypistField().setValue(
+							SERVICES.getService(IUserProcessService.class)
+									.getCurrentUserId());
+					frm.getFileExtensionField().setValue(
+							fileData.getFileExtension());
 					frm.getFileTypeField().setValue(filetypeNr);
 					frm.getFileTypeField().setEnabled(false);
 					frm.getCreationDateField().setValue(new Date());
-					frm.getFilesizeField().setValue(form.getFileData().getFilesize());
+					frm.getFilesizeField().setValue(
+							form.getFileData().getFilesize());
+
 
 					frm.startNew();
+					frm.touch();
 					frm.waitFor();
 					if (frm.isFormStored()) {
 						reloadPage();
 					}
-					// }
 				}
 			}
 		}
@@ -345,7 +387,8 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				SERVICES.getService(IClientFileService.class).openFile(getFileIdColumn().getSelectedValue());
+				SERVICES.getService(IClientFileService.class).openFile(
+						getFileIdColumn().getSelectedValue());
 			}
 		}
 
@@ -359,7 +402,8 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				SERVICES.getService(IFileService.class).deleteFile(getFileIdColumn().getSelectedValue());
+				SERVICES.getService(IFileService.class).deleteFile(
+						getFileIdColumn().getSelectedValue());
 				reloadPage();
 			}
 		}
@@ -374,7 +418,8 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				FileForm form = new FileForm(getFileIdColumn().getSelectedValue());
+				FileForm form = new FileForm(getFileIdColumn()
+						.getSelectedValue());
 
 				form.getMetadataBox().setVisible(false);
 				form.getDetailedBox().setVisible(false);
@@ -383,8 +428,10 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 				form.getAuthorityBox()
 						.getRolesField()
 						.setValue(
-								SERVICES.getService(IRoleProcessService.class).getApprovedRolesForFile(
-										getFileIdColumn().getSelectedValue()));
+								SERVICES.getService(IRoleProcessService.class)
+										.getApprovedRolesForFile(
+												getFileIdColumn()
+														.getSelectedValue()));
 
 				form.startUpdateAuthorities();
 				form.waitFor();
@@ -405,44 +452,61 @@ public class FileTablePage extends AbstractExtensiblePageWithTable<FileTablePage
 			@SuppressWarnings("unchecked")
 			@Override
 			protected void execAction() throws ProcessingException {
-				IMetadataService service = SERVICES.getService(IMetadataService.class);
+				IMetadataService service = SERVICES
+						.getService(IMetadataService.class);
 				Long fileId = getFileIdColumn().getSelectedValue();
 
 				FileForm form = new FileForm(fileId);
 
-				Map<String, Object> metadata = service.getMetdataMapForFile(fileId, getFileTypeColumn()
-						.getSelectedValue());
+				Map<String, Object> metadata = service.getMetdataMapForFile(
+						fileId, getFileTypeColumn().getSelectedValue());
 
 				// metadata
-				form.getTypistField().setValue(getTypistColumn().getSelectedValue());
-				form.getFilesizeField().setValue((String) metadata.get(form.getFilesizeField().getLabel()));
-				form.getCreationDateField().setValue((Date) metadata.get(form.getCreationDateField().getLabel()));
-				form.getFileExtensionField().setValue((String) metadata.get(form.getFileExtensionField().getLabel()));
+				form.getTypistField().setValue(
+						getTypistColumn().getSelectedValue());
+				form.getFilesizeField().setValue(
+						(String) metadata.get(form.getFilesizeField()
+								.getLabel()));
+				form.getCreationDateField().setValue(
+						(Date) metadata.get(form.getCreationDateField()
+								.getLabel()));
+				form.getFileExtensionField().setValue(
+						(String) metadata.get(form.getFileExtensionField()
+								.getLabel()));
 
 				// DCMI metadata
 				IFormField[] fields = form.getDCMIBox().getFields();
 				for (IFormField field : fields) {
+					//TODO set value with parse Value
 					String label = field.getLabel();
 					Object value = metadata.get(label);
 					if (field instanceof AbstractValueField<?>) {
 						field = (AbstractValueField<?>) field;
 						if (field instanceof IStringField) {
-							((AbstractValueField<String>) field).setValue((String) value);
+							((AbstractValueField<String>) field)
+									.setValue((String) value);
 						} else if (field instanceof IDateField) {
-							((AbstractValueField<Date>) field).setValue((Date) value);
+							((AbstractValueField<Date>) field)
+									.setValue((Date) value);
 						}
 
 					}
 				}
 				form.setFiletypeNr(getFileTypeColumn().getSelectedValue());
-				form.getFileTypeField().setValue(getFileTypeColumn().getSelectedValue());
+				form.getFileTypeField().setValue(
+						getFileTypeColumn().getSelectedValue());
 
 				// tags
-				form.getAvailableTagsBox().setValue(SERVICES.getService(ITagService.class).getTagsForFile(fileId));
+				form.getAvailableTagsBox().setValue(
+						SERVICES.getService(ITagService.class).getTagsForFile(
+								fileId));
 
 				// authority
-				form.getAuthorityBox().getRolesField()
-						.setValue(SERVICES.getService(IRoleProcessService.class).getApprovedRolesForFile(fileId));
+				form.getAuthorityBox()
+						.getRolesField()
+						.setValue(
+								SERVICES.getService(IRoleProcessService.class)
+										.getApprovedRolesForFile(fileId));
 
 				form.startModify();
 				form.waitFor();

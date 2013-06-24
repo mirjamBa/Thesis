@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
@@ -20,36 +22,36 @@ import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 
 public class TikaService extends AbstractService implements ITikaService {
 
-  @Override
-  public void extractDataFromFile(File file) throws ProcessingException {
-    Parser parser = new AutoDetectParser();
+	@Override
+	public Map<String, String> extractDataFromFile(File file)
+			throws ProcessingException {
+		Parser parser = new AutoDetectParser();
+		Map<String, String> metaValues = new HashMap<String, String>();
 
-    try {
-      InputStream stream = new FileInputStream(file);
-      DefaultHandler handler = new DefaultHandler();
-      Metadata metadata = new Metadata();
+		try {
+			InputStream stream = new FileInputStream(file);
+			DefaultHandler handler = new DefaultHandler();
+			Metadata metadata = new Metadata();
 
-      parser.parse(stream, handler, metadata, new ParseContext());
+			parser.parse(stream, handler, metadata, new ParseContext());
 
-      stream.close();
+			stream.close();
 
-      for (String key : metadata.names()) {
-        System.out.println(key + "     ---      " + metadata.get(key));
-      }
+			for (String key : metadata.names()) {
+				metaValues.put(key.toUpperCase(), metadata.get(key));
+//				System.out.println(key.toUpperCase() + " ----- " + metadata.get(key.toUpperCase()));
+			}
 
-    }
-    catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    catch (SAXException e) {
-      e.printStackTrace();
-    }
-    catch (TikaException e) {
-      e.printStackTrace();
-    }
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (TikaException e) {
+			e.printStackTrace();
+		}
 
-  }
+		return metaValues;
+	}
 }

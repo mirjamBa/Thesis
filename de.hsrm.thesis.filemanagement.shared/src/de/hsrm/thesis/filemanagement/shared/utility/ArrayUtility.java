@@ -1,6 +1,8 @@
 package de.hsrm.thesis.filemanagement.shared.utility;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ArrayUtility {
 
@@ -32,6 +34,26 @@ public class ArrayUtility {
 		} else {
 			return array1;
 		}
+	}
+
+	/**
+	 * Creates a dictionary of an two-dimensional array on the basis of the
+	 * assigned key-position and value-position in the array
+	 * 
+	 * @param data
+	 * @param posKey
+	 * @param posValue
+	 * @return
+	 */
+	public static Map<Object, Object> getDictionary(Object[][] data,
+			int posKey, int posValue) {
+		Map<Object, Object> dict = new HashMap<Object, Object>();
+
+		for (int i = 0; i < data.length; i++) {
+			dict.put(data[i][posKey], data[i][posValue]);
+		}
+
+		return dict;
 	}
 
 }

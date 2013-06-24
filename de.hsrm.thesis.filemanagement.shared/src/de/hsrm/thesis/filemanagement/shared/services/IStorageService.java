@@ -8,6 +8,11 @@ import org.eclipse.scout.service.IService2;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IStorageService extends IService2 {
 
-  public void installStorage() throws ProcessingException;
-  
+	/**
+	 * Creates a new storage for all application data
+	 * 
+	 * @throws ProcessingException
+	 */
+	public void installStorage() throws ProcessingException;
+
 }

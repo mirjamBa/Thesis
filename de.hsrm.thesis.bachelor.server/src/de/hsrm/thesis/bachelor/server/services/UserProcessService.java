@@ -35,6 +35,7 @@ import de.hsrm.thesis.filemanagement.shared.security.RegisterUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UnregisterUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType.AdministratorCode;
@@ -169,14 +170,8 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     return userId.getValue();
   }
 
-  @Override
-  public boolean createNewUser(String username, String password) throws ProcessingException {
-    return createNewUser(username, password, new Long[0]);
-  }
-
-  @Override
-  public boolean isAdmin(Long[] roles) throws ProcessingException {
-    Long adminId = getAdminRoleId();
+  private boolean isAdmin(Long[] roles) throws ProcessingException {
+    Long adminId = SERVICES.getService(IRoleProcessService.class).getAdminRoleId();
     for (Long l : roles) {
       if (l.equals(adminId)) {
         return true;
@@ -283,26 +278,6 @@ public class UserProcessService extends AbstractService implements IUserProcessS
     catch (UnsupportedEncodingException e) {
       throw new ProcessingException("unknown string encoding: " + ENCODING, e);
     }
-  }
-
-  @Override
-  public Long getRoleId(String name) throws ProcessingException {
-    LongHolder idHolder = new LongHolder();
-    SQL.selectInto("SELECT role_id FROM role WHERE UPPER(name) = UPPER(:rolename) INTO :id",
-        new NVPair("rolename", name),
-        new NVPair("id", idHolder));
-
-    return idHolder.getValue();
-  }
-
-  @Override
-  public Long getAdminRoleId() throws ProcessingException {
-    return getRoleId(USER_ROLE_ADMIN);
-  }
-
-  @Override
-  public Long getUserRoleId() throws ProcessingException {
-    return getRoleId(USER_ROLE_USER);
   }
 
   @Override

@@ -62,6 +62,11 @@ public class FileFormatTablePage extends
 		protected boolean getConfiguredAutoResizeColumns() {
 			return true;
 		}
+		
+		@Override
+		protected boolean getConfiguredMultiSelect() {
+			return false;
+		}
 
 		@Order(10.0)
 		public class IdColumn extends AbstractLongColumn {

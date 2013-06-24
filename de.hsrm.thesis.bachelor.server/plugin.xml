@@ -29,17 +29,6 @@
             class="de.hsrm.thesis.bachelor.server.services.UserProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
-      
-      <!--service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.NotificationProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service-->
-      <!--service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.IconProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service-->
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.OCRProcessService"
@@ -53,11 +42,6 @@
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.RoleProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.TikaService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
       <service

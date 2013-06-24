@@ -72,7 +72,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
   }
 
   @Order(30.0)
-  public static class Subject0Code extends AbstractCode<Long> implements ICategorizable {
+  public static class SubjectCode extends AbstractCode<Long> implements ICategorizable {
 
     private static final long serialVersionUID = 1L;
     public static final Long ID = 70003L;
@@ -80,7 +80,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
 
     @Override
     protected String getConfiguredText() {
-      return TEXTS.get("Subject0");
+      return TEXTS.get("Subject");
     }
 
     @Override
@@ -164,7 +164,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
   }
 
   @Order(70.0)
-  public static class DateMetadataCode extends AbstractCode<Long> implements ICategorizable {
+  public static class DateCode extends AbstractCode<Long> implements ICategorizable {
 
     private static final long serialVersionUID = 1L;
     public static final Long ID = 70007L;
@@ -187,7 +187,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
   }
 
   @Order(80.0)
-  public static class FileTypeCode extends AbstractCode<Long> implements ICategorizable {
+  public static class TypeCode extends AbstractCode<Long> implements ICategorizable {
 
     private static final long serialVersionUID = 1L;
     public static final Long ID = 70008L;
@@ -241,7 +241,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
 
     @Override
     protected String getConfiguredText() {
-      return TEXTS.get("Identifikator");
+      return TEXTS.get("Identifier");
     }
 
     @Override
@@ -256,7 +256,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
   }
 
   @Order(110.0)
-  public static class Source0Code extends AbstractCode<Long> implements ICategorizable {
+  public static class SourceCode extends AbstractCode<Long> implements ICategorizable {
 
     private static final long serialVersionUID = 1L;
     public static final Long ID = 70011L;
@@ -264,7 +264,7 @@ public class DublinCoreMetadataElementSetCodeType extends AbstractCodeType<Long>
 
     @Override
     protected String getConfiguredText() {
-      return TEXTS.get("Source0");
+      return TEXTS.get("Source");
     }
 
     @Override

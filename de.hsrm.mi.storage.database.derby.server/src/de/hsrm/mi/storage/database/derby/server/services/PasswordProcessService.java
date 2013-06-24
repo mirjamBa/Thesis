@@ -20,6 +20,11 @@ import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
+/**
+ * 
+ * @author BSI
+ *
+ */
 public class PasswordProcessService extends AbstractPasswordManagementService implements IPasswordProcessService {
 
   public static final int MIN_PASSWORD_LENGTH = 3;

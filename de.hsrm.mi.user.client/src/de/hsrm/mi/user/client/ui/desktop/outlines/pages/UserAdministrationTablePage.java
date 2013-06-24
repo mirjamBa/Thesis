@@ -20,6 +20,7 @@ import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
+import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdministrationTablePage.Table> {
@@ -171,7 +172,7 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       @Override
       protected void execAction() throws ProcessingException {
         UserForm frm = new UserForm();
-        frm.getRoleField().setValue(new Long[]{SERVICES.getService(IUserProcessService.class).getUserRoleId()});
+        frm.getRoleField().setValue(new Long[]{SERVICES.getService(IRoleProcessService.class).getUserRoleId()});
         //TODO set User Role enabled
 //        frm.getRoleField().getCheckedLookupRow().setEnabled(false); triggers nullpointer
         frm.startNew();

@@ -4,5 +4,8 @@
    <extension
          point="org.eclipse.scout.service.services">
    </extension>
+   <extension
+         point="org.eclipse.scout.rt.extension.client.menus">
+   </extension>
 
 </plugin>
