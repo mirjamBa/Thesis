@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.scout.commons.exception.ProcessingException;
 import org.osgi.framework.BundleContext;
+
+import de.hsrm.thesis.filemanagement.client.handler.HandlerUtility;
+import de.hsrm.thesis.filemanagement.client.handler.IHandler;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -16,6 +20,16 @@ public class Activator extends Plugin {
 
 	// The shared instance
 	private static Activator plugin;
+	
+	private HandlerUtility handlerUtility = new HandlerUtility();
+	
+	public void addHandler(IHandler handler){
+		handlerUtility.addHandler(handler);
+	}
+	
+	public void handle() throws ProcessingException{
+		handlerUtility.handle();
+	}
 	
 	/**
 	 * The constructor

@@ -26,25 +26,20 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.thesis.filemanagement.client.Activator;
 import de.hsrm.thesis.filemanagement.client.services.IClientFileService;
 import de.hsrm.thesis.filemanagement.client.ui.ColumnFactory;
 import de.hsrm.thesis.filemanagement.client.ui.DatatypeColumnFactory;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileFormatForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm;
 import de.hsrm.thesis.filemanagement.shared.Icons;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
-import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
-import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
@@ -273,107 +268,8 @@ public class FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				IFileFormatService fileFormatService = SERVICES
-						.getService(IFileFormatService.class);
-
-				// FIXME make flexible (chain of responsibility?)
-
-				// choose file from filesystem
-				FileChooserForm form = new FileChooserForm();
-				form.startNew();
-				form.waitFor();
-				if (form.isFormStored()) {
-
-					// extract data
-					ServerFileData fileData = form.getFileData();
-					Map<String, String> metaValues = form.getMetaValues();
-					String fileformat = fileData.getFileformat();
-					Long filetypeNr = null;
-
-					// check if format is registered and linked with
-					// filetype
-					if (!fileFormatService.isFileformatRegistered(fileformat)) {
-						// force to register fileformat
-						FileFormatForm fileformatForm = new FileFormatForm();
-						fileformatForm.getFileFormatField()
-								.setValue(fileformat);
-						fileformatForm.getFileFormatField().setEnabled(false);
-						fileformatForm.startNew();
-						fileformatForm.waitFor();
-						if (fileformatForm.isFormStored()) {
-							reloadPage();
-						}
-					} else {
-						// check if fileformat is assigned to filetype
-						// multiple
-						if (fileFormatService
-								.isFormatMultipleAssigned(fileformat)) {
-							// force choosing one of the assigned filetypes
-							FiletypeChooserForm ft = new FiletypeChooserForm();
-							ft.setFileformat(fileformat);
-							ft.startNew();
-							ft.waitFor();
-							if (ft.isFormStored()) {
-								reloadPage();
-							}
-							filetypeNr = ft.getFiletypeNr();
-						}
-					}
-
-					// extract filetype
-					if (filetypeNr == null) {
-						filetypeNr = fileFormatService
-								.getFiletypeForFileFormat(fileformat);
-					}
-
-					// open and prepare fileform
-					FileForm frm = new FileForm(form.getFileData(), filetypeNr);
-					
-					// extracted meta values
-					IFormField[] fields = frm.getDCMIBox().getFields();
-					for (IFormField f : fields) {
-						String elementName = f.getFieldId()
-								.replace("Field", "");
-						AbstractValueField<?> vField = (AbstractValueField<?>) frm
-								.getDCMIBox().getFieldByClass(f.getClass());
-						if (metaValues.containsKey(elementName.toUpperCase())) {
-							vField.parseValue(metaValues.get(elementName.toUpperCase()));
-						} else if (metaValues.containsKey(("dc:" + elementName).toUpperCase())) {
-							vField.parseValue(metaValues.get(("dc:" + elementName).toUpperCase()));
-						}
-						vField.touch();
-					}
-					
-					//most important fields
-					if(frm.getTitleField().isEmpty()){
-						frm.getTitleField().setValue(fileData.getOldName());
-					}
-					if(frm.getFormatField().isEmpty()){
-						frm.getFormatField().setValue(metaValues.get("Content-Type".toUpperCase()));
-					}
-					if(frm.getDateMetadataField().isEmpty()){
-						frm.getDateMetadataField().setValue(fileData.getLastModified());
-					}
-
-					frm.getTypistField().setValue(
-							SERVICES.getService(IUserProcessService.class)
-									.getCurrentUserId());
-					frm.getFileExtensionField().setValue(
-							fileData.getFileExtension());
-					frm.getFileTypeField().setValue(filetypeNr);
-					frm.getFileTypeField().setEnabled(false);
-					frm.getCreationDateField().setValue(new Date());
-					frm.getFilesizeField().setValue(
-							form.getFileData().getFilesize());
-
-
-					frm.startNew();
-					frm.touch();
-					frm.waitFor();
-					if (frm.isFormStored()) {
-						reloadPage();
-					}
-				}
+				Activator.getDefault().handle();
+				reloadPage();
 			}
 		}
 
