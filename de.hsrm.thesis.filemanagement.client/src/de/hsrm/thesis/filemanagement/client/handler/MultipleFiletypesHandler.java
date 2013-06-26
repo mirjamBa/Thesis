@@ -1,5 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
+import java.io.File;
 import java.util.Map;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -14,20 +15,20 @@ public class MultipleFiletypesHandler extends AbstractHandler
 			IHandler {
 
 	@Override
-	public void handle(ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException {
+	public void handle(File dropfile, ServerFileData fileData,
+			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			throws ProcessingException {
 		// check if fileformat is assigned to filetype
 		// multiple
 		if (SERVICES.getService(IFileFormatService.class)
 				.isFormatMultipleAssigned(fileformat)) {
 			// force choosing one of the assigned filetypes
 			FiletypeChooserForm ft = new FiletypeChooserForm();
+			ft.getFileNameField().setValue(
+					fileData.getOldName() + "." + fileData.getFileExtension());
 			ft.setFileformat(fileformat);
 			ft.startNew();
 			ft.waitFor();
-			// if (ft.isFormStored()) {
-			// reloadPage();
-			// }
 			filetypeNr = ft.getFiletypeNr();
 		}
 
@@ -38,7 +39,8 @@ public class MultipleFiletypesHandler extends AbstractHandler
 		}
 
 		if (nextHandler != null) {
-			nextHandler.handle(fileData, metaValues, fileformat, filetypeNr);
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
+					filetypeNr);
 		}
 	}
 

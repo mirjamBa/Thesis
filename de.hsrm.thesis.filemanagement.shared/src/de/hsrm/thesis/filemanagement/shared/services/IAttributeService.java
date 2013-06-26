@@ -27,4 +27,12 @@ public interface IAttributeService extends IService {
 	 */
 	public Map<Object, Object> getDisplayedAttributeNamesAndDatatype()
 			throws ProcessingException;
+	
+	/**
+	 * Fetches id, name and data type for an assigned attribute name
+	 * @param attributenName String
+	 * @return Object[][]
+	 * @throws ProcessingException
+	 */
+	public Object[][] getAttributeData(String attributenName) throws ProcessingException;
 }

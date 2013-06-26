@@ -174,7 +174,7 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
         UserForm frm = new UserForm();
         frm.getRoleField().setValue(new Long[]{SERVICES.getService(IRoleProcessService.class).getUserRoleId()});
         //TODO set User Role enabled
-//        frm.getRoleField().getCheckedLookupRow().setEnabled(false); triggers nullpointer
+//        frm.getRoleField().getCheckedLookupRow().setEnabled(false); //triggers nullpointer
         frm.startNew();
         frm.waitFor();
         if (frm.isFormStored()) {

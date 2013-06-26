@@ -56,7 +56,7 @@
          point="org.eclipse.equinox.http.registry.servlets">
       <servlet
             alias="/auth"
-            class="de.hsrm.thesis.bachelor.server.security.BahBahAuthenticationServlet">
+            class="de.hsrm.mi.user.server.security.BahBahAuthenticationServlet">
       </servlet>
       <servlet
             alias="/process"
@@ -101,7 +101,7 @@
          point="org.eclipse.scout.http.servletfilter.filters">
       <filter
             aliases="/process"
-            class="de.hsrm.thesis.bachelor.server.security.BasicForwardSecurityFilter"
+            class="de.hsrm.mi.user.server.security.BasicForwardSecurityFilter"
             ranking="20">
       </filter>
       <filter

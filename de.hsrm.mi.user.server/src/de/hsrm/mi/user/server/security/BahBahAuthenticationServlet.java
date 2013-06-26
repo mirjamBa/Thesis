@@ -8,7 +8,7 @@
  * Contributors:
  *     BSI Business Systems Integration AG - initial API and implementation
  ******************************************************************************/
-package de.hsrm.thesis.bachelor.server.security;
+package de.hsrm.mi.user.server.security;
 
 import java.io.IOException;
 

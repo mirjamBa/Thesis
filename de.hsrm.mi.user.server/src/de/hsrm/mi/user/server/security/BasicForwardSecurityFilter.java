@@ -8,7 +8,7 @@
  * Contributors:
  *     BSI Business Systems Integration AG - initial API and implementation
  ******************************************************************************/
-package de.hsrm.thesis.bachelor.server.security;
+package de.hsrm.mi.user.server.security;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -27,6 +27,11 @@ import org.eclipse.scout.commons.security.SimplePrincipal;
 import org.eclipse.scout.http.servletfilter.security.AbstractChainableSecurityFilter;
 import org.eclipse.scout.http.servletfilter.security.PrincipalHolder;
 
+/**
+ * 
+ * @author BSI Business Systems Integration AG
+ *
+ */
 public class BasicForwardSecurityFilter extends AbstractChainableSecurityFilter {
 
   private final static String AUTH_SERVLET_URL_PARAM = "authUrl";

@@ -1,5 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
+import java.io.File;
 import java.util.Map;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -14,8 +15,9 @@ public class UnknownFileformatHandler extends AbstractHandler
 			IHandler {
 
 	@Override
-	public void handle(ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException {
+	public void handle(File dropfile, ServerFileData fileData,
+			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			throws ProcessingException {
 		// check if format is registered and linked with
 		// filetype
 		if (!SERVICES.getService(IFileFormatService.class)
@@ -26,12 +28,10 @@ public class UnknownFileformatHandler extends AbstractHandler
 			fileformatForm.getFileFormatField().setEnabled(false);
 			fileformatForm.startNew();
 			fileformatForm.waitFor();
-			// if (fileformatForm.isFormStored()) {
-			// reloadPage();
-			// }
 		}
 		if (nextHandler != null) {
-			nextHandler.handle(fileData, metaValues, fileformat, filetypeNr);
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
+					filetypeNr);
 		}
 	}
 

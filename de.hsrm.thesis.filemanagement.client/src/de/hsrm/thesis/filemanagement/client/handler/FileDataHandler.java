@@ -1,5 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
+import java.io.File;
 import java.util.Date;
 import java.util.Map;
 
@@ -9,15 +10,46 @@ import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
+import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class FileDataHandler extends AbstractHandler implements IHandler {
 
 	@Override
-	public void handle(ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException {
-		// open and prepare fileform
+	public void handle(File dropfile, ServerFileData fileData,
+			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			throws ProcessingException {
+
+		// prepare fileform
+		FileForm frm = fillFileForm(fileData, filetypeNr, metaValues);
+
+		if (dropfile == null) {
+			//show form, user can modify data
+			frm.startNew();
+			frm.touch();
+			frm.waitFor();
+		} else {
+			//drag and drop action: quick processing required
+			FileFormData formData = new FileFormData();
+			frm.exportFormData(formData);
+			SERVICES.getService(IFileService.class).create(formData, fileData);
+		}
+
+		if (nextHandler != null) {
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
+					filetypeNr);
+		}
+	}
+
+	@Override
+	public void setNext(IHandler handler) {
+		this.nextHandler = handler;
+	}
+
+	private FileForm fillFileForm(ServerFileData fileData, Long filetypeNr,
+			Map<String, String> metaValues) throws ProcessingException {
 		FileForm frm = new FileForm(fileData, filetypeNr);
 
 		// extracted meta values
@@ -57,20 +89,7 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 		frm.getCreationDateField().setValue(new Date());
 		frm.getFilesizeField().setValue(fileData.getFilesize());
 
-		frm.startNew();
-		frm.touch();
-		frm.waitFor();
-		if (frm.isFormStored()) {
-			if (nextHandler != null) {
-				nextHandler
-						.handle(fileData, metaValues, fileformat, filetypeNr);
-			}
-		}
-	}
-
-	@Override
-	public void setNext(IHandler handler) {
-		this.nextHandler = handler;
+		return frm;
 	}
 
 }

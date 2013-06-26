@@ -14,6 +14,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
@@ -22,9 +23,10 @@ import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.OkButton;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FileNameField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FileTypeField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FiletypeChooserFormField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.shared.formdata.FiletypeChooserFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
@@ -32,136 +34,155 @@ import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 @FormData(value = FiletypeChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FiletypeChooserForm extends AbstractForm {
 
-  private String m_fileformat;
-  private long m_filetypeNr;
+	private String m_fileformat;
+	private long m_filetypeNr;
 
-  public FiletypeChooserForm() throws ProcessingException {
-    super();
-  }
+	public FiletypeChooserForm() throws ProcessingException {
+		super();
+	}
 
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("FiletypeChooserForm");
-  }
+	@Override
+	protected String getConfiguredTitle() {
+		return TEXTS.get("FiletypeChooserForm");
+	}
 
-  public void startNew() throws ProcessingException {
-    startInternal(new NewHandler());
-  }
+	public void startNew() throws ProcessingException {
+		startInternal(new NewHandler());
+	}
 
-  public CancelButton getCancelButton() {
-    return getFieldByClass(CancelButton.class);
-  }
+	public CancelButton getCancelButton() {
+		return getFieldByClass(CancelButton.class);
+	}
 
-  public FileTypeField getFileTypeField() {
-    return getFieldByClass(FileTypeField.class);
-  }
+	public FileNameField getFileNameField() {
+		return getFieldByClass(FileNameField.class);
+	}
 
-  public FiletypeChooserFormBox getFiletypeChooserFormBox() {
-    return getFieldByClass(FiletypeChooserFormBox.class);
-  }
+	public FileTypeField getFileTypeField() {
+		return getFieldByClass(FileTypeField.class);
+	}
 
-  public FiletypeChooserFormField getFiletypeChooserFormField() {
-    return getFieldByClass(FiletypeChooserFormField.class);
-  }
+	public FiletypeChooserFormBox getFiletypeChooserFormBox() {
+		return getFieldByClass(FiletypeChooserFormBox.class);
+	}
 
-  public MainBox getMainBox() {
-    return getFieldByClass(MainBox.class);
-  }
+	public FiletypeChooserFormField getFiletypeChooserFormField() {
+		return getFieldByClass(FiletypeChooserFormField.class);
+	}
 
-  public OkButton getOkButton() {
-    return getFieldByClass(OkButton.class);
-  }
+	public MainBox getMainBox() {
+		return getFieldByClass(MainBox.class);
+	}
 
-  @Order(10.0)
-  public class MainBox extends AbstractGroupBox {
+	public OkButton getOkButton() {
+		return getFieldByClass(OkButton.class);
+	}
 
-    @Override
-    protected int getConfiguredGridColumnCount() {
-      return 1;
-    }
+	@Order(10.0)
+	public class MainBox extends AbstractGroupBox {
 
-    @Order(10.0)
-    public class FiletypeChooserFormBox extends AbstractGroupBox {
+		@Override
+		protected int getConfiguredGridColumnCount() {
+			return 1;
+		}
 
-      @Order(10.0)
-      public class FiletypeChooserFormField extends AbstractLabelField {
+		@Order(10.0)
+		public class FiletypeChooserFormBox extends AbstractGroupBox {
 
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("FiletypeChooserFormLabel");
-        }
-      }
+			@Order(10.0)
+			public class FiletypeChooserFormField extends AbstractLabelField {
 
-      @Order(20.0)
-      public class FileTypeField extends AbstractSmartField<Long> {
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("FiletypeChooserFormLabel");
+				}
+			}
 
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("FileType");
-        }
+			@Order(20.0)
+			public class FileTypeField extends AbstractSmartField<Long> {
 
-        @Override
-        protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
-          return FileTypeCodeType.class;
-        }
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("FileType");
+				}
 
-        @Override
-        protected void execFilterLookupResult(LookupCall call, List<LookupRow> result) throws ProcessingException {
-          //get all CodeIds the format is connected with
-          Long[] ids = SERVICES.getService(IFileFormatService.class).getFiletypesForFileFormat(getFileformat());
-          ArrayList<Long> codeIds = new ArrayList<Long>();
-          for (Long id : ids) {
-            codeIds.add(id);
-          }
-          //remove other codes
-          for (int i = 0; i < result.size();) {
-            if (!codeIds.contains(result.get(i).getKey())) {
-              result.remove(i);
-            }
-            else {
-              i++;
-            }
-          }
-        }
-      }
-    }
+				@Override
+				protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
+					return FileTypeCodeType.class;
+				}
 
-    @Order(20.0)
-    public class OkButton extends AbstractOkButton {
-    }
+				@Override
+				protected void execFilterLookupResult(LookupCall call,
+						List<LookupRow> result) throws ProcessingException {
+					// get all CodeIds the format is connected with
+					Long[] ids = SERVICES.getService(IFileFormatService.class)
+							.getFiletypesForFileFormat(getFileformat());
+					ArrayList<Long> codeIds = new ArrayList<Long>();
+					for (Long id : ids) {
+						codeIds.add(id);
+					}
+					// remove other codes
+					for (int i = 0; i < result.size();) {
+						if (!codeIds.contains(result.get(i).getKey())) {
+							result.remove(i);
+						} else {
+							i++;
+						}
+					}
+				}
+			}
 
-    @Order(30.0)
-    public class CancelButton extends AbstractCancelButton {
-    }
-  }
+			@Order(30.0)
+			public class FileNameField extends AbstractStringField {
 
-  public class NewHandler extends AbstractFormHandler {
+				@Override
+				protected String getConfiguredLabel() {
+					return TEXTS.get("FileName");
+				}
+				
+				@Override
+				protected boolean getConfiguredEnabled() {
+					return false;
+				}
+			}
+		}
 
-    @Override
-    public void execStore() throws ProcessingException {
-      FiletypeChooserFormData formData = new FiletypeChooserFormData();
-      exportFormData(formData);
-      setFiletypeNr(formData.getFileType().getValue());
-    }
-  }
+		@Order(20.0)
+		public class OkButton extends AbstractOkButton {
+		}
 
-  @FormData
-  public String getFileformat() {
-    return m_fileformat;
-  }
+		@Order(30.0)
+		public class CancelButton extends AbstractCancelButton {
+		}
+	}
 
-  @FormData
-  public void setFileformat(String fileformat) {
-    m_fileformat = fileformat;
-  }
+	public class NewHandler extends AbstractFormHandler {
 
-  @FormData
-  public long getFiletypeNr() {
-    return m_filetypeNr;
-  }
+		@Override
+		public void execStore() throws ProcessingException {
+			FiletypeChooserFormData formData = new FiletypeChooserFormData();
+			exportFormData(formData);
+			setFiletypeNr(formData.getFileType().getValue());
+		}
+	}
 
-  @FormData
-  public void setFiletypeNr(long filetypeNr) {
-    m_filetypeNr = filetypeNr;
-  }
+	@FormData
+	public String getFileformat() {
+		return m_fileformat;
+	}
+
+	@FormData
+	public void setFileformat(String fileformat) {
+		m_fileformat = fileformat;
+	}
+
+	@FormData
+	public long getFiletypeNr() {
+		return m_filetypeNr;
+	}
+
+	@FormData
+	public void setFiletypeNr(long filetypeNr) {
+		m_filetypeNr = filetypeNr;
+	}
 }

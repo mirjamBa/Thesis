@@ -1,5 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,15 +14,18 @@ public class HandlerUtility {
 		handler = new ArrayList<IHandler>();
 
 		FileChooserFormHandler fileChooserFormHandler = new FileChooserFormHandler();
+		DroppedFileMetadataHandler droppedFileMetadataHander = new DroppedFileMetadataHandler();
 		UnknownFileformatHandler unknownFileFormatHandler = new UnknownFileformatHandler();
 		MultipleFiletypesHandler multipleFiletypesHandler = new MultipleFiletypesHandler();
 		FileDataHandler fileDataHandler = new FileDataHandler();
 
-		fileChooserFormHandler.setNext(unknownFileFormatHandler);
+		fileChooserFormHandler.setNext(droppedFileMetadataHander);
+		droppedFileMetadataHander.setNext(unknownFileFormatHandler);
 		unknownFileFormatHandler.setNext(multipleFiletypesHandler);
 		multipleFiletypesHandler.setNext(fileDataHandler);
 
 		handler.add(fileChooserFormHandler);
+		handler.add(droppedFileMetadataHander);
 		handler.add(unknownFileFormatHandler);
 		handler.add(multipleFiletypesHandler);
 		handler.add(fileDataHandler);
@@ -32,8 +36,8 @@ public class HandlerUtility {
 		handler.add(newHandler);
 	}
 
-	public void handle() throws ProcessingException{
-		handler.get(0).handle(null, null, null, null);
+	public void handle(File dropfile) throws ProcessingException{
+		handler.get(0).handle(dropfile, null, null, null, null);
 	}
 
 }

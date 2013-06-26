@@ -49,23 +49,22 @@ public class UserDefinedAttributesService extends AbstractService
 
 	@Override
 	public Object[][] getAttributes(Long filetypeId) throws ProcessingException {
-		// FIXME string auslagern
-		if (filetypeId == null) {
-			return SQL.select("SELECT attribute_id, "
-					+ "                   name, " + "					  show_in_table, "
-					+ "                   datatype, "
-					+ "                   filetype_id "
-					+ "            FROM metadata_attribute "
-					+ "            ORDER BY attribute_id ");
+		StringBuilder s = new StringBuilder();
+		s.append("SELECT attribute_id, " + "                   name, "
+				+ "					  show_in_table, " + "                   datatype, "
+				+ "                   filetype_id "
+				+ "            FROM metadata_attribute ");
+
+		if (filetypeId != null) {
+			s.append("            WHERE filetype_id = :filetypeId ");
+		}
+		s.append("             ORDER BY attribute_id ");
+
+		if (filetypeId != null) {
+			return SQL.select(s.toString(),
+					new NVPair("filetypeId", filetypeId));
 		} else {
-			return SQL.select("SELECT attribute_id, "
-					+ "                   name, " + "					  show_in_table, "
-					+ "                   datatype, "
-					+ "                   filetype_id "
-					+ "            FROM metadata_attribute "
-					+ "            WHERE filetype_id = :filetypeId "
-					+ "             ORDER BY attribute_id ", new NVPair(
-					"filetypeId", filetypeId));
+			return SQL.select(s.toString());
 		}
 	}
 

@@ -21,7 +21,7 @@ public class FileManagementOutline extends AbstractExtensibleOutline {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     FileTablePage fileTablePage = new FileTablePage();
     pageList.add(fileTablePage);
-    pageList.add(new ImageTablePage());
+    pageList.add(new ImageTablePage(150));
 
   }
 }

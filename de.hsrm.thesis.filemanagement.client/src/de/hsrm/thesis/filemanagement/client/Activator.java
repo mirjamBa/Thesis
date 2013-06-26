@@ -2,6 +2,7 @@ package de.hsrm.thesis.filemanagement.client;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.io.File;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -27,8 +28,8 @@ public class Activator extends Plugin {
 		handlerUtility.addHandler(handler);
 	}
 	
-	public void handle() throws ProcessingException{
-		handlerUtility.handle();
+	public void handle(File dropfile) throws ProcessingException{
+		handlerUtility.handle(dropfile);
 	}
 	
 	/**

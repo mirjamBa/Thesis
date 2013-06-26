@@ -1,13 +1,19 @@
 package de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.scout.commons.annotations.ConfigProperty;
+import org.eclipse.scout.commons.annotations.ConfigPropertyValue;
 import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.dnd.FileListTransferObject;
+import org.eclipse.scout.commons.dnd.TransferObject;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
@@ -133,6 +139,25 @@ public class FileTablePage
 		@Override
 		protected boolean getConfiguredAutoResizeColumns() {
 			return true;
+		}
+
+		@Override
+		@ConfigProperty("DRAG_AND_DROP_TYPE")
+		@ConfigPropertyValue("0")
+		protected int getConfiguredDropType() {
+			return TYPE_FILE_TRANSFER;
+		}
+
+		@Override
+		protected void execDrop(ITableRow row, TransferObject t)
+				throws ProcessingException {
+			if (t.isFileList()) {
+				File[] files = ((FileListTransferObject) t).getFiles();
+				for (int i = 0; i < files.length; ++i) {
+					Activator.getDefault().handle(files[i]);
+				}
+				reloadPage();
+			}
 		}
 
 		@Override
@@ -268,7 +293,7 @@ public class FileTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				Activator.getDefault().handle();
+				Activator.getDefault().handle(null);
 				reloadPage();
 			}
 		}
@@ -373,9 +398,9 @@ public class FileTablePage
 				// DCMI metadata
 				IFormField[] fields = form.getDCMIBox().getFields();
 				for (IFormField field : fields) {
-					//TODO set value with parse Value
 					String label = field.getLabel();
 					Object value = metadata.get(label);
+
 					if (field instanceof AbstractValueField<?>) {
 						field = (AbstractValueField<?>) field;
 						if (field instanceof IStringField) {

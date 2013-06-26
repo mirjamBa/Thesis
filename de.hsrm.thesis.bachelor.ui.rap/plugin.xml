@@ -93,12 +93,7 @@
   <extension point="org.eclipse.scout.http.servletfilter.filters">
     <filter
       aliases="/"
-      class="org.eclipse.scout.http.servletfilter.security.AnonymousSecurityFilter"
-      ranking="10">
-    </filter>
-    <filter
-      aliases="/web"
-      class="org.eclipse.scout.http.servletfilter.security.BasicSecurityFilter"
+      class="de.hsrm.mi.user.server.security.BasicForwardSecurityFilter"
       ranking="20">
     </filter>
   </extension>
@@ -114,11 +109,4 @@
             class="org.eclipse.scout.rt.client.mobile.ui.desktop.DeviceTransformationDesktopExtension">
       </desktopExtension>
    </extension>
-  <extension
-        point="org.eclipse.equinox.http.registry.servlets">
-     <servlet
-           alias="/"
-           class="org.eclipse.scout.rt.ui.rap.mobile.servlets.DeviceDispatcherServlet">
-     </servlet>
-  </extension>
 </plugin>

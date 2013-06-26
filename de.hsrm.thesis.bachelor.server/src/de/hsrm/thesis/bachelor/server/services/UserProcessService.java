@@ -105,7 +105,6 @@ public class UserProcessService extends AbstractService implements IUserProcessS
 
     SQL.delete("DELETE FROM TABUSERS WHERE u_id = :ids", new NVPair("ids", u_id));
 
-    //TODO: what to do if the deleted user is still logged in somewhere?
   }
 
   @Override

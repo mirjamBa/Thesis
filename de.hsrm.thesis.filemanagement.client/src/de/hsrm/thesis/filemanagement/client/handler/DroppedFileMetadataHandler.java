@@ -4,32 +4,30 @@ import java.io.File;
 import java.util.Map;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.IFileService;
+import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 
-public class FileChooserFormHandler extends AbstractHandler implements IHandler {
+public class DroppedFileMetadataHandler extends AbstractHandler
+		implements
+			IHandler {
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
 			String fileformat, Long filetypeNr) throws ProcessingException {
-		// not necessary for drag and drop action
-		if (dropfile == null) {
-
-			// choose file from filesystem
-			FileChooserForm form = new FileChooserForm();
-			form.startNew();
-			form.waitFor();
-			if (form.isFormStored()) {
-				// extract data
-				fileData = form.getFileData();
-				metaValues = form.getMetaValues();
-				fileformat = fileData.getFileformat();
-			}
+		if(dropfile != null){
+			// extract data
+			fileData = SERVICES.getService(IFileService.class).saveFile(dropfile);
+			metaValues = SERVICES.getService(ITikaService.class).extractDataFromFile(dropfile);
+			fileformat = fileData.getFileformat();
 		}
+
 		if (nextHandler != null) {
 			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr);
 		}
+
 	}
 
 	@Override
