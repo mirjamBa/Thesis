@@ -22,7 +22,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.desktop.outlines.AdministrationOutline;
+import de.hsrm.mi.administration.client.ui.desktop.outlines.FilemanagementAdminOutline;
 import de.hsrm.mi.user.client.ui.desktop.outlines.UserOutline;
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
@@ -40,7 +40,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   protected Class<? extends IOutline>[] getConfiguredOutlines() {
     ArrayList<Class> outlines = new ArrayList<Class>();
     outlines.add(FileManagementOutline.class);
-    outlines.add(AdministrationOutline.class);
+    outlines.add(FilemanagementAdminOutline.class);
     outlines.add(UserOutline.class);
     return outlines.toArray(new Class[outlines.size()]);
   }
@@ -177,7 +177,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   @Order(20.0)
   public class AdministrationOutlineViewButton extends AbstractOutlineViewButton {
     public AdministrationOutlineViewButton() {
-      super(Desktop.this, AdministrationOutline.class);
+      super(Desktop.this, FilemanagementAdminOutline.class);
     }
 
     @Override

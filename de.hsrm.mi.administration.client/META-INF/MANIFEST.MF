@@ -5,7 +5,6 @@ Bundle-SymbolicName: de.hsrm.mi.administration.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.client.Activator
 Export-Package: de.hsrm.mi.administration.client,
- de.hsrm.mi.administration.client.handler,
  de.hsrm.mi.administration.client.ui.desktop.outlines,
  de.hsrm.mi.administration.client.ui.desktop.outlines.pages,
  de.hsrm.mi.administration.client.ui.forms

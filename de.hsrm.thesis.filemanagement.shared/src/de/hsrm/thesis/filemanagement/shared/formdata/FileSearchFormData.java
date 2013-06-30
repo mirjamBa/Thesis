@@ -2,7 +2,6 @@ package de.hsrm.thesis.filemanagement.shared.formdata;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
-import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
@@ -46,7 +45,7 @@ public class FileSearchFormData extends AbstractFormData {
 		public FileNrTo() {
 		}
 	}
-	public static class FileSearchMetadataTable extends AbstractTableFieldData {
+	public static class FileSearchMetadataTable extends MetadataTableFieldData {
 		private static final long serialVersionUID = 1L;
 
 		public FileSearchMetadataTable() {

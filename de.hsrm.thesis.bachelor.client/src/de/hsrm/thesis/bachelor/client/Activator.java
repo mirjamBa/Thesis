@@ -3,8 +3,6 @@ package de.hsrm.thesis.bachelor.client;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import de.hsrm.thesis.bachelor.client.handler.EmbeddedHandler;
-
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -30,8 +28,6 @@ public class Activator extends Plugin {
   public void start(BundleContext context) throws Exception {
     super.start(context);
     plugin = this;
-
-    de.hsrm.mi.administration.client.Activator.getDefault().addHandler(new EmbeddedHandler());
   }
 
   /*

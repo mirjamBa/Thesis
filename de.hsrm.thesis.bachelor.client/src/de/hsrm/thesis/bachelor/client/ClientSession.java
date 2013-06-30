@@ -9,7 +9,6 @@ import org.eclipse.scout.rt.client.ClientJob;
 import org.eclipse.scout.rt.client.servicetunnel.http.HttpServiceTunnel;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
-import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.bachelor.client.ui.desktop.Desktop;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
@@ -42,7 +41,7 @@ public class ClientSession extends AbstractClientSession {
     CODES.getAllCodeTypes(de.hsrm.thesis.bachelor.shared.Activator.PLUGIN_ID);
 
     // turn client notification polling on
-//    getServiceTunnel().setClientNotificationPollInterval(1000L);
+    getServiceTunnel().setClientNotificationPollInterval(1000L);
 
     setDesktop(new Desktop());
   }
@@ -50,8 +49,7 @@ public class ClientSession extends AbstractClientSession {
   @Override
   public void execStoreSession() throws ProcessingException {
     // disable notification polling with -1
-//    ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
-    SERVICES.getService(IUserProcessService.class).unregisterUser();
+    ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
   }
 
 }

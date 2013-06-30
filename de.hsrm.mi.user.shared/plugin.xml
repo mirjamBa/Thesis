@@ -9,4 +9,5 @@
             class="de.hsrm.mi.user.shared.services.common.text.UserTextProviderService">
       </service>
    </extension>
+   
 </plugin>

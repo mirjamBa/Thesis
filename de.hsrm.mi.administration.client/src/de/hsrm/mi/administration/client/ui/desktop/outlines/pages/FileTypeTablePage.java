@@ -10,16 +10,20 @@ import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMe
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.administration.client.ui.forms.VersionForm;
+import de.hsrm.mi.administration.shared.security.ViewFiletypeTablePagePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IFiletypeService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
-public class FileTypeTablePage extends
-		AbstractExtensiblePageWithTable<FileTypeTablePage.Table> {
+public class FileTypeTablePage
+		extends
+			AbstractExtensiblePageWithTable<FileTypeTablePage.Table> {
 
 	@Override
 	protected String getConfiguredTitle() {
@@ -32,6 +36,11 @@ public class FileTypeTablePage extends
 		FiletypeAttributesNodePage childPage = new FiletypeAttributesNodePage();
 		childPage.setFiletypeNr(getTable().getFiletypeColumn().getValue(row));
 		return childPage;
+	}
+
+	@Override
+	protected void execInitPage() throws ProcessingException {
+		setVisibleGranted(ACCESS.getLevel(new ViewFiletypeTablePagePermission()) > BasicHierarchyPermission.LEVEL_NONE);
 	}
 
 	@Override

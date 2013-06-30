@@ -1,12 +1,19 @@
 package de.hsrm.mi.storage.database.derby.server.services;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.commons.holders.LongArrayHolder;
 import org.eclipse.scout.commons.holders.LongHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
 
+import de.hsrm.thesis.filemanagement.shared.security.CreateTagPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteTagPermission;
+import de.hsrm.thesis.filemanagement.shared.security.ReadTagPermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateTagPermission;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.TagFormData;
 
@@ -14,12 +21,18 @@ public class TagService extends AbstractService implements ITagService {
 
   @Override
   public TagFormData create(TagFormData formData) throws ProcessingException {
+	  if(!ACCESS.check(new CreateTagPermission())){
+		  throw new VetoException(TEXTS.get("VETOCreateTagPermission"));
+	  }
     create(formData.getTagName().getValue());
     return formData;
   }
 
   @Override
   public void create(String... tagnames) throws ProcessingException {
+	  if(!ACCESS.check(new CreateTagPermission())){
+		  throw new VetoException(TEXTS.get("VETOCreateTagPermission"));
+	  }
     for (String tagname : tagnames) {
       SQL.insert("INSERT INTO tag (name) VALUES (:tagName)",
           new NVPair("tagName", tagname));
@@ -28,11 +41,17 @@ public class TagService extends AbstractService implements ITagService {
 
   @Override
   public Object[][] getTags() throws ProcessingException {
+	  if(!ACCESS.check(new ReadTagPermission())){
+		  throw new VetoException(TEXTS.get("VETOReadTagPermission"));
+	  }
     return SQL.select("SELECT tag_id, name FROM TAG");
   }
 
   @Override
   public void updateTag(TagFormData formData) throws ProcessingException {
+	  if(!ACCESS.check(new UpdateTagPermission())){
+		  throw new VetoException(TEXTS.get("VETOUpdateTagPermission"));
+	  }
     SQL.update("UPDATE tag SET name = :tagName WHERE tag_id = :tagId",
         new NVPair("tagName", formData.getTagName()),
         new NVPair("tagId", formData.getTagId()));
@@ -40,6 +59,9 @@ public class TagService extends AbstractService implements ITagService {
 
   @Override
   public void deleteTag(Long[] ids) throws ProcessingException {
+	  if(!ACCESS.check(new DeleteTagPermission())){
+		  throw new VetoException(TEXTS.get("VETODeleteTagPermission"));
+	  }
     SQL.delete("DELETE FROM tag WHERE tag_id = :ids", new NVPair("ids", ids));
   }
 
@@ -82,6 +104,9 @@ public class TagService extends AbstractService implements ITagService {
 
   @Override
   public void deleteTagsForFile(Long fileId) throws ProcessingException {
+	  if(!ACCESS.check(new DeleteTagPermission())){
+		  throw new VetoException(TEXTS.get("VETODeleteTagPermission"));
+	  }
     SQL.delete("DELETE FROM tag_file WHERE file_id = :fileId", new NVPair("fileId", fileId));
   }
 

@@ -41,22 +41,6 @@ public class ImageTablePage extends FileTablePage {
 		((FileSearchFormData) filter.getFormData()).getFileType().setValue(
 				FileTypeCodeType.ImageCode.ID);
 
-//		Object[][] attData = SERVICES
-//				.getService(IAttributeService.class)
-//				.getAttributeData(
-//						CODES.getCode(
-//								DublinCoreMetadataElementSetCodeType.FormatCode.class)
-//								.getText());
-//		
-//		((FileSearchFormData) filter.getFormData())
-//		.getFileSearchMetadataTable().setValueAt(0, 0, attData[0][0]);
-//		((FileSearchFormData) filter.getFormData())
-//		.getFileSearchMetadataTable().setValueAt(0, 1, attData[0][1]);
-//		((FileSearchFormData) filter.getFormData())
-//		.getFileSearchMetadataTable().setValueAt(0, 2, "image");
-//		((FileSearchFormData) filter.getFormData())
-//		.getFileSearchMetadataTable().setValueAt(0, 3, attData[0][2]);
-		
 		Object[][] files = SERVICES.getService(IFileService.class).getFiles(
 				(FileSearchFormData) filter.getFormData());
 		return files;

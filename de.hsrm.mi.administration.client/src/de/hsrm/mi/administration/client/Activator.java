@@ -3,9 +3,6 @@ package de.hsrm.mi.administration.client;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import de.hsrm.mi.administration.client.handler.HandlerUtility;
-import de.hsrm.mi.administration.shared.handler.IHandler;
-
 /**
  * The activator class controls the plug-in life cycle
  */
@@ -16,16 +13,6 @@ public class Activator extends Plugin {
 
 	// The shared instance
 	private static Activator plugin;
-	
-	private HandlerUtility handlerUtility = new HandlerUtility();
-	
-	public void addHandler(IHandler handler){
-		handlerUtility.addHandler(handler);
-	}
-	
-	public void handle(){
-		handlerUtility.handle();
-	}
 	
 	/**
 	 * The constructor

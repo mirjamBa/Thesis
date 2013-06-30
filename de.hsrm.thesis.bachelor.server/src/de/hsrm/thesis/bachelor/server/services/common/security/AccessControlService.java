@@ -1,51 +1,79 @@
 package de.hsrm.thesis.bachelor.server.services.common.security;
 
+import java.security.AllPermission;
+import java.security.Permission;
 import java.security.Permissions;
+import java.util.HashMap;
 
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.holders.NVPair;
+import org.eclipse.scout.commons.holders.StringArrayHolder;
+import org.eclipse.scout.commons.logger.IScoutLogger;
+import org.eclipse.scout.commons.logger.ScoutLogManager;
+import org.eclipse.scout.commons.osgi.BundleClassDescriptor;
+import org.eclipse.scout.rt.server.ServerJob;
+import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.rt.server.services.common.security.AbstractAccessControlService;
 import org.eclipse.scout.rt.shared.security.RemoteServiceAccessPermission;
-import org.eclipse.scout.rt.shared.services.common.code.ICode;
+import org.eclipse.scout.rt.shared.services.common.security.IPermissionService;
+import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.bachelor.server.ServerSession;
-import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
-import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
-import de.hsrm.thesis.filemanagement.shared.security.ReadUsersPermission;
-import de.hsrm.thesis.filemanagement.shared.security.RegisterUserPermission;
-import de.hsrm.thesis.filemanagement.shared.security.ResetPasswordPermission;
-import de.hsrm.thesis.filemanagement.shared.security.UnregisterUserPermission;
-import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
-import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType.AdministratorCode;
-import de.hsrm.thesis.filemanagement.shared.services.code.UserRoleCodeType.UserCode;
+import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
 
 public class AccessControlService extends AbstractAccessControlService {
+  private static IScoutLogger logger = ScoutLogManager.getLogger(AccessControlService.class);
 
   @Override
   protected Permissions execLoadPermissions() {
     Permissions permissions = new Permissions();
 
-    ICode<Integer> permission = ServerSession.get().getPermission();
-    if (permission != null) {
-      // USERS
-      if (permission.getId() >= UserCode.ID) {
-        permissions.add(new RemoteServiceAccessPermission("*.shared.*", "*"));
+    Long userNr = (Long) ServerJob.getCurrentSession().getData(IStartupService.USER_NR);
 
-//        permissions.add(new CreateNotificationPermission());
-        permissions.add(new ReadUsersPermission());
-        permissions.add(new RegisterUserPermission());
-        permissions.add(new UnregisterUserPermission());
-//        permissions.add(new UpdateIconPermission());
+    if (userNr != null) {
+      //permissio to call service
+      permissions.add(new RemoteServiceAccessPermission("*.shared.*", "*"));
+    }
+
+    try {
+      if (SERVICES.getService(IRoleProcessService.class).getAdminRoleId().equals(userNr)) {
+        permissions.add(new AllPermission());
+      }
+    }
+    catch (ProcessingException e1) {
+      e1.printStackTrace();
+    }
+
+    StringArrayHolder perm = new StringArrayHolder();
+    try {
+      SQL.selectInto("SELECT DISTINCT p.permission_name "
+          + "         FROM            role_permission p, "
+          + "                         user_role r "
+          + "         WHERE           r.u_id = :userNr "
+          + "         AND             r.role_id = p.role_id "
+          + "         INTO            :perm ",
+          new NVPair("perm", perm),
+          new NVPair("userNr", userNr));
+
+      HashMap<String, String> map = new HashMap<String, String>();
+      for (BundleClassDescriptor descriptor : SERVICES.getService(IPermissionService.class).getAllPermissionClasses()) {
+        map.put(descriptor.getSimpleClassName(), descriptor.getClassName());
       }
 
-      // ADMIN
-      if (permission.getId() >= AdministratorCode.ID) {
-        permissions.add(new CreateUserPermission());
-        permissions.add(new DeleteUserPermission());
-        permissions.add(new ResetPasswordPermission());
-        permissions.add(new UpdateUserPermission());
+      //instantiate permissions and assign them
+      for (String simpleClass : perm.getValue()) {
+        try {
+          permissions.add((Permission) Class.forName(map.get(simpleClass)).newInstance());
+        }
+        catch (Exception e) {
+          logger.error("cannot find permission " + simpleClass + ": " + e.getMessage());
+        }
       }
+    }
+    catch (ProcessingException e) {
+      logger.error("cannot read permissions: " + e.getMessage());
     }
 
     return permissions;
   }
-
 }

@@ -26,31 +26,10 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.UserProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.bachelor.server.services.OCRProcessService"
             session="de.hsrm.thesis.bachelor.server.ServerSession">
       </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.FileService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.RoleProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.SharedContextService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
-      </service>
    </extension>
-   
    <extension
          name=""
          point="org.eclipse.equinox.http.registry.servlets">
@@ -95,10 +74,19 @@
             class="org.eclipse.scout.rt.server.ServiceTunnelServlet">
       </servlet>
    </extension>
-   
    <extension
          name=""
          point="org.eclipse.scout.http.servletfilter.filters">
+      <!--filter
+            aliases="/process /remotefiles /updatesite"
+            class="org.eclipse.scout.http.servletfilter.security.BasicSecurityFilter"
+            ranking="20">
+      </filter>
+      <filter
+            aliases="/process /remotefiles /updatesite"
+            class="org.eclipse.scout.http.servletfilter.security.AnonymousSecurityFilter"
+            ranking="30">
+      </filter-->
       <filter
             aliases="/process"
             class="de.hsrm.mi.user.server.security.BasicForwardSecurityFilter"
@@ -118,7 +106,6 @@
          </init-param>
       </filter>
    </extension>
-   
    <extension
          id="app"
          name="Server Application"
@@ -134,8 +121,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            name="bachelor Server"
-            application="de.hsrm.thesis.bachelor.server.app">
+            application="de.hsrm.thesis.bachelor.server.app"
+            name="bachelor Server">
          <property
                name="appName"
                value="bachelor Server">

@@ -17,21 +17,38 @@ import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class FileDataHandler extends AbstractHandler implements IHandler {
 
+	private FileForm frm;
+
+	/**
+	 * @return the frm
+	 */
+	public FileForm getFrm() {
+		return frm;
+	}
+
+	/**
+	 * @param frm
+	 *            the frm to set
+	 */
+	public void setFrm(FileForm frm) {
+		this.frm = frm;
+	}
+
 	@Override
 	public void handle(File dropfile, ServerFileData fileData,
 			Map<String, String> metaValues, String fileformat, Long filetypeNr)
 			throws ProcessingException {
 
 		// prepare fileform
-		FileForm frm = fillFileForm(fileData, filetypeNr, metaValues);
+		frm = fillFileForm(fileData, filetypeNr, metaValues);
 
 		if (dropfile == null) {
-			//show form, user can modify data
+			// show form, user can modify data
 			frm.startNew();
 			frm.touch();
 			frm.waitFor();
 		} else {
-			//drag and drop action: quick processing required
+			// drag and drop action: quick processing required
 			FileFormData formData = new FileFormData();
 			frm.exportFormData(formData);
 			SERVICES.getService(IFileService.class).create(formData, fileData);
@@ -50,7 +67,12 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 
 	private FileForm fillFileForm(ServerFileData fileData, Long filetypeNr,
 			Map<String, String> metaValues) throws ProcessingException {
-		FileForm frm = new FileForm(fileData, filetypeNr);
+		if (frm == null) {
+			frm = new FileForm(fileData, filetypeNr);
+		} else {
+			frm.setFileData(fileData);
+			frm.setFiletypeNr(filetypeNr);
+		}
 
 		// extracted meta values
 		IFormField[] fields = frm.getDCMIBox().getFields();

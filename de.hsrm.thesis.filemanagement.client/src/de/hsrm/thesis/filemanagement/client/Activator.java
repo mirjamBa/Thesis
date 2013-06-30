@@ -24,6 +24,13 @@ public class Activator extends Plugin {
 	
 	private HandlerUtility handlerUtility = new HandlerUtility();
 	
+	/**
+	 * @return the handlerUtility
+	 */
+	public HandlerUtility getHandlerUtility() {
+		return handlerUtility;
+	}
+
 	public void addHandler(IHandler handler){
 		handlerUtility.addHandler(handler);
 	}

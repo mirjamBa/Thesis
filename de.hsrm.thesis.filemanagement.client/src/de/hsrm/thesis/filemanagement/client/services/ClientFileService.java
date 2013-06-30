@@ -5,10 +5,14 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 import org.eclipse.swt.program.Program;
 
+import de.hsrm.thesis.filemanagement.shared.security.OpenFilePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 
 public class ClientFileService extends AbstractService
@@ -17,6 +21,9 @@ public class ClientFileService extends AbstractService
 
 	@Override
 	public void openFile(Long fileNr) throws ProcessingException {
+		if(!ACCESS.check(new OpenFilePermission())){
+			  throw new VetoException(TEXTS.get("VETOOpenFilePermission"));
+		  }
 		// TODO test opening files from server
 		File file = SERVICES.getService(IFileService.class).getServerFile(
 				fileNr);

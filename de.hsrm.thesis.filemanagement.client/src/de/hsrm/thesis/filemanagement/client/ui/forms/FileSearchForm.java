@@ -11,8 +11,6 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractResetButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractSearchButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.listbox.AbstractListBox;
-import org.eclipse.scout.rt.client.ui.form.fields.longfield.AbstractLongField;
-import org.eclipse.scout.rt.client.ui.form.fields.sequencebox.AbstractSequenceBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
 import org.eclipse.scout.rt.extension.client.ui.form.fields.smartfield.AbstractExtensibleSmartField;
@@ -27,17 +25,19 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.Sear
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.FileSearchMetadataTableField;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.FieldBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.FileTypeField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.TypistField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
-@FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.CREATE)
+@FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.USE)
 public class FileSearchForm extends AbstractSearchForm {
 
 	@Override
@@ -47,6 +47,13 @@ public class FileSearchForm extends AbstractSearchForm {
 
 	public FileSearchForm() throws ProcessingException {
 		super();
+	}
+
+	@Override
+	protected void execDataChanged(Object... dataTypes)
+			throws ProcessingException {
+		getFileSearchMetadataTableField().reloadTableData();
+		getTagField().resetValue();
 	}
 
 	@Override
@@ -63,12 +70,20 @@ public class FileSearchForm extends AbstractSearchForm {
 		startInternal(new SearchHandler());
 	}
 
+	public TagField getTagField() {
+		return getFieldByClass(TagField.class);
+	}
+
 	public DetailedBox getDetailedBox() {
 		return getFieldByClass(DetailedBox.class);
 	}
 
-	public FieldBox getFieldBox() {
-		return getFieldByClass(FieldBox.class);
+	public FileSearchMetadataTableField getFileSearchMetadataTableField() {
+		return getFieldByClass(FileSearchMetadataTableField.class);
+	}
+
+	public FileTypeField getFileTypeField() {
+		return getFieldByClass(FileTypeField.class);
 	}
 
 	public GeneralSearchBox getGeneralSearchBox() {
@@ -81,10 +96,6 @@ public class FileSearchForm extends AbstractSearchForm {
 
 	public MainBox getMainBox() {
 		return getFieldByClass(MainBox.class);
-	}
-
-	public FileSearchMetadataTableField getFileSearchMetadataTableField() {
-		return getFieldByClass(FileSearchMetadataTableField.class);
 	}
 
 	public ResetButton getResetButton() {
@@ -124,15 +135,15 @@ public class FileSearchForm extends AbstractSearchForm {
 				}
 			}
 
-			@Order(20.0)
-			public class FieldBox extends AbstractGroupBox {
+			@Order(30.0)
+			public class DetailedBox extends AbstractGroupBox {
 
 				@Override
 				protected String getConfiguredLabel() {
-					return TEXTS.get("Metadata");
+					return TEXTS.get("Detailed");
 				}
 
-				@Order(20.0)
+				@Order(10.0)
 				public class FileTypeField
 						extends
 							AbstractExtensibleSmartField<Long> {
@@ -148,34 +159,7 @@ public class FileSearchForm extends AbstractSearchForm {
 					}
 				}
 
-				@Order(10.0)
-				public class FileNrBox extends AbstractSequenceBox {
-
-					@Override
-					protected String getConfiguredLabel() {
-						return TEXTS.get("FileNr");
-					}
-
-					@Order(10.0)
-					public class FileNrFrom extends AbstractLongField {
-
-						@Override
-						protected String getConfiguredLabel() {
-							return TEXTS.get("From");
-						}
-					}
-
-					@Order(20.0)
-					public class FileNrTo extends AbstractLongField {
-
-						@Override
-						protected String getConfiguredLabel() {
-							return TEXTS.get("To");
-						}
-					}
-				}
-
-				@Order(30.0)
+				@Order(20.0)
 				public class TypistField
 						extends
 							AbstractExtensibleSmartField<Long> {
@@ -190,20 +174,21 @@ public class FileSearchForm extends AbstractSearchForm {
 						return UserLookupCall.class;
 					}
 				}
-			}
 
-			@Order(30.0)
-			public class DetailedBox extends AbstractGroupBox {
-
-				@Override
-				protected String getConfiguredLabel() {
-					return TEXTS.get("Detailed");
-				}
-
-				@Order(10.0)
+				@Order(30.0)
 				public class FileSearchMetadataTableField
 						extends
 							MetadataTableField {
+
+					@Override
+					protected int getConfiguredGridH() {
+						return 4;
+					}
+
+					@Override
+					protected int getConfiguredGridW() {
+						return 2;
+					}
 
 				}
 
@@ -265,6 +250,10 @@ public class FileSearchForm extends AbstractSearchForm {
 
 	public TagBox getTagBox() {
 		return getFieldByClass(TagBox.class);
+	}
+
+	public TypistField getTypistField() {
+		return getFieldByClass(TypistField.class);
 	}
 
 	private void loadMetaAttributeTable() throws ProcessingException {

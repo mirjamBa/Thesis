@@ -62,12 +62,15 @@ import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
-@FormData(value = FileFormData.class, sdkCommand = SdkCommand.CREATE)
+@FormData(value = FileFormData.class, sdkCommand = SdkCommand.USE)
 public class FileForm extends AbstractForm {
 
 	private Long m_fileNr;
 	private ServerFileData m_fileData;
 	private long m_filetypeNr;
+
+	public FileForm() throws ProcessingException {
+	}
 
 	public FileForm(Long fileNr) throws ProcessingException {
 		super();
@@ -775,6 +778,28 @@ public class FileForm extends AbstractForm {
 					.getValue());
 		}
 	}
+
+	// public class ViewHandler extends AbstractFormHandler {
+	//
+	// @Override
+	// protected void execLoad() throws ProcessingException {
+	// // open form code
+	// }
+	//
+	// @Override
+	// protected boolean getConfiguredOpenExclusive() {
+	// return true;
+	// }
+	// }
+	//
+	// public void startView() throws ProcessingException {
+	// startInternalExclusive(new FileForm.ViewHandler());
+	// }
+	//
+	// @Override
+	// public Object computeExclusiveKey() throws ProcessingException {
+	// return m_fileNr;
+	// }
 
 	@FormData
 	public ServerFileData getFileData() {

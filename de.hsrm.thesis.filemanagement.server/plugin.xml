@@ -12,6 +12,18 @@
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.thesis.filemanagement.server.services.ImageProcessService">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.filemanagement.server.services.StartupService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.filemanagement.server.services.common.security.FilemanagementPermissionService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.thesis.filemanagement.server.services.lookup.AllRoleLookupService">
+      </service>
    </extension>
 
 </plugin>

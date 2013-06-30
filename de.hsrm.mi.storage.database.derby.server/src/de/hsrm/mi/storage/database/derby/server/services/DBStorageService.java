@@ -36,8 +36,8 @@ public class DBStorageService extends AbstractService
 					+ " u_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT USERS_PK PRIMARY KEY, "
 					+ " username VARCHAR(32) NOT NULL, "
 					+ " pass VARCHAR(256) NOT NULL, "
-					+ " salt VARCHAR(64) NOT NULL, "
-					+ " permission_id INT NOT NULL, " + " icon BLOB " + ")");
+					+ " salt VARCHAR(64) NOT NULL ) ");
+//					+ " permission_id INT NOT NULL, " + " icon BLOB " + ")");
 			SQL.commit();
 
 			SQL.insert(" CREATE UNIQUE INDEX IX_USERNAME ON TABUSERS (username) ");
@@ -114,6 +114,10 @@ public class DBStorageService extends AbstractService
 
 			SQL.insert("CREATE SEQUENCE file_number AS BIGINT START WITH 1000");
 			SQL.commit();
+			
+			SQL.insert("CREATE TABLE role_permission ( "
+					+ "role_id		BIGINT NOT NULL REFERENCES role(role_id), "
+					+ "permission_name	VARCHAR(256) NOT NULL )");
 
 			SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('"
 					+ IRoleProcessService.USER_ROLE_ADMIN + "', null)");

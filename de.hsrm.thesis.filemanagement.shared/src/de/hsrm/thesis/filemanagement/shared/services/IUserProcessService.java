@@ -1,10 +1,7 @@
 package de.hsrm.thesis.filemanagement.shared.services;
 
-import java.util.Set;
-
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
-import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService;
@@ -24,8 +21,8 @@ public interface IUserProcessService extends IService {
 	// ///////////////////////////@author
 	// BSI/////////////////////////////////////////////
 
-	ICode<Integer> getUserPermission(String userName)
-			throws ProcessingException;
+//	ICode<Integer> getUserPermission(String userName)
+//			throws ProcessingException;
 
 	Object[][] getUsers() throws ProcessingException;
 
@@ -35,11 +32,11 @@ public interface IUserProcessService extends IService {
 
 	void updateUser(UserFormData formData) throws ProcessingException;
 
-	public void registerUser() throws ProcessingException;
+//	public void registerUser() throws ProcessingException;
 
-	public void unregisterUser() throws ProcessingException;
+//	public void unregisterUser() throws ProcessingException;
 
-	public Set<String> getUsersOnline() throws ProcessingException;
+//	public Set<String> getUsersOnline() throws ProcessingException;
 
 	public boolean isValidUser(String username, String password)
 			throws ProcessingException;

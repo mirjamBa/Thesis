@@ -27,8 +27,10 @@ import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMe
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
@@ -41,6 +43,11 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
 import de.hsrm.thesis.filemanagement.shared.Icons;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
+import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.FreeFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.OpenFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateFilePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
@@ -72,6 +79,11 @@ public class FileTablePage
 	@Override
 	protected boolean getConfiguredLeaf() {
 		return true;
+	}
+
+	@Override
+	protected void execPageActivated() throws ProcessingException {
+		// reloadPage();
 	}
 
 	private Long[] extractIdsFromTableData(Object[][] data) {
@@ -158,6 +170,11 @@ public class FileTablePage
 				}
 				reloadPage();
 			}
+		}
+
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyMenu.class).doAction();
 		}
 
 		@Override
@@ -282,6 +299,11 @@ public class FileTablePage
 		public class NewFileMenu extends AbstractExtensibleMenu {
 
 			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisibleGranted(ACCESS.getLevel(new CreateFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+			}
+
+			@Override
 			protected boolean getConfiguredEmptySpaceAction() {
 				return true;
 			}
@@ -300,6 +322,11 @@ public class FileTablePage
 
 		@Order(20.0)
 		public class OpenFileMenu extends AbstractExtensibleMenu {
+			
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisibleGranted(ACCESS.getLevel(new OpenFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+			}
 
 			@Override
 			protected String getConfiguredText() {
@@ -315,6 +342,11 @@ public class FileTablePage
 
 		@Order(30.0)
 		public class DeleteMenu extends AbstractExtensibleMenu {
+			
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisibleGranted(ACCESS.getLevel(new DeleteFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+			}
 
 			@Override
 			protected String getConfiguredText() {
@@ -331,6 +363,11 @@ public class FileTablePage
 
 		@Order(40.0)
 		public class AuthorityMenu extends AbstractExtensibleMenu {
+			
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisibleGranted(ACCESS.getLevel(new FreeFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+			}
 
 			@Override
 			protected String getConfiguredText() {
@@ -345,6 +382,9 @@ public class FileTablePage
 				form.getMetadataBox().setVisible(false);
 				form.getDetailedBox().setVisible(false);
 				form.getTagBox().setVisible(false);
+
+				// FIXME Role Form auslagern
+				form.getTitleField().setMandatory(false);
 
 				form.getAuthorityBox()
 						.getRolesField()
@@ -364,6 +404,11 @@ public class FileTablePage
 
 		@Order(50.0)
 		public class ModifyMenu extends AbstractExtensibleMenu {
+			
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisibleGranted(ACCESS.getLevel(new UpdateFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+			}
 
 			@Override
 			protected String getConfiguredText() {

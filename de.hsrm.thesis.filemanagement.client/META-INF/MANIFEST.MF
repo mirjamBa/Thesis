@@ -5,7 +5,9 @@ Bundle-SymbolicName: de.hsrm.thesis.filemanagement.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.thesis.filemanagement.client.Activator
 Export-Package: de.hsrm.thesis.filemanagement.client,
+ de.hsrm.thesis.filemanagement.client.handler,
  de.hsrm.thesis.filemanagement.client.services,
+ de.hsrm.thesis.filemanagement.client.ui,
  de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages,
  de.hsrm.thesis.filemanagement.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,

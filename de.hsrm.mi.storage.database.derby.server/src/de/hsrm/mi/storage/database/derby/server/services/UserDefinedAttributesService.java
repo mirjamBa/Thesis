@@ -1,11 +1,18 @@
 package de.hsrm.mi.storage.database.derby.server.services;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.commons.holders.LongHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
 
+import de.hsrm.thesis.filemanagement.shared.security.CreateAttributePermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteAttributePermission;
+import de.hsrm.thesis.filemanagement.shared.security.ReadAttributePermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateAttributePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
 
@@ -16,6 +23,9 @@ public class UserDefinedAttributesService extends AbstractService
 	@Override
 	public MetadataFormData create(MetadataFormData formData)
 			throws ProcessingException {
+		if(!ACCESS.check(new CreateAttributePermission())){
+			  throw new VetoException(TEXTS.get("VETOCreateAttributePermission"));
+		  }
 		SQL.insert(
 				"INSERT INTO metadata_attribute (name, datatype, filetype_id, show_in_table) VALUES(:name, :datatype, :filetype, :showInFileTable)",
 				new NVPair("name", formData.getDescription()), new NVPair(
@@ -29,6 +39,9 @@ public class UserDefinedAttributesService extends AbstractService
 
 	@Override
 	public void delete(Long[] ids) throws ProcessingException {
+		if(!ACCESS.check(new DeleteAttributePermission())){
+			  throw new VetoException(TEXTS.get("VETODeleteAttributePermission"));
+		  }
 		SQL.delete("DELETE FROM metadata WHERE attribute_id = :ids",
 				new NVPair("ids", ids));
 
@@ -39,6 +52,9 @@ public class UserDefinedAttributesService extends AbstractService
 	@Override
 	public MetadataFormData update(MetadataFormData formData)
 			throws ProcessingException {
+		if(!ACCESS.check(new UpdateAttributePermission())){
+			  throw new VetoException(TEXTS.get("VETOUpdateAttributePermission"));
+		  }
 		SQL.update(
 				"UPDATE metadata_attribute SET name = :name , show_in_table = :display WHERE attribute_id = :id",
 				new NVPair("name", formData.getDescription().getValue()),
@@ -49,6 +65,9 @@ public class UserDefinedAttributesService extends AbstractService
 
 	@Override
 	public Object[][] getAttributes(Long filetypeId) throws ProcessingException {
+		if(!ACCESS.check(new ReadAttributePermission())){
+			  throw new VetoException(TEXTS.get("VETOReadAttributePermission"));
+		  }
 		StringBuilder s = new StringBuilder();
 		s.append("SELECT attribute_id, " + "                   name, "
 				+ "					  show_in_table, " + "                   datatype, "
@@ -80,6 +99,9 @@ public class UserDefinedAttributesService extends AbstractService
 	@Override
 	public Object[][] getDetailedMetadataForAllFileTypes()
 			throws ProcessingException {
+		if(!ACCESS.check(new ReadAttributePermission())){
+			  throw new VetoException(TEXTS.get("VETOReadAttributePermission"));
+		  }
 		Object[][] res = SQL
 				.select("SELECT attribute_id, name, datatype FROM metadata_attribute WHERE filetype_id IS NOT NULL");
 		return res;

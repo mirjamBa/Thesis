@@ -4,6 +4,11 @@ Bundle-Name: Server
 Bundle-SymbolicName: de.hsrm.thesis.filemanagement.server;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.thesis.filemanagement.server.Activator
+Export-Package: de.hsrm.thesis.filemanagement.server,
+ de.hsrm.thesis.filemanagement.server.services,
+ de.hsrm.thesis.filemanagement.server.services.common.security,
+ de.hsrm.thesis.filemanagement.server.services.lookup,
+ de.hsrm.thesis.filemanagement.server.util
 Require-Bundle: org.eclipse.core.runtime,
  tikanearlyall,
  de.hsrm.thesis.filemanagement.shared,
@@ -12,6 +17,3 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.server
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: de.hsrm.thesis.filemanagement.server,
- de.hsrm.thesis.filemanagement.server.services,
- de.hsrm.thesis.filemanagement.server.util

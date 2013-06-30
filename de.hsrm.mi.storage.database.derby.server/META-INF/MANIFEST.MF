@@ -9,6 +9,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.service,
  de.hsrm.thesis.filemanagement.shared,
  org.eclipse.scout.commons,
- org.eclipse.scout.rt.server
+ org.eclipse.scout.rt.server,
+ de.hsrm.thesis.filemanagement.server
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

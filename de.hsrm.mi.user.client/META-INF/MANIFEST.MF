@@ -1,10 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
-Bundle-SymbolicName: de.hsrm.mi.user.client
+Bundle-SymbolicName: de.hsrm.mi.user.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.user.client.Activator
-Export-Package: de.hsrm.mi.user.client.ui.desktop.outlines,
+Export-Package: de.hsrm.mi.user.client.forms,
+ de.hsrm.mi.user.client.ui.desktop.outlines,
  de.hsrm.mi.user.client.ui.desktop.outlines.pages,
  de.hsrm.mi.user.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,
