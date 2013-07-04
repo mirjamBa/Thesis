@@ -24,7 +24,7 @@ public interface IFileService extends IService2 {
 	 * @return FileFormData
 	 * @throws ProcessingException
 	 */
-	public FileFormData create(FileFormData formData, ServerFileData fileData) throws ProcessingException;
+	public FileFormData create(FileFormData formData, ServerFileData fileData, Long parentFolderId) throws ProcessingException;
 
 	/**
 	 * Modifies the assigned file data in the storage
@@ -45,6 +45,8 @@ public interface IFileService extends IService2 {
 	 * @return Object[][]
 	 * @throws ProcessingException
 	 */
+	public Object[][] getFolderFiles(FileSearchFormData searchFormData, Long folderId) throws ProcessingException;
+	
 	public Object[][] getFiles(FileSearchFormData searchFormData) throws ProcessingException;
 
 	/**
@@ -68,7 +70,9 @@ public interface IFileService extends IService2 {
 	 *            Long[]
 	 * @throws ProcessingException
 	 */
-	public void updateRoleFilePermission(Long fildId, Long[] roleIds) throws ProcessingException;
+	public void freeFile(Long fileId, Long[] roleIds) throws ProcessingException;
+	
+	public void updateRoleFileAndFolderPermission(Long fileId, Long[] roleIds) throws ProcessingException;
 
 	/**
 	 * Delete the file belonging to the assigned file id an all its meta data
@@ -90,4 +94,8 @@ public interface IFileService extends IService2 {
 	 * @throws ProcessingException
 	 */
 	public File getServerFile(Long fileId) throws ProcessingException;
+
+	public void updateFileFreeing(Long fileId, Long[] roleIds) throws ProcessingException;
+
+	
 }

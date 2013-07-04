@@ -76,8 +76,8 @@ public class HandlerUtility {
 		handler.add(newHandler);
 	}
 
-	public void handle(File dropfile) throws ProcessingException {
-		handler.get(0).handle(dropfile, null, null, null, null);
+	public void handle(File dropfile, Long parentFolderId) throws ProcessingException {
+		handler.get(0).handle(dropfile, null, null, null, null, parentFolderId);
 	}
 
 }

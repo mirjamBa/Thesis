@@ -40,7 +40,7 @@ public interface IRoleProcessService extends IService {
 	 * @return Long[]
 	 * @throws ProcessingException
 	 */
-	public Long[] getApprovedRolesForFile(Long fileId)
+	public Long[] getApprovedRolesForFileOrFolder(Long fileId)
 			throws ProcessingException;
 
 	/**

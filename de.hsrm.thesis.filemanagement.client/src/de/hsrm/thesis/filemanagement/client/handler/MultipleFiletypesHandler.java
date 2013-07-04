@@ -16,7 +16,7 @@ public class MultipleFiletypesHandler extends AbstractHandler
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			Map<String, String> metaValues, String fileformat, Long filetypeNr, Long parentFolderId)
 			throws ProcessingException {
 		// check if fileformat is assigned to filetype
 		// multiple
@@ -40,7 +40,7 @@ public class MultipleFiletypesHandler extends AbstractHandler
 
 		if (nextHandler != null) {
 			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr);
+					filetypeNr, parentFolderId);
 		}
 	}
 

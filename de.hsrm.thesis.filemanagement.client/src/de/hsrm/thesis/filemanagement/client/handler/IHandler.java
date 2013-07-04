@@ -10,7 +10,7 @@ import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 public interface IHandler {
 
 	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException;
+			String fileformat, Long filetypeNr, Long parentFolderId) throws ProcessingException;
 
 	public void setNext(IHandler handler);
 

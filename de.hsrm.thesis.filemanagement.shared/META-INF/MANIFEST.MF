@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.thesis.filemanagement.shared.Activator
 Export-Package: de.hsrm.thesis.filemanagement.shared,
  de.hsrm.thesis.filemanagement.shared.formdata,
+ de.hsrm.thesis.filemanagement.shared.forms,
  de.hsrm.thesis.filemanagement.shared.nonFormdataBeans,
  de.hsrm.thesis.filemanagement.shared.security,
  de.hsrm.thesis.filemanagement.shared.services,

@@ -42,7 +42,7 @@ public class RoleProcessService extends AbstractService implements IRoleProcessS
   }
 
   @Override
-  public Long[] getApprovedRolesForFile(Long fileId) throws ProcessingException {
+  public Long[] getApprovedRolesForFileOrFolder(Long fileId) throws ProcessingException {
     LongArrayHolder longArrayHolder = new LongArrayHolder();
     SQL.selectInto("SELECT role_id FROM role_file_permission WHERE file_id = :fileId INTO :longArray",
         new NVPair("fileId", fileId),

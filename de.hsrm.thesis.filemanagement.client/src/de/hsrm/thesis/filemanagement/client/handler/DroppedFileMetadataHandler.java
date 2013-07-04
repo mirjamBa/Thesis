@@ -16,7 +16,7 @@ public class DroppedFileMetadataHandler extends AbstractHandler
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException {
+			String fileformat, Long filetypeNr, Long parentFolderId) throws ProcessingException {
 		if(dropfile != null){
 			// extract data
 			fileData = SERVICES.getService(IFileService.class).saveFile(dropfile);
@@ -25,7 +25,7 @@ public class DroppedFileMetadataHandler extends AbstractHandler
 		}
 
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr);
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr, parentFolderId);
 		}
 
 	}

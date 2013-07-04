@@ -6,7 +6,6 @@ import java.util.Set;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
-import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.service.AbstractService;
@@ -37,7 +36,6 @@ public class DBStorageService extends AbstractService
 					+ " username VARCHAR(32) NOT NULL, "
 					+ " pass VARCHAR(256) NOT NULL, "
 					+ " salt VARCHAR(64) NOT NULL ) ");
-//					+ " permission_id INT NOT NULL, " + " icon BLOB " + ")");
 			SQL.commit();
 
 			SQL.insert(" CREATE UNIQUE INDEX IX_USERNAME ON TABUSERS (username) ");
@@ -52,24 +50,24 @@ public class DBStorageService extends AbstractService
 					+ "tag_id    BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT TAG_PK PRIMARY KEY,"
 					+ "name      VARCHAR(256) NOT NULL)");
 			SQL.commit();
-
-			SQL.insert("CREATE TABLE file ("
-					+ "file_id   BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILE_PK PRIMARY KEY,"
-					+ "number    BIGINT NOT NULL,"
-					+ "filetype_id  BIGINT NOT NULL, "
-					+ "file_path  VARCHAR(256) NOT NULL, "
-					+ "u_id      BIGINT  REFERENCES TABUSERS(u_id))");
+			
+			SQL.insert("CREATE TABLE file_folder ( "
+					+ "file_folder_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FILE_FOLDER_PK PRIMARY KEY, "
+					+ "name 		  VARCHAR(256) NOT NULL, "
+					+ "u_id			  BIGINT NOT NULL REFERENCES TABUSERS(u_id), "
+					+ "parent_folder  BIGINT, "
+					+ "is_folder	  BOOLEAN NOT NULL )");
 			SQL.commit();
 
 			SQL.insert("CREATE TABLE tag_file ("
 					+ "tag_id    BIGINT NOT NULL REFERENCES tag(tag_id),"
-					+ "file_id   BIGINT NOT NULL REFERENCES file(file_id),"
+					+ "file_id   BIGINT NOT NULL REFERENCES file_folder(file_folder_id),"
 					+ "PRIMARY KEY(tag_id, file_id))");
 			SQL.commit();
 
 			SQL.insert("CREATE TABLE version ("
 					+ "version_id  BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT VERSIOn_PK PRIMARY KEY,"
-					+ "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
+					+ "file_id     BIGINT NOT NULL REFERENCES file_folder(file_folder_id),"
 					+ "version     VARCHAR(8) NOT NULL)");
 			SQL.commit();
 
@@ -83,7 +81,7 @@ public class DBStorageService extends AbstractService
 
 			SQL.insert("CREATE TABLE metadata ("
 					+ "metadata_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT METADATA_PK PRIMARY KEY,"
-					+ "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
+					+ "file_id     BIGINT NOT NULL REFERENCES file_folder(file_folder_id),"
 					+ "attribute_id  BIGINT NOT NULL REFERENCES metadata_attribute(attribute_id),"
 					+ "value       VARCHAR(512))");
 			SQL.commit();
@@ -101,7 +99,7 @@ public class DBStorageService extends AbstractService
 			SQL.commit();
 
 			SQL.insert("CREATE TABLE role_file_permission ("
-					+ "file_id     BIGINT NOT NULL REFERENCES file(file_id),"
+					+ "file_id     BIGINT NOT NULL REFERENCES file_folder(file_folder_id),"
 					+ "role_id     BIGINT NOT NULL REFERENCES role(role_id),"
 					+ "PRIMARY KEY(file_id, role_id))");
 			SQL.commit();
@@ -119,6 +117,7 @@ public class DBStorageService extends AbstractService
 					+ "role_id		BIGINT NOT NULL REFERENCES role(role_id), "
 					+ "permission_name	VARCHAR(256) NOT NULL )");
 
+			//create default roles
 			SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('"
 					+ IRoleProcessService.USER_ROLE_ADMIN + "', null)");
 			SQL.insert("INSERT INTO role (name, user_creator_id) VALUES ('"
@@ -132,6 +131,7 @@ public class DBStorageService extends AbstractService
 
 			SQL.commit();
 
+			//insert dublin core filetypes
 			@SuppressWarnings("unchecked")
 			ICode<Long>[] codes = CODES.getCodeType(FileTypeCodeType.class)
 					.getCodes();
@@ -142,6 +142,7 @@ public class DBStorageService extends AbstractService
 				SQL.commit();
 			}
 
+			//inser dublin core metadata element set
 			@SuppressWarnings("unchecked")
 			ICode<Long>[] meta = CODES.getCodeType(
 					DublinCoreMetadataElementSetCodeType.class).getCodes();
@@ -154,20 +155,33 @@ public class DBStorageService extends AbstractService
 				SQL.commit();
 			}
 
+			//insert some extra metadata
 			SQL.insert(
 					"INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
-					new NVPair("name", TEXTS.get("EntryDate")), new NVPair(
+					new NVPair("name", IStorageService.META_ENTRYDATE), new NVPair(
 							"datatype", DatatypeCodeType.DateCode.ID));
 
 			SQL.insert(
 					"INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
-					new NVPair("name", TEXTS.get("Filesize")), new NVPair(
+					new NVPair("name", IStorageService.META_FILESIZE), new NVPair(
 							"datatype", DatatypeCodeType.StringCode.ID));
 
 			SQL.insert(
 					"INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
-					new NVPair("name", TEXTS.get("FileExtension")), new NVPair(
+					new NVPair("name", IStorageService.META_FILEEXTENSION), new NVPair(
 							"datatype", DatatypeCodeType.StringCode.ID));
+			
+			SQL.insert(
+					"INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+					new NVPair("name", IStorageService.META_NUMBER), new NVPair(
+							"datatype", DatatypeCodeType.LongCode.ID));
+			
+			SQL.insert(
+					"INSERT INTO metadata_attribute (name, datatype) VALUES (:name, :datatype)",
+					new NVPair("name", IStorageService.META_FILEPATH), new NVPair(
+							"datatype", DatatypeCodeType.StringCode.ID));
+			
+			
 
 		}
 

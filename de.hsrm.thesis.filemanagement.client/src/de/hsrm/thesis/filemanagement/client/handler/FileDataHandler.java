@@ -36,11 +36,11 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			Map<String, String> metaValues, String fileformat, Long filetypeNr, Long parentFolderId)
 			throws ProcessingException {
 
 		// prepare fileform
-		frm = fillFileForm(fileData, filetypeNr, metaValues);
+		frm = fillFileForm(fileData, filetypeNr, metaValues, parentFolderId);
 
 		if (dropfile == null) {
 			// show form, user can modify data
@@ -51,12 +51,13 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 			// drag and drop action: quick processing required
 			FileFormData formData = new FileFormData();
 			frm.exportFormData(formData);
-			SERVICES.getService(IFileService.class).create(formData, fileData);
+			SERVICES.getService(IFileService.class).create(formData, fileData, frm.getParentFolderId());
 		}
+		frm = null;
 
 		if (nextHandler != null) {
 			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr);
+					filetypeNr, parentFolderId);
 		}
 	}
 
@@ -66,9 +67,9 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 	}
 
 	private FileForm fillFileForm(ServerFileData fileData, Long filetypeNr,
-			Map<String, String> metaValues) throws ProcessingException {
+			Map<String, String> metaValues, Long parentFolderId) throws ProcessingException {
 		if (frm == null) {
-			frm = new FileForm(fileData, filetypeNr);
+			frm = new FileForm(fileData, filetypeNr, parentFolderId);
 		} else {
 			frm.setFileData(fileData);
 			frm.setFiletypeNr(filetypeNr);

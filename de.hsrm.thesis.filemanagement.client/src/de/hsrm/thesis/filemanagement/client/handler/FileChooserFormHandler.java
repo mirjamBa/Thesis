@@ -12,7 +12,7 @@ public class FileChooserFormHandler extends AbstractHandler implements IHandler 
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr) throws ProcessingException {
+			String fileformat, Long filetypeNr, Long parentFolderId) throws ProcessingException {
 		// not necessary for drag and drop action
 		if (dropfile == null) {
 
@@ -28,7 +28,7 @@ public class FileChooserFormHandler extends AbstractHandler implements IHandler 
 			}
 		}
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr);
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr, parentFolderId);
 		}
 	}
 

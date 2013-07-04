@@ -12,17 +12,14 @@ public class FileSearchFormData extends AbstractFormData {
 	public FileSearchFormData() {
 	}
 
-	public FileNrFrom getFileNrFrom() {
-		return getFieldByClass(FileNrFrom.class);
-	}
-	public FileNrTo getFileNrTo() {
-		return getFieldByClass(FileNrTo.class);
-	}
 	public FileSearchMetadataTable getFileSearchMetadataTable() {
 		return getFieldByClass(FileSearchMetadataTable.class);
 	}
 	public FileType getFileType() {
 		return getFieldByClass(FileType.class);
+	}
+	public FolderSearch getFolderSearch() {
+		return getFieldByClass(FolderSearch.class);
 	}
 	public GeneralSearch getGeneralSearch() {
 		return getFieldByClass(GeneralSearch.class);
@@ -33,22 +30,11 @@ public class FileSearchFormData extends AbstractFormData {
 	public Typist getTypist() {
 		return getFieldByClass(Typist.class);
 	}
-	public static class FileNrFrom extends AbstractValueFieldData<Long> {
-		private static final long serialVersionUID = 1L;
-
-		public FileNrFrom() {
-		}
-	}
-	public static class FileNrTo extends AbstractValueFieldData<Long> {
-		private static final long serialVersionUID = 1L;
-
-		public FileNrTo() {
-		}
-	}
 	public static class FileSearchMetadataTable extends MetadataTableFieldData {
 		private static final long serialVersionUID = 1L;
 
 		public FileSearchMetadataTable() {
+			super();
 		}
 	}
 	public static class FileType extends AbstractValueFieldData<Long> {
@@ -65,6 +51,12 @@ public class FileSearchFormData extends AbstractFormData {
 			super.initValidationRules(ruleMap);
 			ruleMap.put(ValidationRule.CODE_TYPE, FileTypeCodeType.class);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
+		}
+	}
+	public static class FolderSearch extends AbstractValueFieldData<Boolean> {
+		private static final long serialVersionUID = 1L;
+
+		public FolderSearch() {
 		}
 	}
 	public static class GeneralSearch extends AbstractValueFieldData<String> {

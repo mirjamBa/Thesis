@@ -62,6 +62,21 @@ public class FileFormData extends AbstractFormData {
 	public void setFiletypeNr(long filetypeNr) {
 		getFiletypeNrProperty().setValue(filetypeNr);
 	}
+	public ParentFolderIdProperty getParentFolderIdProperty() {
+		return getPropertyByClass(ParentFolderIdProperty.class);
+	}
+	/**
+	 * access method for property ParentFolderId.
+	 */
+	public Long getParentFolderId() {
+		return getParentFolderIdProperty().getValue();
+	}
+	/**
+	 * access method for property ParentFolderId.
+	 */
+	public void setParentFolderId(Long parentFolderId) {
+		getParentFolderIdProperty().setValue(parentFolderId);
+	}
 	public AvailableTagsBox getAvailableTagsBox() {
 		return getFieldByClass(AvailableTagsBox.class);
 	}
@@ -89,6 +104,9 @@ public class FileFormData extends AbstractFormData {
 	public FileFormMetadataTable getFileFormMetadataTable() {
 		return getFieldByClass(FileFormMetadataTable.class);
 	}
+	public FileFormRoles getFileFormRoles() {
+		return getFieldByClass(FileFormRoles.class);
+	}
 	public Filesize getFilesize() {
 		return getFieldByClass(Filesize.class);
 	}
@@ -112,9 +130,6 @@ public class FileFormData extends AbstractFormData {
 	}
 	public Rights getRights() {
 		return getFieldByClass(Rights.class);
-	}
-	public Roles getRoles() {
-		return getFieldByClass(Roles.class);
 	}
 	public Source getSource() {
 		return getFieldByClass(Source.class);
@@ -147,6 +162,12 @@ public class FileFormData extends AbstractFormData {
 		private static final long serialVersionUID = 1L;
 
 		public FiletypeNrProperty() {
+		}
+	}
+	public class ParentFolderIdProperty extends AbstractPropertyData<Long> {
+		private static final long serialVersionUID = 1L;
+
+		public ParentFolderIdProperty() {
 		}
 	}
 	public static class AvailableTagsBox extends AbstractValueFieldData<Long[]> {
@@ -258,6 +279,21 @@ public class FileFormData extends AbstractFormData {
 
 		public FileFormMetadataTable() {
 			super();
+		}
+	}
+	public static class FileFormRoles extends AbstractValueFieldData<Long[]> {
+		private static final long serialVersionUID = 1L;
+
+		public FileFormRoles() {
+		}
+
+		/**
+		 * list of derived validation rules.
+		 */
+		@Override
+		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+			super.initValidationRules(ruleMap);
+			ruleMap.put(ValidationRule.LOOKUP_CALL, RoleLookupCall.class);
 		}
 	}
 	public static class Filesize extends AbstractValueFieldData<String> {
@@ -378,21 +414,6 @@ public class FileFormData extends AbstractFormData {
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
 			ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
-		}
-	}
-	public static class Roles extends AbstractValueFieldData<Long[]> {
-		private static final long serialVersionUID = 1L;
-
-		public Roles() {
-		}
-
-		/**
-		 * list of derived validation rules.
-		 */
-		@Override
-		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
-			super.initValidationRules(ruleMap);
-			ruleMap.put(ValidationRule.LOOKUP_CALL, RoleLookupCall.class);
 		}
 	}
 	public static class Source extends AbstractValueFieldData<String> {

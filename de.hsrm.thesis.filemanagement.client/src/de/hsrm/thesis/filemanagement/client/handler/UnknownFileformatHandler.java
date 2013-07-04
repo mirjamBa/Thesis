@@ -16,7 +16,7 @@ public class UnknownFileformatHandler extends AbstractHandler
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr)
+			Map<String, String> metaValues, String fileformat, Long filetypeNr, Long parentFolderId)
 			throws ProcessingException {
 		// check if format is registered and linked with
 		// filetype
@@ -31,7 +31,7 @@ public class UnknownFileformatHandler extends AbstractHandler
 		}
 		if (nextHandler != null) {
 			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr);
+					filetypeNr, parentFolderId);
 		}
 	}
 

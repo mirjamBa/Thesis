@@ -52,10 +52,10 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       return true;
     }
 
-    @Override
-    protected String getConfiguredDefaultIconId() {
-      return Icons.Eye;
-    }
+    	@Override
+		protected String getConfiguredDefaultIconId() {
+			return Icons.Eye;
+		}
 
     @Override
     protected void execRowAction(ITableRow row) throws ProcessingException {
@@ -173,8 +173,6 @@ public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdmin
       protected void execAction() throws ProcessingException {
         UserForm frm = new UserForm();
         frm.getRoleField().setValue(new Long[]{SERVICES.getService(IRoleProcessService.class).getUserRoleId()});
-        //TODO set User Role enabled
-//        frm.getRoleField().getCheckedLookupRow().setEnabled(false); //triggers nullpointer
         frm.startNew();
         frm.waitFor();
         if (frm.isFormStored()) {

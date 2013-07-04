@@ -23,7 +23,7 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.AuthorityBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.AuthorityBox.RolesField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.AuthorityBox.FileFormRolesField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.DetailedBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.DetailedBox.FileFormMetadataTableField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.MetadataBox;
@@ -56,9 +56,7 @@ import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
-import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
-import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
@@ -68,6 +66,7 @@ public class FileForm extends AbstractForm {
 	private Long m_fileNr;
 	private ServerFileData m_fileData;
 	private long m_filetypeNr;
+	private Long m_parentFolderId;
 
 	public FileForm() throws ProcessingException {
 	}
@@ -77,11 +76,12 @@ public class FileForm extends AbstractForm {
 		m_fileNr = fileNr;
 	}
 
-	public FileForm(ServerFileData fileData, long filetypeNr)
+	public FileForm(ServerFileData fileData, long filetypeNr, Long parentFolderId)
 			throws ProcessingException {
 		super();
 		m_filetypeNr = filetypeNr;
 		m_fileData = fileData;
+		m_parentFolderId = parentFolderId;
 	}
 
 	@Override
@@ -121,8 +121,8 @@ public class FileForm extends AbstractForm {
 		return getFieldByClass(AvailableTagsBox.class);
 	}
 
-	public RolesField getAvailableUserField() {
-		return getFieldByClass(RolesField.class);
+	public FileFormRolesField getAvailableUserField() {
+		return getFieldByClass(FileFormRolesField.class);
 	}
 
 	public CancelButton getCancelButton() {
@@ -662,8 +662,8 @@ public class FileForm extends AbstractForm {
 			@Order(40.0)
 			public class AuthorityBox extends AbstractGroupBox {
 
-				public RolesField getRolesField() {
-					return getFieldByClass(RolesField.class);
+				public FileFormRolesField getRolesField() {
+					return getFieldByClass(FileFormRolesField.class);
 				}
 
 				@Override
@@ -672,34 +672,7 @@ public class FileForm extends AbstractForm {
 				}
 
 				@Order(10.0)
-				public class RolesField extends AbstractListBox<Long> {
-
-					@Override
-					protected int getConfiguredGridH() {
-						return 5;
-					}
-
-					@Override
-					protected String getConfiguredLabel() {
-						return TEXTS.get("UserRoles");
-					}
-
-					@Override
-					protected Class<? extends LookupCall> getConfiguredLookupCall() {
-						return RoleLookupCall.class;
-					}
-
-					@Override
-					protected void execPrepareLookup(LookupCall call)
-							throws ProcessingException {
-						((RoleLookupCall) call).setUserId(SERVICES.getService(
-								IUserProcessService.class).getCurrentUserId());
-					}
-
-					@Override
-					public String getTooltipText() {
-						return TEXTS.get("TooltipRolesField");
-					}
+				public class FileFormRolesField extends RolesField {
 				}
 			}
 		}
@@ -729,7 +702,7 @@ public class FileForm extends AbstractForm {
 			table.addRow(row);
 		}
 	}
-
+	
 	public class ModifyHandler extends AbstractFormHandler {
 
 		@Override
@@ -763,7 +736,7 @@ public class FileForm extends AbstractForm {
 			IFileService service = SERVICES.getService(IFileService.class);
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
-			formData = service.create(formData, m_fileData);
+			formData = service.create(formData, m_fileData, getParentFolderId());
 		}
 	}
 
@@ -774,32 +747,10 @@ public class FileForm extends AbstractForm {
 			IFileService service = SERVICES.getService(IFileService.class);
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
-			service.updateRoleFilePermission(getFileNr(), formData.getRoles()
+			service.updateRoleFileAndFolderPermission(getFileNr(), formData.getFileFormRoles()
 					.getValue());
 		}
 	}
-
-	// public class ViewHandler extends AbstractFormHandler {
-	//
-	// @Override
-	// protected void execLoad() throws ProcessingException {
-	// // open form code
-	// }
-	//
-	// @Override
-	// protected boolean getConfiguredOpenExclusive() {
-	// return true;
-	// }
-	// }
-	//
-	// public void startView() throws ProcessingException {
-	// startInternalExclusive(new FileForm.ViewHandler());
-	// }
-	//
-	// @Override
-	// public Object computeExclusiveKey() throws ProcessingException {
-	// return m_fileNr;
-	// }
 
 	@FormData
 	public ServerFileData getFileData() {
@@ -819,5 +770,15 @@ public class FileForm extends AbstractForm {
 	@FormData
 	public void setFiletypeNr(long filetypeNr) {
 		m_filetypeNr = filetypeNr;
+	}
+
+	@FormData
+	public Long getParentFolderId() {
+		return m_parentFolderId;
+	}
+
+	@FormData
+	public void setParentFolderId(Long parentFolderId) {
+		m_parentFolderId = parentFolderId;
 	}
 }

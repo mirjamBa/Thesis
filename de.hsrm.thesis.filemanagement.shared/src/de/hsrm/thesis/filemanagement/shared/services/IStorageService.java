@@ -7,6 +7,12 @@ import org.eclipse.scout.service.IService2;
 
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IStorageService extends IService2 {
+	
+	public static final String META_ENTRYDATE = "EntryDate";
+	public static final String META_FILESIZE = "Filsize";
+	public static final String META_FILEPATH = "Filepath";
+	public static final String META_FILEEXTENSION = "FileExtension";
+	public static final String META_NUMBER = "Number";
 
 	/**
 	 * Creates a new storage for all application data

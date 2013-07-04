@@ -35,8 +35,8 @@ public class Activator extends Plugin {
 		handlerUtility.addHandler(handler);
 	}
 	
-	public void handle(File dropfile) throws ProcessingException{
-		handlerUtility.handle(dropfile);
+	public void handle(File dropfile, Long parentFolderId) throws ProcessingException{
+		handlerUtility.handle(dropfile, parentFolderId);
 	}
 	
 	/**

@@ -7,8 +7,10 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractSearchForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractResetButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractSearchButton;
+import org.eclipse.scout.rt.client.ui.form.fields.checkbox.AbstractCheckBox;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.listbox.AbstractListBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
@@ -20,6 +22,11 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import de.hsrm.thesis.filemanagement.client.forms.BookmarkNameForm;
+import de.hsrm.thesis.filemanagement.client.forms.SearchBookmarkForm;
+import de.hsrm.thesis.filemanagement.client.services.IFileSearchBookmarkService;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.BookmarkButton;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.LoadBookmarkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.ResetButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.SearchButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox;
@@ -28,10 +35,12 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabB
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.FileTypeField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.TypistField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.FolderSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField;
 import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.forms.BookmarkNameFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
@@ -39,6 +48,7 @@ import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
 @FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.USE)
 public class FileSearchForm extends AbstractSearchForm {
+	private SearchBookmarkForm bookmarkForm;
 
 	@Override
 	protected String getConfiguredTitle() {
@@ -47,6 +57,7 @@ public class FileSearchForm extends AbstractSearchForm {
 
 	public FileSearchForm() throws ProcessingException {
 		super();
+		bookmarkForm = new SearchBookmarkForm(this);
 	}
 
 	@Override
@@ -74,6 +85,10 @@ public class FileSearchForm extends AbstractSearchForm {
 		return getFieldByClass(TagField.class);
 	}
 
+	public BookmarkButton getBookmarkButton() {
+		return getFieldByClass(BookmarkButton.class);
+	}
+
 	public DetailedBox getDetailedBox() {
 		return getFieldByClass(DetailedBox.class);
 	}
@@ -86,12 +101,20 @@ public class FileSearchForm extends AbstractSearchForm {
 		return getFieldByClass(FileTypeField.class);
 	}
 
+	public FolderSearchField getFolderSearchField() {
+		return getFieldByClass(FolderSearchField.class);
+	}
+
 	public GeneralSearchBox getGeneralSearchBox() {
 		return getFieldByClass(GeneralSearchBox.class);
 	}
 
 	public GeneralSearchField getGeneralSearchField() {
 		return getFieldByClass(GeneralSearchField.class);
+	}
+
+	public LoadBookmarkButton getLoadBookmarkButton() {
+		return getFieldByClass(LoadBookmarkButton.class);
 	}
 
 	public MainBox getMainBox() {
@@ -132,6 +155,20 @@ public class FileSearchForm extends AbstractSearchForm {
 						return TEXTS.get("GeneralSearchFieldToolTip");
 					}
 
+				}
+
+				@Order(20.0)
+				public class FolderSearchField extends AbstractCheckBox {
+
+					@Override
+					protected String getConfiguredLabel() {
+						return TEXTS.get("FolderSearch");
+					}
+
+					@Override
+					protected void execInitField() throws ProcessingException {
+						setValue(true);
+					}
 				}
 			}
 
@@ -235,6 +272,51 @@ public class FileSearchForm extends AbstractSearchForm {
 
 		@Order(30.0)
 		public class SearchButton extends AbstractSearchButton {
+		}
+
+		@Order(40.0)
+		public class LoadBookmarkButton extends AbstractButton {
+
+			@Override
+			protected String getConfiguredLabel() {
+				return TEXTS.get("ShowBookmarks");
+			}
+
+			@Override
+			protected void execClickAction() throws ProcessingException {
+				if (!bookmarkForm.isFormOpen()) {
+					bookmarkForm.startNew();
+					setLabel(TEXTS.get("CloseBookmark"));
+				} else {
+					setLabel(getConfiguredLabel());
+					bookmarkForm.doClose();
+				}
+			}
+		}
+
+		@Order(50.0)
+		public class BookmarkButton extends AbstractButton {
+
+			@Override
+			protected String getConfiguredLabel() {
+				return TEXTS.get("BookmarkSearch");
+			}
+
+			@Override
+			protected void execClickAction() throws ProcessingException {
+				String s = FileSearchForm.this.getXML("UTF-8");
+				BookmarkNameForm form = new BookmarkNameForm();
+				form.startNew();
+				form.waitFor();
+				if (form.isFormStored()) {
+					BookmarkNameFormData data = new BookmarkNameFormData();
+					form.exportFormData(data);
+					SERVICES.getService(IFileSearchBookmarkService.class)
+							.exportFileSearch(data.getName().getValue(), s);
+					bookmarkForm.getBookmarkField().reloadTableData();
+				}
+
+			}
 		}
 	}
 

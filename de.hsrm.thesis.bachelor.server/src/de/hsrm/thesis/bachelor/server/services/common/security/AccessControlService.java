@@ -36,6 +36,7 @@ public class AccessControlService extends AbstractAccessControlService {
     }
 
     try {
+      //FIXME remove
       if (SERVICES.getService(IRoleProcessService.class).getAdminRoleId().equals(userNr)) {
         permissions.add(new AllPermission());
       }

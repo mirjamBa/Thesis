@@ -1,7 +1,9 @@
 package de.hsrm.thesis.filemanagement.shared.utility;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ArrayUtility {
@@ -54,6 +56,22 @@ public class ArrayUtility {
 		}
 
 		return dict;
+	}
+
+	/**
+	 * Removes all objects in b from a. Example: a[LongX, LongY, LongZ],
+	 * b[LongY, LongZ, LongA], returns [LongX]
+	 * 
+	 * @param a
+	 *            Long[]
+	 * @param b
+	 *            Long[]
+	 * @return Long[]
+	 */
+	public static Long[] getDifferenz(Long[] a, Long[] b) {
+		List<Long> listA = new ArrayList<Long>(Arrays.asList(a));
+		listA.removeAll(Arrays.asList(b));
+		return listA.toArray(new Long[listA.size()]);
 	}
 
 }

@@ -105,6 +105,14 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.IAssignToRoleService">
       </proxy>
+      <service
+            factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
+            class="de.hsrm.thesis.filemanagement.client.services.FileSearchBookmarkService">
+      </service>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.IFolderService">
+      </proxy>
    </extension>
 
 </plugin>

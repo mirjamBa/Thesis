@@ -76,6 +76,10 @@
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.mi.storage.database.derby.server.services.AssignToRoleService">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.mi.storage.database.derby.server.services.FolderService">
+      </service>
    </extension>
 
 </plugin>
