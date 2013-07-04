@@ -6,6 +6,10 @@
          point="org.eclipse.scout.service.services">
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.mi.storage.database.derby.server.services.common.security.AccessControlService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.mi.storage.database.derby.server.services.DBStorageService">
       </service>
       <service

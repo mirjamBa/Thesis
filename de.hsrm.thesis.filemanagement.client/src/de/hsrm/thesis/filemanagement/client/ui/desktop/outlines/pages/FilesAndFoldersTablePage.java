@@ -54,9 +54,13 @@ import de.hsrm.thesis.filemanagement.shared.forms.CreateFoldersPermission;
 import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
 import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.DeleteFolderPermission;
+import de.hsrm.thesis.filemanagement.shared.security.DownloadFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.FreeFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.FreeFolderPermission;
 import de.hsrm.thesis.filemanagement.shared.security.OpenFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.UpdateFolderPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IFolderService;
@@ -420,11 +424,10 @@ public class FilesAndFoldersTablePage
 				if (getTree().getSelectedNode() instanceof FilePage) {
 					setVisible(false);
 				}
-				// if (isVisible()) {
-				// setVisibleGranted(ACCESS
-				// .getLevel(new ModifyFoldersPermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
-				// }
+				if (isVisible()) {
+					setVisibleGranted(ACCESS
+							.getLevel(new UpdateFolderPermission()) > BasicHierarchyPermission.LEVEL_NONE);
+				}
 			}
 
 			@Override
@@ -457,11 +460,10 @@ public class FilesAndFoldersTablePage
 				if (getTree().getSelectedNode() instanceof FilePage) {
 					setVisible(false);
 				}
-				// if (isVisible()) {
-				// setVisibleGranted(ACCESS
-				// .getLevel(new DeleteFoldersPermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
-				// }
+				if (isVisible()) {
+					setVisibleGranted(ACCESS
+							.getLevel(new DeleteFolderPermission()) > BasicHierarchyPermission.LEVEL_NONE);
+				}
 			}
 
 			@Override
@@ -487,11 +489,10 @@ public class FilesAndFoldersTablePage
 				if (getTree().getSelectedNode() instanceof FilePage) {
 					setVisible(false);
 				}
-				// if (isVisible()) {
-				// setVisibleGranted(ACCESS
-				// .getLevel(new FreeFoldersPermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
-				// }
+				if (isVisible()) {
+					setVisibleGranted(ACCESS
+							.getLevel(new FreeFolderPermission()) > BasicHierarchyPermission.LEVEL_NONE);
+				}
 			}
 
 			@Override
@@ -628,9 +629,7 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				// setVisibleGranted(ACCESS.getLevel(new
-				// DownloadFilePermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
+				setVisibleGranted(ACCESS.getLevel(new DownloadFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
 				setVisible(!getIsFolderColumn().getSelectedValue());
 			}
 

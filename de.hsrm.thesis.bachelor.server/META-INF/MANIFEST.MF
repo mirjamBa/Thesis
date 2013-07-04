@@ -21,8 +21,7 @@ Export-Package: de.hsrm.thesis.bachelor.server;
    de.hsrm.thesis.bachelor.shared.services.process,
    org.eclipse.scout.service,
    org.eclipse.scout.rt.shared.services.common.code,
-   org.osgi.framework",
- de.hsrm.thesis.bachelor.server.services.common.security;uses:="org.eclipse.scout.rt.server.services.common.security"
+   org.osgi.framework"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.server,
  org.eclipse.scout.http.servletfilter,
