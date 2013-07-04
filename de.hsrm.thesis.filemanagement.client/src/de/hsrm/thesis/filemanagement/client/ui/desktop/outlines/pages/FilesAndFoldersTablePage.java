@@ -580,7 +580,7 @@ public class FilesAndFoldersTablePage
 				form.getDetailedBox().setVisible(false);
 				form.getTagBox().setVisible(false);
 
-				// FIXME Role Form auslagern
+				// FIXME extract role form
 				form.getTitleField().setMandatory(false);
 
 				form.getAuthorityBox()
