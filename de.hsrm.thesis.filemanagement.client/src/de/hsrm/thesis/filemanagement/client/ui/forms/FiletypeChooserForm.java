@@ -27,9 +27,9 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FileTypeField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.FiletypeChooserFormBox.FiletypeChooserFormField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.formdata.FiletypeChooserFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FiletypeChooserFormData;
 
 @FormData(value = FiletypeChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FiletypeChooserForm extends AbstractForm {

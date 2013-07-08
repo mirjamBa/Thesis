@@ -20,9 +20,9 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.Autho
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.AuthorityBox.UserRolesField;
-import de.hsrm.thesis.filemanagement.shared.AuthorityFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IFolderService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.AuthorityFormData;
 
 @FormData(value = AuthorityFormData.class, sdkCommand = SdkCommand.CREATE)
 public class AuthorityForm extends AbstractForm {

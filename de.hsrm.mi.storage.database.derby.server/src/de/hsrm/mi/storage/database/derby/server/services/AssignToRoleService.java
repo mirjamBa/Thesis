@@ -10,10 +10,10 @@ import org.eclipse.scout.rt.shared.services.common.security.IAccessControlServic
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.AssignToRoleFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateAssignToRolePermission;
 import de.hsrm.thesis.filemanagement.shared.security.RemoveAssignToRolePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IAssignToRoleService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.AssignToRoleFormData;
 
 public class AssignToRoleService extends AbstractService
 		implements

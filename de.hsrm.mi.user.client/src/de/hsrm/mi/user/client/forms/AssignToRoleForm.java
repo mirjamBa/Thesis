@@ -18,8 +18,8 @@ import de.hsrm.mi.user.client.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox
 import de.hsrm.mi.user.client.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox.RoleField;
 import de.hsrm.mi.user.client.forms.AssignToRoleForm.MainBox.CancelButton;
 import de.hsrm.mi.user.client.forms.AssignToRoleForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.formdata.AssignToRoleFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IAssignToRoleService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.AssignToRoleFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.AllRoleLookupCall;
 
 @FormData(value = AssignToRoleFormData.class, sdkCommand = SdkCommand.CREATE)

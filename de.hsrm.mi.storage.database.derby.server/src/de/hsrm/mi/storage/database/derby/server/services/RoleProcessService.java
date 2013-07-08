@@ -11,13 +11,13 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.RoleFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateRolePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteRolePermission;
 import de.hsrm.thesis.filemanagement.shared.security.ReadRolesPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateRolePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.RoleFormData;
 
 public class RoleProcessService extends AbstractService implements IRoleProcessService {
 

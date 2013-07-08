@@ -22,7 +22,6 @@ import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.server.util.HashUtility;
-import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.ReadUsersPermission;
@@ -30,6 +29,7 @@ import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.UserFormData;
 
 public class UserProcessService extends AbstractService
 		implements

@@ -6,13 +6,16 @@ import java.util.Map;
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 
-public class FileChooserFormHandler extends AbstractHandler implements IHandler {
+public class FileChooserFormHandler extends AbstracClienttHandler
+		implements
+			IClientHandler {
 
 	@Override
-	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr, Long parentFolderId) throws ProcessingException {
+	public void handle(File dropfile, ServerFileData fileData,
+			Map<String, String> metaValues, String fileformat, Long filetypeNr,
+			Long parentFolderId) throws ProcessingException {
 		// not necessary for drag and drop action
 		if (dropfile == null) {
 
@@ -25,15 +28,27 @@ public class FileChooserFormHandler extends AbstractHandler implements IHandler 
 				fileData = form.getFileData();
 				metaValues = form.getMetaValues();
 				fileformat = fileData.getFileformat();
+				doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
+						parentFolderId);
 			}
+			//don't dispatch if form isn't stored and no dropfile is available
+		} else {
+			doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
+					parentFolderId);
 		}
+	}
+
+	private void doNext(File dropfile, ServerFileData fileData,
+			Map<String, String> metaValues, String fileformat, Long filetypeNr,
+			Long parentFolderId) throws ProcessingException {
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr, parentFolderId);
+			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
+					filetypeNr, parentFolderId);
 		}
 	}
 
 	@Override
-	public void setNext(IHandler handler) {
+	public void setNext(IClientHandler handler) {
 		this.nextHandler = handler;
 	}
 

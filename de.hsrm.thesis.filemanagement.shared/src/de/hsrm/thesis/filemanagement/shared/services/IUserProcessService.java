@@ -6,7 +6,7 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.UserFormData;
 
 /**
  * 

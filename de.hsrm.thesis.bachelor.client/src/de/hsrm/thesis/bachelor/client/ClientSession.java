@@ -1,6 +1,5 @@
 package de.hsrm.thesis.bachelor.client;
 
-import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.logger.IScoutLogger;
 import org.eclipse.scout.commons.logger.ScoutLogManager;
@@ -8,10 +7,8 @@ import org.eclipse.scout.rt.client.AbstractClientSession;
 import org.eclipse.scout.rt.client.ClientJob;
 import org.eclipse.scout.rt.client.servicetunnel.http.HttpServiceTunnel;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
-import org.eclipse.scout.rt.shared.services.common.code.ICode;
 
 import de.hsrm.thesis.bachelor.client.ui.desktop.Desktop;
-import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
 public class ClientSession extends AbstractClientSession {
   private static IScoutLogger logger = ScoutLogManager.getLogger(ClientSession.class);
@@ -27,11 +24,11 @@ public class ClientSession extends AbstractClientSession {
     return ClientJob.getCurrentSession(ClientSession.class);
   }
 
-  @SuppressWarnings("unchecked")
-  @FormData
-  public ICode<Integer> getPermission() {
-    return getSharedContextVariable(IUserProcessService.PERMISSION_KEY, ICode.class);
-  }
+//  @SuppressWarnings("unchecked")
+//  @FormData
+//  public ICode<Integer> getPermission() {
+//    return getSharedContextVariable(IUserProcessService.PERMISSION_KEY, ICode.class);
+//  }
 
   @Override
   public void execLoadSession() throws ProcessingException {

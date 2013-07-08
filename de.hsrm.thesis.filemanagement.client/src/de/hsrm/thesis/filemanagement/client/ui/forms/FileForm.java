@@ -51,12 +51,12 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.Ta
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox.AvailableTagsBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox.NewTagField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 

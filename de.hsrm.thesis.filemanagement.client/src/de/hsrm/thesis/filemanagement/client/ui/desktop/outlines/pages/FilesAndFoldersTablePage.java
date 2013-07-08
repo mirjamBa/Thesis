@@ -42,17 +42,16 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.Activator;
-import de.hsrm.thesis.filemanagement.client.forms.FoldersForm;
 import de.hsrm.thesis.filemanagement.client.services.IClientFileService;
 import de.hsrm.thesis.filemanagement.client.ui.ColumnFactory;
 import de.hsrm.thesis.filemanagement.client.ui.DatatypeColumnFactory;
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
-import de.hsrm.thesis.filemanagement.shared.forms.CreateFoldersPermission;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ColumnSpec;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FoldersForm;
+import de.hsrm.thesis.filemanagement.shared.beans.ColumnSpec;
 import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
+import de.hsrm.thesis.filemanagement.shared.security.CreateFoldersPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFolderPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DownloadFilePermission;
@@ -68,6 +67,7 @@ import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
 

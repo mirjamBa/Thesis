@@ -8,9 +8,9 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.shared.Icons;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 
 public class ImageTablePage extends FilesAndFoldersTablePage {
 

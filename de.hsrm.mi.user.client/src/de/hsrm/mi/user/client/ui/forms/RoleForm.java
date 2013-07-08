@@ -17,8 +17,8 @@ import de.hsrm.mi.user.client.ui.forms.RoleForm.MainBox.CancelButton;
 import de.hsrm.mi.user.client.ui.forms.RoleForm.MainBox.OkButton;
 import de.hsrm.mi.user.client.ui.forms.RoleForm.MainBox.RoleBox;
 import de.hsrm.mi.user.client.ui.forms.RoleForm.MainBox.RoleBox.NameField;
-import de.hsrm.thesis.filemanagement.shared.formdata.RoleFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.RoleFormData;
 
 @FormData(value = RoleFormData.class, sdkCommand = SdkCommand.CREATE)
 public class RoleForm extends AbstractForm {

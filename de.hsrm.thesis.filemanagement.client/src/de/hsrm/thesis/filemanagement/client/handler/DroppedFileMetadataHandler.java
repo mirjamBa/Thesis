@@ -6,13 +6,13 @@ import java.util.Map;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 
-public class DroppedFileMetadataHandler extends AbstractHandler
+public class DroppedFileMetadataHandler extends AbstracClienttHandler
 		implements
-			IHandler {
+			IClientHandler {
 
 	@Override
 	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
@@ -31,7 +31,7 @@ public class DroppedFileMetadataHandler extends AbstractHandler
 	}
 
 	@Override
-	public void setNext(IHandler handler) {
+	public void setNext(IClientHandler handler) {
 		this.nextHandler = handler;
 	}
 

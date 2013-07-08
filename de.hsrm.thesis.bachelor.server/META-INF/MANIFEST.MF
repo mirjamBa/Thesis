@@ -30,12 +30,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.jaxws216;bundle-version="2.1.6",
  net.sourceforge.tess4j,
  de.hsrm.thesis.bachelor.shared,
- de.hsrm.mi.administration.shared,
  tikanearlyall;bundle-version="1.0.0",
- de.hsrm.thesis.filemanagement.shared,
- de.hsrm.thesis.filemanagement.server,
- de.hsrm.user.security;bundle-version="1.0.0"
+ de.hsrm.thesis.bachelor.security;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: javax.servlet;version="2.4.0",
+Import-Package: de.hsrm.thesis.filemanagement.shared.services,
+ javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"
 Bundle-ActivationPolicy: lazy

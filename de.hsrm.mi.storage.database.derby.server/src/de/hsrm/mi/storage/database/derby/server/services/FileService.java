@@ -32,10 +32,7 @@ import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
-import de.hsrm.thesis.filemanagement.shared.formdata.MetadataTableFieldData;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.FreeFilePermission;
@@ -52,6 +49,9 @@ import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesServi
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.ICategorizable;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataTableFieldData;
 
 public class FileService extends AbstractService implements IFileService {
 	private SimpleDateFormat m_formatter = new SimpleDateFormat(
@@ -102,7 +102,7 @@ public class FileService extends AbstractService implements IFileService {
 		SQL.update("UPDATE file_folder SET name = :name WHERE file_folder_id = :id", 
 				new NVPair("name", formData.getTitle().getValue()), 
 						new NVPair("id", fileId));
-
+		
 		return formData;
 	}
 	
@@ -208,7 +208,10 @@ public class FileService extends AbstractService implements IFileService {
 		// insert individual metadata
 		MetadataTableFieldData tableData = formData.getFileFormMetadataTable();
 		insertUserMetadata(tableData, false, fileId.getValue());
-
+		
+		//start handler
+		de.hsrm.thesis.filemanagement.server.Activator.getDefault().handle(fileId.getValue(), formData, fileData, parentFolderId);
+		
 		return formData;
 	}
 

@@ -5,7 +5,7 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.AssignToRoleFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.AssignToRoleFormData;
 
 @InputValidation(IValidationStrategy.PROCESS.class)
 	public interface IAssignToRoleService extends IService{

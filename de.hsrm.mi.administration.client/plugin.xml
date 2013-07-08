@@ -7,5 +7,12 @@
    <extension
          point="org.eclipse.scout.rt.extension.client.menus">
    </extension>
+   <extension
+         point="org.eclipse.scout.rt.extension.client.desktopExtensions">
+      <desktopExtension
+            active="true"
+            class="de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension">
+      </desktopExtension>
+   </extension>
 
 </plugin>

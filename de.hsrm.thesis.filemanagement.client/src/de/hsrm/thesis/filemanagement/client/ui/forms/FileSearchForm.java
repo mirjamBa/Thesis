@@ -22,8 +22,6 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.client.forms.BookmarkNameForm;
-import de.hsrm.thesis.filemanagement.client.forms.SearchBookmarkForm;
 import de.hsrm.thesis.filemanagement.client.services.IFileSearchBookmarkService;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.BookmarkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.LoadBookmarkButton;
@@ -39,10 +37,10 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabB
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
-import de.hsrm.thesis.filemanagement.shared.forms.BookmarkNameFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.BookmarkNameFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 

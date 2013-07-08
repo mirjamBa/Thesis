@@ -7,9 +7,9 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService2;
 
-import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileSearchFormData;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFileService extends IService2 {

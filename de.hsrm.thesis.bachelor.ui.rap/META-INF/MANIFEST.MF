@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.ui.rap.theme.rayo,
  org.eclipse.scout.rt.client.mobile,
  javax.servlet;bundle-version="3.0.0",
- de.hsrm.user.security;bundle-version="1.0.0"
+ de.hsrm.thesis.bachelor.security;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Scout-Project: org.eclipse.scout.rt
 Bundle-ActivationPolicy: lazy

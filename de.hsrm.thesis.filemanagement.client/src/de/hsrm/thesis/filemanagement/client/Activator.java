@@ -8,8 +8,8 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.osgi.framework.BundleContext;
 
-import de.hsrm.thesis.filemanagement.client.handler.HandlerUtility;
-import de.hsrm.thesis.filemanagement.client.handler.IHandler;
+import de.hsrm.thesis.filemanagement.client.handler.ClientHandlerManager;
+import de.hsrm.thesis.filemanagement.client.handler.IClientHandler;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -22,21 +22,21 @@ public class Activator extends Plugin {
 	// The shared instance
 	private static Activator plugin;
 	
-	private HandlerUtility handlerUtility = new HandlerUtility();
+	private ClientHandlerManager handlerManager = new ClientHandlerManager();
 	
 	/**
 	 * @return the handlerUtility
 	 */
-	public HandlerUtility getHandlerUtility() {
-		return handlerUtility;
+	public ClientHandlerManager getHandlerManager() {
+		return handlerManager;
 	}
 
-	public void addHandler(IHandler handler){
-		handlerUtility.addHandler(handler);
+	public void addHandler(IClientHandler handler){
+		handlerManager.addHandler(handler);
 	}
 	
 	public void handle(File dropfile, Long parentFolderId) throws ProcessingException{
-		handlerUtility.handle(dropfile, parentFolderId);
+		handlerManager.handle(dropfile, parentFolderId);
 	}
 	
 	/**

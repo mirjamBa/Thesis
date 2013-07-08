@@ -5,20 +5,13 @@ Bundle-SymbolicName: de.hsrm.thesis.filemanagement.shared;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.thesis.filemanagement.shared.Activator
 Export-Package: de.hsrm.thesis.filemanagement.shared,
- de.hsrm.thesis.filemanagement.shared.formdata,
- de.hsrm.thesis.filemanagement.shared.forms,
- de.hsrm.thesis.filemanagement.shared.nonFormdataBeans,
+ de.hsrm.thesis.filemanagement.shared.beans,
  de.hsrm.thesis.filemanagement.shared.security,
  de.hsrm.thesis.filemanagement.shared.services,
  de.hsrm.thesis.filemanagement.shared.services.code,
  de.hsrm.thesis.filemanagement.shared.services.common.text,
  de.hsrm.thesis.filemanagement.shared.services.formdata,
  de.hsrm.thesis.filemanagement.shared.services.lookup,
- de.hsrm.thesis.filemanagement.shared.formdata,
- de.hsrm.thesis.filemanagement.shared.security,
- de.hsrm.thesis.filemanagement.shared.services,
- de.hsrm.thesis.filemanagement.shared.services.code,
- de.hsrm.thesis.filemanagement.shared.services.common.text,
  de.hsrm.thesis.filemanagement.shared.utility
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared

@@ -19,10 +19,11 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.Can
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox.FileField;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileChooserFormData;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileChooserFormData;
+
 import java.util.Map;
 
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)

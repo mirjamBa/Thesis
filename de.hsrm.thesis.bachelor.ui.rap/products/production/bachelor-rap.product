@@ -31,10 +31,19 @@
 
    <plugins>
       <plugin id="com.ibm.icu"/>
+      <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
+      <plugin id="de.hsrm.mi.administration.client"/>
+      <plugin id="de.hsrm.mi.administration.shared"/>
+      <plugin id="de.hsrm.mi.user.client"/>
+      <plugin id="de.hsrm.mi.user.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.client"/>
       <plugin id="de.hsrm.thesis.bachelor.client.mobile"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.ui.rap"/>
+      <plugin id="de.hsrm.thesis.filemanagement.client"/>
+      <plugin id="de.hsrm.thesis.filemanagement.shared"/>
+      <plugin id="de.hsrm.user.security"/>
+      <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
       <plugin id="org.apache.batik.bridge"/>
       <plugin id="org.apache.batik.css"/>
@@ -52,6 +61,7 @@
       <plugin id="org.apache.commons.fileupload"/>
       <plugin id="org.apache.commons.io"/>
       <plugin id="org.apache.commons.logging"/>
+      <plugin id="org.apache.derby.jdbc_1091.fragment" fragment="true"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -60,7 +70,9 @@
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.net"/>
+      <plugin id="org.eclipse.core.net.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.emf.common"/>
       <plugin id="org.eclipse.emf.ecore"/>
       <plugin id="org.eclipse.emf.ecore.xmi"/>
@@ -93,6 +105,7 @@
       <plugin id="org.eclipse.scout.rt.client.mobile"/>
       <plugin id="org.eclipse.scout.rt.extension.client"/>
       <plugin id="org.eclipse.scout.rt.shared"/>
+      <plugin id="org.eclipse.scout.rt.shared.legacy.texts.fragment" fragment="true"/>
       <plugin id="org.eclipse.scout.rt.ui.rap"/>
       <plugin id="org.eclipse.scout.rt.ui.rap.incubator.filechooser"/>
       <plugin id="org.eclipse.scout.rt.ui.rap.mobile"/>
@@ -102,6 +115,8 @@
       <plugin id="org.eclipse.scout.service"/>
       <plugin id="org.eclipse.scout.svg.client"/>
       <plugin id="org.eclipse.scout.svg.ui.rap"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
       <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.w3c.css.sac"/>
       <plugin id="org.w3c.dom.smil"/>

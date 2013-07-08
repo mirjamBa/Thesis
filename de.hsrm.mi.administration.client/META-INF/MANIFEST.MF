@@ -5,18 +5,17 @@ Bundle-SymbolicName: de.hsrm.mi.administration.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.client.Activator
 Export-Package: de.hsrm.mi.administration.client,
+ de.hsrm.mi.administration.client.extension,
  de.hsrm.mi.administration.client.ui.desktop.outlines,
  de.hsrm.mi.administration.client.ui.desktop.outlines.pages,
  de.hsrm.mi.administration.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client,
- org.eclipse.scout.rt.shared,
  org.eclipse.scout.rt.extension.client,
  de.hsrm.mi.administration.shared,
- de.hsrm.thesis.filemanagement.shared,
- de.hsrm.thesis.filemanagement.client,
- de.hsrm.mi.user.client,
- org.eclipse.scout.svg.client
+ org.eclipse.scout.svg.client,
+ de.hsrm.thesis.filemanagement.shared;bundle-version="1.0.0",
+ de.hsrm.thesis.filemanagement.client;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.w3c.dom.svg;version="[1.1.0,2.0.0)"
 Bundle-ActivationPolicy: lazy

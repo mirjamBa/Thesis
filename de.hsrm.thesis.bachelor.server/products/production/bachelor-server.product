@@ -29,18 +29,22 @@
    </vm>
 
    <plugins>
+      <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
+      <plugin id="de.hsrm.mi.storage.database.derby.server"/>
       <plugin id="de.hsrm.thesis.bachelor.server"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
+      <plugin id="de.hsrm.thesis.filemanagement.server"/>
+      <plugin id="de.hsrm.thesis.filemanagement.shared"/>
+      <plugin id="de.hsrm.user.security"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
       <plugin id="net.sourceforge.tess4j"/>
       <plugin id="org.apache.commons.codec"/>
       <plugin id="org.apache.derby.jdbc_1091.fragment" fragment="true"/>
-      <plugin id="org.apache.tika"/>
-      <plugin id="org.codehouse.xstream"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
       <plugin id="org.eclipse.equinox.app"/>
       <plugin id="org.eclipse.equinox.common"/>
       <plugin id="org.eclipse.equinox.http.registry"/>
@@ -59,11 +63,10 @@
       <plugin id="org.eclipse.scout.rt.jdbc.derby"/>
       <plugin id="org.eclipse.scout.rt.server"/>
       <plugin id="org.eclipse.scout.rt.shared"/>
+      <plugin id="org.eclipse.scout.rt.shared.legacy.texts.fragment" fragment="true"/>
       <plugin id="org.eclipse.scout.service"/>
       <plugin id="org.eclipse.update.configurator"/>
-      <plugin id="tikaaddon"/>
-      <plugin id="tikaohnevorbis"/>
-      <plugin id="tikaxx"/>
+      <plugin id="tikanearlyall"/>
    </plugins>
 
 

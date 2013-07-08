@@ -13,11 +13,11 @@ import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.forms.FoldersFormData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IFolderService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FoldersFormData;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
 
 public class FolderService extends AbstractService implements IFolderService {

@@ -114,5 +114,12 @@
             class="de.hsrm.thesis.filemanagement.shared.services.IFolderService">
       </proxy>
    </extension>
+   <extension
+         point="org.eclipse.scout.rt.extension.client.desktopExtensions">
+      <desktopExtension
+            active="true"
+            class="de.hsrm.thesis.filemanagement.client.extension.FilemanagementDesktopExtension">
+      </desktopExtension>
+   </extension>
 
 </plugin>

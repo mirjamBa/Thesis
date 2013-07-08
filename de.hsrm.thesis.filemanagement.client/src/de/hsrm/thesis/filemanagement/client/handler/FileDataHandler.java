@@ -10,12 +10,12 @@ import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
-import de.hsrm.thesis.filemanagement.shared.formdata.FileFormData;
-import de.hsrm.thesis.filemanagement.shared.nonFormdataBeans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
 
-public class FileDataHandler extends AbstractHandler implements IHandler {
+public class FileDataHandler extends AbstracClienttHandler implements IClientHandler {
 
 	private FileForm frm;
 
@@ -62,7 +62,7 @@ public class FileDataHandler extends AbstractHandler implements IHandler {
 	}
 
 	@Override
-	public void setNext(IHandler handler) {
+	public void setNext(IClientHandler handler) {
 		this.nextHandler = handler;
 	}
 

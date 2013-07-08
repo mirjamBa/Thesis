@@ -20,11 +20,11 @@ import de.hsrm.mi.user.client.ui.forms.UserForm.MainBox.UserBox.OkButton;
 import de.hsrm.mi.user.client.ui.forms.UserForm.MainBox.UserBox.PasswordField;
 import de.hsrm.mi.user.client.ui.forms.UserForm.MainBox.UserBox.RoleField;
 import de.hsrm.mi.user.client.ui.forms.UserForm.MainBox.UserBox.UsernameField;
-import de.hsrm.thesis.filemanagement.shared.formdata.UserFormData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IPasswordProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.UserFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
 
 @FormData(value = UserFormData.class, sdkCommand = SdkCommand.CREATE)

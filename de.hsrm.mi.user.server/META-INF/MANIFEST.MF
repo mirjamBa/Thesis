@@ -1,12 +1,11 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Server
-Bundle-SymbolicName: de.hsrm.user.security;singleton:=true
+Bundle-SymbolicName: de.hsrm.thesis.bachelor.security;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.user.server.Activator
 Require-Bundle: org.eclipse.core.runtime,
  javax.servlet,
- de.hsrm.thesis.filemanagement.shared,
  org.eclipse.scout.commons,
  org.eclipse.scout.http.servletfilter,
  org.eclipse.scout.service;bundle-version="3.9.0"
@@ -14,3 +13,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: de.hsrm.mi.user.server,
  de.hsrm.mi.user.server.security
+Import-Package: de.hsrm.thesis.filemanagement.shared.services

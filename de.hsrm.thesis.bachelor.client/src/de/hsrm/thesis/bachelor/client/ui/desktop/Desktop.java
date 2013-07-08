@@ -1,6 +1,7 @@
 package de.hsrm.thesis.bachelor.client.ui.desktop;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -10,7 +11,7 @@ import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
-import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
+import org.eclipse.scout.rt.client.ui.desktop.IDesktopExtension;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
@@ -22,11 +23,11 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.desktop.outlines.FilemanagementAdminOutline;
-import de.hsrm.mi.user.client.ui.desktop.outlines.UserOutline;
+import de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension;
+import de.hsrm.mi.user.client.extension.UserDesktopExtension;
 import de.hsrm.thesis.bachelor.client.ClientSession;
-import de.hsrm.thesis.bachelor.client.ui.desktop.outlines.FileManagementOutline;
 import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
+import de.hsrm.thesis.filemanagement.client.extension.FilemanagementDesktopExtension;
 import de.hsrm.thesis.filemanagement.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
@@ -35,13 +36,26 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   public Desktop() {
   }
 
+  @Override
+  protected void injectDesktopExtensions(List<IDesktopExtension> desktopExtensions) {
+    FilemanagementDesktopExtension fileExtension = new FilemanagementDesktopExtension();
+    fileExtension.setCoreDesktop(this);
+    desktopExtensions.add(fileExtension);
+
+    FileAdminDesktopExtension extension = new FileAdminDesktopExtension();
+    extension.setCoreDesktop(this);
+    desktopExtensions.add(extension);
+
+    UserDesktopExtension userExtension = new UserDesktopExtension();
+    userExtension.setCoreDesktop(this);
+    desktopExtensions.add(userExtension);
+
+  }
+
   @SuppressWarnings("unchecked")
   @Override
   protected Class<? extends IOutline>[] getConfiguredOutlines() {
     ArrayList<Class> outlines = new ArrayList<Class>();
-    outlines.add(FileManagementOutline.class);
-    outlines.add(FilemanagementAdminOutline.class);
-    outlines.add(UserOutline.class);
     return outlines.toArray(new Class[outlines.size()]);
   }
 
@@ -159,42 +173,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     @Override
     protected void execAction() throws ProcessingException {
       SERVICES.getService(IOCRProcessService.class).doOCR();
-    }
-  }
-
-  @Order(10.0)
-  public class FileManagementOutlineViewButton extends AbstractOutlineViewButton {
-    public FileManagementOutlineViewButton() {
-      super(Desktop.this, FileManagementOutline.class);
-    }
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("FileManagement");
-    }
-  }
-
-  @Order(20.0)
-  public class AdministrationOutlineViewButton extends AbstractOutlineViewButton {
-    public AdministrationOutlineViewButton() {
-      super(Desktop.this, FilemanagementAdminOutline.class);
-    }
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("Administration");
-    }
-  }
-
-  @Order(30.0)
-  public class UserOutlineViewButton extends AbstractOutlineViewButton {
-    public UserOutlineViewButton() {
-      super(Desktop.this, UserOutline.class);
-    }
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("User");
     }
   }
 
