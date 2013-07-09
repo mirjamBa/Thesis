@@ -15,5 +15,5 @@ Export-Package: de.hsrm.thesis.filemanagement.shared,
  de.hsrm.thesis.filemanagement.shared.utility
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

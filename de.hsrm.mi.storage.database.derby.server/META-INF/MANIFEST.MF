@@ -3,20 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Server
 Bundle-SymbolicName: de.hsrm.thesis.filemanagement.database.derby;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.hsrm.mi.storage.database.derby.server.Activator
-Export-Package: de.hsrm.mi.storage.database.derby.server.services
+Bundle-Activator: de.hsrm.thesis.filemanagement.database.derby.server.Activator
+Export-Package: de.hsrm.thesis.filemanagement.database.derby.server,
+ de.hsrm.thesis.filemanagement.database.derby.server.services,
+ de.hsrm.thesis.filemanagement.database.derby.server.services.common.security,
+ de.hsrm.thesis.filemanagement.database.derby.server.services.lookup
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.service,
  org.eclipse.scout.commons,
- org.eclipse.scout.rt.server
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.eclipse.scout.rt.server,
+ de.hsrm.thesis.filemanagement.shared;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: de.hsrm.thesis.filemanagement.server,
- de.hsrm.thesis.filemanagement.server.util,
- de.hsrm.thesis.filemanagement.shared.beans,
- de.hsrm.thesis.filemanagement.shared.security,
- de.hsrm.thesis.filemanagement.shared.services,
- de.hsrm.thesis.filemanagement.shared.services.code,
- de.hsrm.thesis.filemanagement.shared.services.formdata,
- de.hsrm.thesis.filemanagement.shared.services.lookup,
- de.hsrm.thesis.filemanagement.shared.utility
+Import-Package: de.hsrm.thesis.filemanagement.server

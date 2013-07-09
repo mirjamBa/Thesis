@@ -18,7 +18,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client,
  org.eclipse.swt,
  org.eclipse.scout.svg.client
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.hsrm.thesis.filemanagement.shared,
  de.hsrm.thesis.filemanagement.shared.beans,
  de.hsrm.thesis.filemanagement.shared.security,

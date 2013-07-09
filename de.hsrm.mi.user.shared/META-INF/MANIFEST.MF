@@ -7,5 +7,5 @@ Bundle-Activator: de.hsrm.mi.user.shared.Activator
 Export-Package: de.hsrm.mi.user.shared.security
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

@@ -31,11 +31,12 @@
       <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
       <plugin id="de.hsrm.mi.administration.shared"/>
       <plugin id="de.hsrm.mi.user.shared"/>
+      <plugin id="de.hsrm.thesis.bachelor.security"/>
       <plugin id="de.hsrm.thesis.bachelor.server"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
+      <plugin id="de.hsrm.thesis.filemanagement.database.derby"/>
       <plugin id="de.hsrm.thesis.filemanagement.server"/>
       <plugin id="de.hsrm.thesis.filemanagement.shared"/>
-      <plugin id="de.hsrm.user.security"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
       <plugin id="net.sourceforge.tess4j"/>

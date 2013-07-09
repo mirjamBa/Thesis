@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.extension.client;visibility:=reexport,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.svg.client
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: de.hsrm.mi.administration.client.extension,
  de.hsrm.mi.user.client.extension,
  de.hsrm.thesis.filemanagement.client.extension,

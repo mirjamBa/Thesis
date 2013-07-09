@@ -16,5 +16,5 @@ Export-Package: de.hsrm.thesis.bachelor.shared;
  de.hsrm.thesis.bachelor.shared.services.common.text;uses:="org.eclipse.scout.rt.shared.services.common.text"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

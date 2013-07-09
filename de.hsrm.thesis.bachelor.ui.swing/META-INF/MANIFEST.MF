@@ -11,5 +11,5 @@ Require-Bundle: org.eclipse.scout.rt.ui.swing,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.net,
  com.bsiag.scout.rt.ui.swing.rayo
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

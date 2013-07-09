@@ -9,5 +9,5 @@ Export-Package: de.hsrm.mi.administration.shared.security,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared,
  org.eclipse.osgi
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
