@@ -9,6 +9,13 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.AbstractCode;
 import org.eclipse.scout.rt.shared.services.common.code.AbstractCodeType;
 
+/**
+ * Long-CodeType for used Datatypes for simplification of field and table
+ * validation
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class DatatypeCodeType extends AbstractCodeType<Long> {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +34,8 @@ public class DatatypeCodeType extends AbstractCodeType<Long> {
 			} else if (codeId.equals(DoubleCode.ID)) {
 				return Double.parseDouble(value);
 			} else if (codeId.equals(DateCode.ID)) {
-				SimpleDateFormat formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
+				SimpleDateFormat formatter = new SimpleDateFormat(
+						TEXTS.get("SimpleDateFormat"));
 				try {
 					return formatter.parse(value);
 				} catch (ParseException e) {

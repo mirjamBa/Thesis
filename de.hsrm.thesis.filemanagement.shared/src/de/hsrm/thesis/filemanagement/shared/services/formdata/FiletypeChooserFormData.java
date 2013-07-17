@@ -92,6 +92,7 @@ public class FiletypeChooserFormData extends AbstractFormData {
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
 			ruleMap.put(ValidationRule.CODE_TYPE, FileTypeCodeType.class);
+			ruleMap.put(ValidationRule.MANDATORY, true);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}
@@ -101,6 +102,15 @@ public class FiletypeChooserFormData extends AbstractFormData {
 		private static final long serialVersionUID = 1L;
 
 		public FiletypeChooserForm() {
+		}
+
+		/**
+		 * list of derived validation rules.
+		 */
+		@Override
+		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+			super.initValidationRules(ruleMap);
+			ruleMap.put(ValidationRule.MAX_LENGTH, Integer.MAX_VALUE);
 		}
 	}
 }

@@ -17,11 +17,10 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.AuthorityBox;
+import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.AuthorityBox.UserRolesField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm.MainBox.AuthorityBox.UserRolesField;
-import de.hsrm.thesis.filemanagement.shared.services.IFileService;
-import de.hsrm.thesis.filemanagement.shared.services.IFolderService;
+import de.hsrm.thesis.filemanagement.shared.services.IFileAndFolderFreeingService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.AuthorityFormData;
 
 @FormData(value = AuthorityFormData.class, sdkCommand = SdkCommand.CREATE)
@@ -97,7 +96,7 @@ public class AuthorityForm extends AbstractForm {
 			Long[] selectedRoles = formData.getUserRoles().getValue();
 
 			// free folder
-			SERVICES.getService(IFileService.class)
+			SERVICES.getService(IFileAndFolderFreeingService.class)
 					.updateRoleFileAndFolderPermission(getFolderId(),
 							selectedRoles);
 
@@ -108,7 +107,7 @@ public class AuthorityForm extends AbstractForm {
 				newRoles.removeAll(Arrays.asList(getOldRoleIds()));
 				if (newRoles.size() > 0) {
 					// add new roles to child folders and files
-					SERVICES.getService(IFolderService.class)
+					SERVICES.getService(IFileAndFolderFreeingService.class)
 							.addFreeingToChildFolderAndFiles(getFolderId(),
 									newRoles.toArray(new Long[newRoles.size()]));
 				}
@@ -122,7 +121,7 @@ public class AuthorityForm extends AbstractForm {
 			}
 			if (removedRoles.size() > 0) {
 				// remove roles from child folders and files
-				SERVICES.getService(IFolderService.class)
+				SERVICES.getService(IFileAndFolderFreeingService.class)
 						.removeFreeingFromChildFolderAndFiles(
 								getFolderId(),
 								removedRoles.toArray(new Long[removedRoles

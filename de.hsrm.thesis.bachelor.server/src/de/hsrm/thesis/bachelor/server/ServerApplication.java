@@ -55,12 +55,6 @@ public class ServerApplication implements IApplication {
           return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while installing the bachelor server Db schema", t);
         }
 
-        try {
-        }
-        catch (Throwable t) {
-          return new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error while initiating filetypes", t);
-        }
-
         return Status.OK_STATUS;
       }
     };

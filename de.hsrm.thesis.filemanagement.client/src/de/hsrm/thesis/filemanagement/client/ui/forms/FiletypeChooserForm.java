@@ -12,7 +12,7 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
-import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
+import org.eclipse.scout.rt.client.ui.form.fields.htmlfield.AbstractHtmlField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -90,12 +90,23 @@ public class FiletypeChooserForm extends AbstractForm {
 		public class FiletypeChooserFormBox extends AbstractGroupBox {
 
 			@Order(10.0)
-			public class FiletypeChooserFormField extends AbstractLabelField {
+			public class FiletypeChooserFormField extends AbstractHtmlField {
 
 				@Override
-				protected String getConfiguredLabel() {
-					return TEXTS.get("FiletypeChooserFormLabel");
+				protected boolean getConfiguredLabelVisible() {
+					return false;
 				}
+
+				@Override
+				protected int getConfiguredGridH() {
+					return 2;
+				}
+
+				@Override
+				protected void execInitField() throws ProcessingException {
+					setValue(TEXTS.get("FiletypeChooserFormLabel"));
+				}
+
 			}
 
 			@Order(20.0)
@@ -109,6 +120,11 @@ public class FiletypeChooserForm extends AbstractForm {
 				@Override
 				protected Class<? extends ICodeType<?>> getConfiguredCodeType() {
 					return FileTypeCodeType.class;
+				}
+
+				@Override
+				protected boolean getConfiguredMandatory() {
+					return true;
 				}
 
 				@Override
@@ -139,7 +155,7 @@ public class FiletypeChooserForm extends AbstractForm {
 				protected String getConfiguredLabel() {
 					return TEXTS.get("FileName");
 				}
-				
+
 				@Override
 				protected boolean getConfiguredEnabled() {
 					return false;

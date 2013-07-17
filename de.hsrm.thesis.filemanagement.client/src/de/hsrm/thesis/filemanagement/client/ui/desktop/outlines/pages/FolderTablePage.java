@@ -13,7 +13,7 @@ public class FolderTablePage extends FilesAndFoldersTablePage {
 
 	@Override
 	protected String getConfiguredTitle() {
-		return TEXTS.get("TestFolderTablePage");
+		return TEXTS.get("FolderTablePage");
 	}
 
 	@Order(10.0)

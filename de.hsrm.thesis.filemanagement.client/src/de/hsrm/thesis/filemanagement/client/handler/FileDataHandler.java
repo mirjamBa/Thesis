@@ -1,8 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
-import java.io.File;
 import java.util.Date;
-import java.util.Map;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.fields.AbstractValueField;
@@ -10,14 +8,29 @@ import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
-import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
 
-public class FileDataHandler extends AbstracClienttHandler implements IClientHandler {
+public class FileDataHandler extends AbstractClientHandler implements IClientHandler {
 
 	private FileForm frm;
+	private FileFormData frmData;
+	
+
+	/**
+	 * @return the frmData
+	 */
+	public FileFormData getFrmData() {
+		return frmData;
+	}
+
+	/**
+	 * @param frmData the frmData to set
+	 */
+	public void setFrmData(FileFormData frmData) {
+		this.frmData = frmData;
+	}
 
 	/**
 	 * @return the frm
@@ -35,29 +48,40 @@ public class FileDataHandler extends AbstracClienttHandler implements IClientHan
 	}
 
 	@Override
-	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr, Long parentFolderId)
+	public void handle(FileUploadData data)
 			throws ProcessingException {
 
 		// prepare fileform
-		frm = fillFileForm(fileData, filetypeNr, metaValues, parentFolderId);
+		frm = fillFileForm(data);
 
-		if (dropfile == null) {
+		if (data.getFile() == null) {
 			// show form, user can modify data
 			frm.startNew();
 			frm.touch();
 			frm.waitFor();
+			
+			if(frmData == null){
+				frmData = new FileFormData();
+			}
+			frm.exportFormData(frmData);
+			data.setFileFormData(frmData);
+			data.setFileId(frm.getFileNr());
+			
 		} else {
 			// drag and drop action: quick processing required
-			FileFormData formData = new FileFormData();
-			frm.exportFormData(formData);
-			SERVICES.getService(IFileService.class).create(formData, fileData, frm.getParentFolderId());
+			if(frmData == null){
+				frmData = new FileFormData();
+			}
+			frm.exportFormData(frmData);
+			data.setFileFormData(frmData);
+			frmData = SERVICES.getService(IFileService.class).create(frmData, data.getServerFileData(), frm.getParentFolderId());
+			data.setFileId(frmData.getFileNr());
 		}
 		frm = null;
+		frmData = null;
 
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr, parentFolderId);
+			nextHandler.handle(data);
 		}
 	}
 
@@ -66,13 +90,13 @@ public class FileDataHandler extends AbstracClienttHandler implements IClientHan
 		this.nextHandler = handler;
 	}
 
-	private FileForm fillFileForm(ServerFileData fileData, Long filetypeNr,
-			Map<String, String> metaValues, Long parentFolderId) throws ProcessingException {
+	private FileForm fillFileForm(FileUploadData data) throws ProcessingException {
 		if (frm == null) {
-			frm = new FileForm(fileData, filetypeNr, parentFolderId);
+			frm = new FileForm(data.getServerFileData(), data.getFiletypeNr(), data.getParentFolderId());
 		} else {
-			frm.setFileData(fileData);
-			frm.setFiletypeNr(filetypeNr);
+			frm.setFileData(data.getServerFileData());
+			frm.setFiletypeNr(data.getFiletypeNr());
+			frm.setParentFolderId(data.getParentFolderId());
 		}
 
 		// extracted meta values
@@ -81,11 +105,11 @@ public class FileDataHandler extends AbstracClienttHandler implements IClientHan
 			String elementName = f.getFieldId().replace("Field", "");
 			AbstractValueField<?> vField = (AbstractValueField<?>) frm
 					.getDCMIBox().getFieldByClass(f.getClass());
-			if (metaValues.containsKey(elementName.toUpperCase())) {
-				vField.parseValue(metaValues.get(elementName.toUpperCase()));
-			} else if (metaValues.containsKey(("dc:" + elementName)
+			if (data.getMetaValues().containsKey(elementName.toUpperCase())) {
+				vField.parseValue(data.getMetaValues().get(elementName.toUpperCase()));
+			} else if (data.getMetaValues().containsKey(("dc:" + elementName)
 					.toUpperCase())) {
-				vField.parseValue(metaValues.get(("dc:" + elementName)
+				vField.parseValue(data.getMetaValues().get(("dc:" + elementName)
 						.toUpperCase()));
 			}
 			vField.touch();
@@ -93,24 +117,24 @@ public class FileDataHandler extends AbstracClienttHandler implements IClientHan
 
 		// most important fields
 		if (frm.getTitleField().isEmpty()) {
-			frm.getTitleField().setValue(fileData.getOldName());
+			frm.getTitleField().setValue(data.getServerFileData().getOldName());
 		}
 		if (frm.getFormatField().isEmpty()) {
 			frm.getFormatField().setValue(
-					metaValues.get("Content-Type".toUpperCase()));
+					data.getMetaValues().get("Content-Type".toUpperCase()));
 		}
 		if (frm.getDateMetadataField().isEmpty()) {
-			frm.getDateMetadataField().setValue(fileData.getLastModified());
+			frm.getDateMetadataField().setValue(data.getServerFileData().getLastModified());
 		}
 
 		frm.getTypistField().setValue(
 				SERVICES.getService(IUserProcessService.class)
 						.getCurrentUserId());
-		frm.getFileExtensionField().setValue(fileData.getFileExtension());
-		frm.getFileTypeField().setValue(filetypeNr);
+		frm.getFileExtensionField().setValue(data.getServerFileData().getFileExtension());
+		frm.getFileTypeField().setValue(data.getFiletypeNr());
 		frm.getFileTypeField().setEnabled(false);
 		frm.getCreationDateField().setValue(new Date());
-		frm.getFilesizeField().setValue(fileData.getFilesize());
+		frm.getFilesizeField().setValue(data.getServerFileData().getFilesize());
 
 		return frm;
 	}

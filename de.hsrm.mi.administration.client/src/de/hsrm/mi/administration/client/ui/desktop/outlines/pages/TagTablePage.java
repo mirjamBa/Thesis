@@ -2,6 +2,7 @@ package de.hsrm.mi.administration.client.ui.desktop.outlines.pages;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
@@ -22,7 +23,7 @@ public class TagTablePage extends AbstractPageWithTable<TagTablePage.Table> {
 
 	@Override
 	protected String getConfiguredTitle() {
-		return TEXTS.get("Tag");
+		return TEXTS.get("Tags");
 	}
 
 	@Override
@@ -43,6 +44,11 @@ public class TagTablePage extends AbstractPageWithTable<TagTablePage.Table> {
 
 	@Order(10.0)
 	public class Table extends AbstractExtensibleTable {
+
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyMenu.class).doAction();
+		}
 
 		public TagIdColumn getTagIdColumn() {
 			return getColumnSet().getColumnByClass(TagIdColumn.class);
@@ -92,6 +98,11 @@ public class TagTablePage extends AbstractPageWithTable<TagTablePage.Table> {
 
 		@Order(10.0)
 		public class NewTagMenu extends AbstractExtensibleMenu {
+
+			@Override
+			protected boolean getConfiguredSingleSelectionAction() {
+				return false;
+			}
 
 			@Override
 			protected String getConfiguredText() {

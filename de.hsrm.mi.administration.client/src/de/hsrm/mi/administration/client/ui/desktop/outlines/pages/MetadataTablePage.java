@@ -3,6 +3,7 @@ package de.hsrm.mi.administration.client.ui.desktop.outlines.pages;
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractBooleanColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
@@ -15,8 +16,8 @@ import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm;
-import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
@@ -39,13 +40,13 @@ public class MetadataTablePage
 	@Override
 	protected Object[][] execLoadTableData(SearchFilter filter)
 			throws ProcessingException {
-		return SERVICES.getService(IUserDefinedAttributesService.class)
-				.getAttributes(m_filetypeNr);
+		return SERVICES.getService(IAttributeService.class).getAttributes(
+				m_filetypeNr);
 	}
 
 	@Order(10.0)
 	public class Table extends AbstractExtensibleTable {
-		
+
 		@Override
 		protected boolean getConfiguredMultiSelect() {
 			return false;
@@ -65,6 +66,11 @@ public class MetadataTablePage
 
 		public ShowInFileTableColumn getShowInFileTableColumn() {
 			return getColumnSet().getColumnByClass(ShowInFileTableColumn.class);
+		}
+
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyMenu.class).doAction();
 		}
 
 		public AttributIDColumn getAttributIDColumn() {
@@ -146,6 +152,11 @@ public class MetadataTablePage
 		public class NewMetadataattributeMenu extends AbstractExtensibleMenu {
 
 			@Override
+			protected boolean getConfiguredSingleSelectionAction() {
+				return false;
+			}
+
+			@Override
 			protected String getConfiguredText() {
 				return TEXTS.get("NewMetadataattribute");
 			}
@@ -157,7 +168,7 @@ public class MetadataTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				MetadataForm form = new MetadataForm();
+				AttributeForm form = new AttributeForm();
 				if (getFiletypeNr() > 0) {
 					form.getFileTypeField().setValue(getFiletypeNr());
 				}
@@ -179,7 +190,7 @@ public class MetadataTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				MetadataForm form = new MetadataForm();
+				AttributeForm form = new AttributeForm();
 				form.setAttributeId(getAttributIDColumn().getSelectedValue());
 				form.getDescriptionField().setValue(
 						getNameColumn().getSelectedValue());
@@ -214,8 +225,8 @@ public class MetadataTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				SERVICES.getService(IUserDefinedAttributesService.class)
-						.delete(getAttributIDColumn().getSelectedValues());
+				SERVICES.getService(IAttributeService.class).delete(
+						getAttributIDColumn().getSelectedValues());
 				reloadPage();
 			}
 		}

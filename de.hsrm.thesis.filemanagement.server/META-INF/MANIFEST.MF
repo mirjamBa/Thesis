@@ -5,6 +5,7 @@ Bundle-SymbolicName: de.hsrm.thesis.filemanagement.server;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.thesis.filemanagement.server.Activator
 Export-Package: de.hsrm.thesis.filemanagement.server,
+ de.hsrm.thesis.filemanagement.server.handler,
  de.hsrm.thesis.filemanagement.server.services,
  de.hsrm.thesis.filemanagement.server.services.common.security,
  de.hsrm.thesis.filemanagement.server.services.lookup

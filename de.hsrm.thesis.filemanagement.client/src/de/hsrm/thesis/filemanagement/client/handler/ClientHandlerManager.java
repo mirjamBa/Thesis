@@ -1,6 +1,5 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,8 +75,8 @@ public class ClientHandlerManager {
 		handler.add(newHandler);
 	}
 
-	public void handle(File dropfile, Long parentFolderId) throws ProcessingException {
-		handler.get(0).handle(dropfile, null, null, null, null, parentFolderId);
+	public void handle(FileUploadData data) throws ProcessingException {
+		handler.get(0).handle(data);
 	}
 
 }

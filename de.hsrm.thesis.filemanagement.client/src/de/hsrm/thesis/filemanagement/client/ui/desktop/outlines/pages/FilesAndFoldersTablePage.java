@@ -35,6 +35,7 @@ import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractEx
 import org.eclipse.scout.rt.shared.AbstractIcons;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
+import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
@@ -42,6 +43,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.Activator;
+import de.hsrm.thesis.filemanagement.client.handler.FileUploadData;
 import de.hsrm.thesis.filemanagement.client.services.IClientFileService;
 import de.hsrm.thesis.filemanagement.client.ui.ColumnFactory;
 import de.hsrm.thesis.filemanagement.client.ui.DatatypeColumnFactory;
@@ -49,9 +51,10 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.AuthorityForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FoldersForm;
+import de.hsrm.thesis.filemanagement.shared.Icons;
 import de.hsrm.thesis.filemanagement.shared.beans.ColumnSpec;
 import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
-import de.hsrm.thesis.filemanagement.shared.security.CreateFoldersPermission;
+import de.hsrm.thesis.filemanagement.shared.security.CreateFolderPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFolderPermission;
 import de.hsrm.thesis.filemanagement.shared.security.DownloadFilePermission;
@@ -67,6 +70,7 @@ import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
+import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
@@ -74,7 +78,7 @@ import de.hsrm.thesis.filemanagement.shared.utility.ArrayUtility;
 public class FilesAndFoldersTablePage
 		extends
 			AbstractExtensiblePageWithTable<FilesAndFoldersTablePage.FilesAndFoldersTable> {
-	private List<IColumn<?>> m_injectedColumns;
+	protected List<IColumn<?>> m_injectedColumns;
 	private Long m_folderId;
 	private String m_folderName;
 
@@ -85,7 +89,7 @@ public class FilesAndFoldersTablePage
 
 	@Override
 	protected String getConfiguredTitle() {
-		return TEXTS.get("File");
+		return TEXTS.get("FileStorage");
 	}
 
 	@Override
@@ -95,10 +99,11 @@ public class FilesAndFoldersTablePage
 
 	@Override
 	protected String getConfiguredIconId() {
-		return AbstractIcons.TreeNode;
+		return Icons.Database;
 	}
 
-	private Long[] extractIdsFromTableData(Object[][] data) {
+	protected Long[] extractIdsFromTableData(Object[][] data)
+			throws ProcessingException {
 		Long[] ids = new Long[data.length];
 		for (int i = 0; i < data.length; i++) {
 			ids[i] = (Long) data[i][0];
@@ -109,18 +114,22 @@ public class FilesAndFoldersTablePage
 	@Override
 	protected IPage execCreateChildPage(ITableRow row)
 			throws ProcessingException {
-		// only create a childPage for folders
+		// only create a childTablePage for folders
 		if (getTable().getIsFolderColumn().getValue(row)) {
 			FolderTablePage page = new FolderTablePage(getTable()
-					.getFileIdColumn().getValue(row));
+					.getFileFolderIdColumn().getValue(row));
 			page.setFolderName(getTable().getNameColumn().getValue(row));
 			return page;
 		} else {
 			// create a page with a form for files
 			FileForm form = prepareFileForm(row);
-			return new FilePage(form, getTable().getFileIdColumn()
+			return new FilePage(form, getTable().getFileFolderIdColumn()
 					.getValue(row));
 		}
+	}
+
+	protected FileSearchFormData getSearchData(SearchFilter filter) {
+		return (FileSearchFormData) filter.getFormData();
 	}
 
 	@Override
@@ -128,8 +137,7 @@ public class FilesAndFoldersTablePage
 			throws ProcessingException {
 		// standard table data
 		Object[][] fileTableData = SERVICES.getService(IFileService.class)
-				.getFolderFiles((FileSearchFormData) filter.getFormData(),
-						getFolderId());
+				.getFolderFiles(getSearchData(filter), getFolderId());
 
 		// dictionary dynamic columns (attribute name and datatype)
 		Map<Object, Object> map = SERVICES.getService(IAttributeService.class)
@@ -161,7 +169,7 @@ public class FilesAndFoldersTablePage
 
 	}
 
-	private void updateDynamicColumns(ColumnSpec[] columnSpecs) {
+	protected void updateDynamicColumns(ColumnSpec[] columnSpecs) {
 		if (columnSpecs.length == 0) {
 			return;
 		}
@@ -197,14 +205,25 @@ public class FilesAndFoldersTablePage
 			if (t.isFileList()) {
 				File[] files = ((FileListTransferObject) t).getFiles();
 				for (int i = 0; i < files.length; ++i) {
-					Activator.getDefault().handle(files[i], getFolderId());
+					FileUploadData data = new FileUploadData();
+					data.setFile(files[i]);
+					data.setParentFolderId(getFolderId());
+					Activator.getDefault().handle(data);
 				}
 				reloadPage();
 			}
 		}
 
+		@Override
 		protected void execRowAction(ITableRow row) throws ProcessingException {
-			getMenu(ModifyMenu.class).doAction();
+			if (!getIsFolderColumn().getValue(row)) {
+				getMenu(ModifyMenu.class).doAction();
+			}
+		}
+
+		@Override
+		protected boolean getConfiguredMultiSelect() {
+			return false;
 		}
 
 		@Override
@@ -226,16 +245,12 @@ public class FilesAndFoldersTablePage
 			return getColumnSet().getColumnByClass(IsFolderColumn.class);
 		}
 
-		// public IconColumn getIconColumn() {
-		// return getColumnSet().getColumnByClass(IconColumn.class);
-		// }
-
-		public FileIdColumn getFileIdColumn() {
-			return getColumnSet().getColumnByClass(FileIdColumn.class);
+		public FileFolderIdColumn getFileFolderIdColumn() {
+			return getColumnSet().getColumnByClass(FileFolderIdColumn.class);
 		}
 
 		@Order(10.0)
-		public class FileIdColumn extends AbstractLongColumn {
+		public class FileFolderIdColumn extends AbstractLongColumn {
 
 			@Override
 			protected boolean getConfiguredDisplayable() {
@@ -268,7 +283,7 @@ public class FilesAndFoldersTablePage
 				if (getIsFolderColumn().getValue(row)) {
 					row.setIconId(AbstractIcons.TreeNode);
 				} else {
-					row.setIconId(AbstractIcons.Bookmark);
+					row.setIconId(Icons.File);
 				}
 			}
 
@@ -316,39 +331,23 @@ public class FilesAndFoldersTablePage
 			}
 		}
 
-		// @Order(50.0)
-		// public class IconColumn extends AbstractStringColumn {
-		//
-		// @Override
-		// protected boolean getConfiguredDisplayable() {
-		// return false;
-		// }
-		//
-		// @Override
-		// protected boolean getConfiguredVisible() {
-		// return false;
-		// }
-		//
-		// @Override
-		// protected void execDecorateCell(Cell cell, ITableRow row)
-		// throws ProcessingException {
-		// if (getIsFolderColumn().getValue(row)) {
-		// row.setIconId(AbstractIcons.TreeNode);
-		// } else {
-		// row.setIconId(AbstractIcons.Bookmark);
-		// }
-		// }
-		// }
-
 		@Order(10.0)
 		public class NewFileMenu extends AbstractExtensibleMenu {
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage) {
+				if (getTree().getSelectedNode() instanceof FilePage
+						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+								.getIsFolderColumn().getSelectedValue() == false)) {
 					setVisible(false);
 				} else {
 					setVisible(true);
+				}
+
+				if (getTree().getSelectedNode().equals(
+						getTree().getRootNode().getChildNode(0))) {
+					setVisible(true);
+
 				}
 				if (isVisible()) {
 					setVisibleGranted(ACCESS
@@ -356,7 +355,6 @@ public class FilesAndFoldersTablePage
 				}
 
 			}
-
 			@Override
 			protected boolean getConfiguredEmptySpaceAction() {
 				return true;
@@ -369,10 +367,16 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				Activator.getDefault()
-						.handle(null,
-								((FilesAndFoldersTablePage) getTree()
-										.getSelectedNode()).getFolderId());
+				FileUploadData data = new FileUploadData();
+				if (getIsFolderColumn().getSelectedValue() != null
+						&& getIsFolderColumn().getSelectedValue() == true) {
+					data.setParentFolderId(getFileFolderIdColumn()
+							.getSelectedValue());
+				} else {
+					data.setParentFolderId(((FilesAndFoldersTablePage) getTree()
+							.getSelectedNode()).getFolderId());
+				}
+				Activator.getDefault().handle(data);
 				reloadPage();
 			}
 		}
@@ -382,15 +386,22 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage) {
+				if (getTree().getSelectedNode() instanceof FilePage
+						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+								.getIsFolderColumn().getSelectedValue() == false)) {
 					setVisible(false);
 				} else {
 					setVisible(true);
 				}
+				if (getTree().getSelectedNode().equals(
+						getTree().getRootNode().getChildNode(0))) {
+					setVisible(true);
+				}
 				if (isVisible()) {
 					setVisibleGranted(ACCESS
-							.getLevel(new CreateFoldersPermission()) > BasicHierarchyPermission.LEVEL_NONE);
+							.getLevel(new CreateFolderPermission()) > BasicHierarchyPermission.LEVEL_NONE);
 				}
+
 			}
 
 			@Override
@@ -421,7 +432,10 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage) {
+				setVisible(true);
+				if (getTree().getSelectedNode() instanceof FilePage
+						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+								.getIsFolderColumn().getSelectedValue() == false)) {
 					setVisible(false);
 				}
 				if (isVisible()) {
@@ -457,7 +471,10 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage) {
+				setVisible(true);
+				if (getTree().getSelectedNode() instanceof FilePage
+						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+								.getIsFolderColumn().getSelectedValue() == false)) {
 					setVisible(false);
 				}
 				if (isVisible()) {
@@ -486,7 +503,10 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage) {
+				setVisible(true);
+				if (getTree().getSelectedNode() instanceof FilePage
+						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+								.getIsFolderColumn().getSelectedValue() == false)) {
 					setVisible(false);
 				}
 				if (isVisible()) {
@@ -531,7 +551,7 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				SERVICES.getService(IClientFileService.class).openFile(
-						getFileIdColumn().getSelectedValue());
+						getFileFolderIdColumn().getSelectedValue());
 			}
 		}
 
@@ -552,7 +572,7 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				SERVICES.getService(IFileService.class).deleteFile(
-						getFileIdColumn().getSelectedValue());
+						getFileFolderIdColumn().getSelectedValue());
 				reloadPage();
 			}
 		}
@@ -573,25 +593,13 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execAction() throws ProcessingException {
-				FileForm form = new FileForm(getFileIdColumn()
-						.getSelectedValue());
+				AuthorityForm form = new AuthorityForm(getFileFolderIdColumn()
+						.getSelectedValue(), SERVICES.getService(
+						IRoleProcessService.class)
+						.getApprovedRolesForFileOrFolder(
+								getFileFolderIdColumn().getSelectedValue()));
 
-				form.getMetadataBox().setVisible(false);
-				form.getDetailedBox().setVisible(false);
-				form.getTagBox().setVisible(false);
-
-				// FIXME extract role form
-				form.getTitleField().setMandatory(false);
-
-				form.getAuthorityBox()
-						.getRolesField()
-						.setValue(
-								SERVICES.getService(IRoleProcessService.class)
-										.getApprovedRolesForFileOrFolder(
-												getFileIdColumn()
-														.getSelectedValue()));
-
-				form.startUpdateAuthorities();
+				form.startNew();
 				form.waitFor();
 				if (form.isFormStored()) {
 					reloadPage();
@@ -641,7 +649,7 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				File f = SERVICES.getService(IFileService.class).getServerFile(
-						getTable().getFileIdColumn().getSelectedValue());
+						getTable().getFileFolderIdColumn().getSelectedValue());
 				String filename = IOUtility.getFileName(f.getAbsolutePath());
 
 				File tempFile;
@@ -651,7 +659,8 @@ public class FilesAndFoldersTablePage
 				} else {
 					FileChooser chooser = new FileChooser();
 					chooser.setTypeLoad(false);
-					chooser.setFileName(filename);
+					chooser.setFileName(getNameColumn().getSelectedValue()
+							+ "." + IOUtility.getFileExtension(filename));
 					File[] files = chooser.startChooser();
 					tempFile = (files != null && files.length > 0
 							? files[0]
@@ -671,7 +680,7 @@ public class FilesAndFoldersTablePage
 			throws ProcessingException {
 		IMetadataService service = SERVICES.getService(IMetadataService.class);
 
-		Long fileId = getTable().getFileIdColumn().getValue(row);
+		Long fileId = getTable().getFileFolderIdColumn().getValue(row);
 
 		FileForm form = new FileForm(fileId);
 
@@ -710,6 +719,13 @@ public class FilesAndFoldersTablePage
 		}
 		form.setFiletypeNr(filetype);
 		form.getFileTypeField().setValue(filetype);
+		form.getLanguageField()
+				.setValue(
+						(String) metadata
+								.get(CODES
+										.getCode(
+												DublinCoreMetadataElementSetCodeType.LanguageCode.class)
+										.getText()));
 
 		// tags
 		form.getAvailableTagsBox().setValue(

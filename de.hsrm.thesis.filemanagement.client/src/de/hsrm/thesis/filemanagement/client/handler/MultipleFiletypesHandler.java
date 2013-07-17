@@ -1,58 +1,47 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
-import java.io.File;
-import java.util.Map;
-
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FiletypeChooserForm;
-import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 
-public class MultipleFiletypesHandler extends AbstracClienttHandler
+public class MultipleFiletypesHandler extends AbstractClientHandler
 		implements
 			IClientHandler {
 
 	@Override
-	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr,
-			Long parentFolderId) throws ProcessingException {
+	public void handle(FileUploadData data) throws ProcessingException {
 		// check if fileformat is assigned to filetype
 		// multiple
 		if (SERVICES.getService(IFileFormatService.class)
-				.isFormatMultipleAssigned(fileformat)) {
+				.isFormatMultipleAssigned(data.getFileFormat())) {
 			// force choosing one of the assigned filetypes
 			FiletypeChooserForm ft = new FiletypeChooserForm();
 			ft.getFileNameField().setValue(
-					fileData.getOldName() + "." + fileData.getFileExtension());
-			ft.setFileformat(fileformat);
+					data.getServerFileData().getOldName() + "." + data.getServerFileData().getFileExtension());
+			ft.setFileformat(data.getFileFormat());
 			ft.startNew();
 			ft.waitFor();
-			filetypeNr = ft.getFiletypeNr();
+			data.setFiletypeNr(ft.getFiletypeNr());
 			if (ft.isFormStored()) {
-				doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
-						parentFolderId);
+				doNext(data);
 			}
 		} else {
 
 			// extract filetype
-			if (filetypeNr == null) {
-				filetypeNr = SERVICES.getService(IFileFormatService.class)
-						.getFiletypeForFileFormat(fileformat);
+			if (data.getFiletypeNr() == null) {
+				data.setFiletypeNr(SERVICES.getService(IFileFormatService.class)
+						.getFiletypeForFileFormat(data.getFileFormat()));
 			}
 
-			doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
-					parentFolderId);
+			doNext(data);
 		}
 	}
 
-	private void doNext(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr,
-			Long parentFolderId) throws ProcessingException {
+	private void doNext(FileUploadData data) throws ProcessingException {
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr, parentFolderId);
+			nextHandler.handle(data);
 		}
 	}
 

@@ -5,6 +5,12 @@ import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService;
 
+/**
+ * Service Interface for file type handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFiletypeService extends IService {
 

@@ -24,12 +24,6 @@ public class ClientSession extends AbstractClientSession {
     return ClientJob.getCurrentSession(ClientSession.class);
   }
 
-//  @SuppressWarnings("unchecked")
-//  @FormData
-//  public ICode<Integer> getPermission() {
-//    return getSharedContextVariable(IUserProcessService.PERMISSION_KEY, ICode.class);
-//  }
-
   @Override
   public void execLoadSession() throws ProcessingException {
     setServiceTunnel(new HttpServiceTunnel(this, getBundle().getBundleContext().getProperty("server.url")));
@@ -47,6 +41,7 @@ public class ClientSession extends AbstractClientSession {
   public void execStoreSession() throws ProcessingException {
     // disable notification polling with -1
     ClientSession.get().getServiceTunnel().setClientNotificationPollInterval(-1);
+
   }
 
 }

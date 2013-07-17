@@ -13,6 +13,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
+import org.eclipse.scout.rt.shared.AbstractIcons;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.service.SERVICES;
 
@@ -35,8 +36,8 @@ public class SearchBookmarkForm extends AbstractForm {
 	protected void execInitForm() throws ProcessingException {
 		loadTableData();
 	}
-	
-	private void loadTableData() throws ProcessingException{
+
+	private void loadTableData() throws ProcessingException {
 		BookmarkField.Table table = getBookmarkField().getTable();
 		table.deleteAllRows();
 		Object[][] result = SERVICES.getService(
@@ -49,7 +50,7 @@ public class SearchBookmarkForm extends AbstractForm {
 			table.addRow(row);
 		}
 	}
-	
+
 	@Override
 	protected int getConfiguredDisplayHint() {
 		return DISPLAY_HINT_VIEW;
@@ -86,17 +87,17 @@ public class SearchBookmarkForm extends AbstractForm {
 
 		@Order(10.0)
 		public class BookmarkBox extends AbstractGroupBox {
-			
+
 			@Order(10.0)
 			public class BookmarkField
 					extends
 						AbstractTableField<BookmarkField.Table> {
-				
+
 				@Override
 				protected void execReloadTableData() throws ProcessingException {
 					loadTableData();
 				}
-				
+
 				@Override
 				protected int getConfiguredGridH() {
 					return 15;
@@ -114,6 +115,22 @@ public class SearchBookmarkForm extends AbstractForm {
 					protected boolean getConfiguredAutoResizeColumns() {
 						return true;
 					}
+					
+					@Override
+					protected boolean getConfiguredHeaderVisible() {
+						return false;
+					}
+
+					@Override
+					protected String getConfiguredDefaultIconId() {
+						return AbstractIcons.Bookmark;
+					}
+
+					@Override
+					protected void execRowAction(ITableRow row)
+							throws ProcessingException {
+						getMenu(LoadBookmarkMenu.class).doAction();
+					}
 
 					public BookmarkColumn getBookmarkColumn() {
 						return getColumnSet().getColumnByClass(
@@ -122,11 +139,6 @@ public class SearchBookmarkForm extends AbstractForm {
 
 					@Order(10.0)
 					public class BookmarkColumn extends AbstractStringColumn {
-
-						@Override
-						protected String getConfiguredHeaderText() {
-							return TEXTS.get("Bookmark");
-						}
 
 					}
 
@@ -166,7 +178,29 @@ public class SearchBookmarkForm extends AbstractForm {
 									.deleteBookmark(
 											getBookmarkColumn()
 													.getSelectedValue());
-							getBookmarkField().getTable().deleteRow(getSelectedRow());
+							getBookmarkField().getTable().deleteRow(
+									getSelectedRow());
+						}
+					}
+
+					@Order(30.0)
+					public class SearchMenu extends AbstractExtensibleMenu {
+
+						@Override
+						protected String getConfiguredText() {
+							return TEXTS.get("SearchButtonTooltip");
+						}
+
+						@Override
+						protected void execAction() throws ProcessingException {
+							String xml = SERVICES.getService(
+									IFileSearchBookmarkService.class)
+									.getBookmarkXml(
+											getBookmarkColumn()
+													.getSelectedValue());
+							m_form.setXML(xml);
+							((FileSearchForm) m_form).getSearchButton()
+									.doClick();
 						}
 					}
 				}

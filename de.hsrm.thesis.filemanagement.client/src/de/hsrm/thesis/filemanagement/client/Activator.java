@@ -2,13 +2,13 @@ package de.hsrm.thesis.filemanagement.client;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.io.File;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.osgi.framework.BundleContext;
 
 import de.hsrm.thesis.filemanagement.client.handler.ClientHandlerManager;
+import de.hsrm.thesis.filemanagement.client.handler.FileUploadData;
 import de.hsrm.thesis.filemanagement.client.handler.IClientHandler;
 
 /**
@@ -35,8 +35,8 @@ public class Activator extends Plugin {
 		handlerManager.addHandler(handler);
 	}
 	
-	public void handle(File dropfile, Long parentFolderId) throws ProcessingException{
-		handlerManager.handle(dropfile, parentFolderId);
+	public void handle(FileUploadData data) throws ProcessingException{
+		handlerManager.handle(data);
 	}
 	
 	/**

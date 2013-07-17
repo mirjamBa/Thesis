@@ -1,10 +1,18 @@
-/**
- * 
- */
 package de.hsrm.thesis.filemanagement.shared.services.code;
 
+/**
+ * Interface to categorize sth.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public interface ICategorizable {
 
-  public Long getCategory();
+	/**
+	 * Getter for the category id
+	 * 
+	 * @return Long
+	 */
+	public Long getCategory();
 
 }

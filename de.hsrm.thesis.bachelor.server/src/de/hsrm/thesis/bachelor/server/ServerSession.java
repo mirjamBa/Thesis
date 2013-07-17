@@ -28,15 +28,10 @@ public class ServerSession extends AbstractServerSession {
   }
 
   @Override
-  public <T> void setSharedContextVariable(String name, Class<T> type, T value) {
-    super.setSharedContextVariable(name, type, value);
-  }
-
-  @Override
   protected void execLoadSession() throws ProcessingException {
     if (getUserId() != null && Subject.getSubject(AccessController.getContext()) != Activator.getDefault().getBackendSubject()) {
       SERVICES.getService(IStartupService.class).initSessionData();
-      //using anonymous security filter: set global role for all users here instead of line 48f.
+      //using anonymous security filter: set global role for all users
 //      ServerJob.getCurrentSession().setData(IStartupService.USER_NR, SERVICES.getService(IRoleProcessService.class).getAdminRoleId());
 
     }

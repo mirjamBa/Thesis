@@ -7,18 +7,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.swing.Icon;
-import javax.swing.filechooser.FileSystemView;
 
 import org.eclipse.scout.commons.IOUtility;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
+import org.eclipse.scout.commons.holders.IntegerHolder;
 import org.eclipse.scout.commons.holders.LongHolder;
 import org.eclipse.scout.commons.holders.NVPair;
 import org.eclipse.scout.rt.server.ServerJob;
@@ -35,17 +31,15 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.security.CreateFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.DeleteFilePermission;
-import de.hsrm.thesis.filemanagement.shared.security.FreeFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.ReadFilePermission;
 import de.hsrm.thesis.filemanagement.shared.security.UpdateFilePermission;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
-import de.hsrm.thesis.filemanagement.shared.services.IFolderService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
 import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
 import de.hsrm.thesis.filemanagement.shared.services.ITagService;
-import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.ICategorizable;
@@ -64,6 +58,75 @@ public class FileService extends AbstractService implements IFileService {
 
 	public String getFilePath() {
 		return filePath;
+	}
+
+	@Override
+	public FileFormData create(FileFormData formData, ServerFileData fileData,
+			Long parentFolderId) throws ProcessingException {
+
+		if (!ACCESS.check(new CreateFilePermission())) {
+			throw new VetoException(TEXTS.get("VETOCreateFilePermission"));
+		}
+		SQL.insert(
+				"INSERT INTO file_folder (name, u_id, parent_folder, is_folder) VALUES (:name, :uId, :parent, :isFolder)",
+				new NVPair("name", formData.getTitle().getValue()),
+				new NVPair("uId", (Long) ServerJob.getCurrentSession().getData(
+						IStartupService.USER_NR)), new NVPair("parent",
+						parentFolderId), new NVPair("isFolder", false));
+
+		// get generated file_id
+		LongHolder fileId = new LongHolder();
+		SQL.selectInto(
+				"SELECT max(file_folder_id) FROM file_folder INTO :fileId",
+				new NVPair("fileId", fileId));
+
+		formData.setFileNr(fileId.getValue());
+
+		insertTagsForFile(fileId.getValue(), formData.getAvailableTagsBox()
+				.getValue());
+		insertRegeneratedTags(formData, fileId.getValue());
+
+		insertRolesForFile(fileId.getValue(), formData.getFileFormRoles()
+				.getValue());
+
+		// filemanagement metadata
+		Long entryDateId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(IStorageService.META_ENTRYDATE);
+		Long filesizeId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(IStorageService.META_FILESIZE);
+		Long fileExtensionId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(IStorageService.META_FILEEXTENSION);
+		Long numberId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(IStorageService.META_NUMBER);
+		Long filepathId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(IStorageService.META_FILEPATH);
+
+		SERVICES.getService(IMetadataService.class).addMetadata(entryDateId,
+				fileId.getValue(),
+				m_formatter.format(formData.getCreationDate().getValue()));
+		SERVICES.getService(IMetadataService.class).addMetadata(filesizeId,
+				fileId.getValue(), formData.getFilesize().getValue());
+		SERVICES.getService(IMetadataService.class).addMetadata(
+				fileExtensionId, fileId.getValue(),
+				formData.getFileExtension().getValue());
+
+		SERVICES.getService(IMetadataService.class).addMetadata(numberId,
+				fileId.getValue(), fileData.getNumber().toString());
+		SERVICES.getService(IMetadataService.class).addMetadata(filepathId,
+				fileId.getValue(), fileData.getPath());
+
+		// dcmi metadata
+		insertDCMIMetadata(formData, fileId.getValue());
+
+		// insert individual metadata
+		MetadataTableFieldData tableData = formData.getFileFormMetadataTable();
+		insertUserMetadata(tableData, false, fileId.getValue());
+
+		// start handler
+		de.hsrm.thesis.filemanagement.server.Activator.getDefault().handle(
+				fileId.getValue(), formData, fileData, parentFolderId);
+
+		return formData;
 	}
 
 	@Override
@@ -98,14 +161,120 @@ public class FileService extends AbstractService implements IFileService {
 
 		// standardMetadata
 		updateDCMIMetadata(formData, fileId);
-		
-		SQL.update("UPDATE file_folder SET name = :name WHERE file_folder_id = :id", 
-				new NVPair("name", formData.getTitle().getValue()), 
-						new NVPair("id", fileId));
-		
+
+		SQL.update(
+				"UPDATE file_folder SET name = :name WHERE file_folder_id = :id",
+				new NVPair("name", formData.getTitle().getValue()), new NVPair(
+						"id", fileId));
+
 		return formData;
 	}
-	
+
+	@Override
+	public Object[][] getFiles(FileSearchFormData searchFormData,
+			int maxRowCount, int page) throws ProcessingException {
+		return getFileTableData(searchFormData, null, true, maxRowCount, page);
+	}
+
+	@Override
+	public Object[][] getFolderFiles(FileSearchFormData searchFormData,
+			Long folderId) throws ProcessingException {
+		return getFileTableData(searchFormData, folderId, false, null, null);
+	}
+
+	@Override
+	public ServerFileData saveFile(File file) throws ProcessingException {
+		if (!ACCESS.check(new CreateFilePermission())) {
+			throw new VetoException(TEXTS.get("VETOCreateFilePermission"));
+		}
+
+		byte[] content;
+		File serverFile;
+
+		String fileEnding = file.getName().split("\\.")[file.getName().split(
+				"\\.").length - 1];
+		String currentDate = generateCurrentDate(TEXTS.get("StorageDirectory"));
+		String[] parts = currentDate.split(":");
+
+		String fileServerPath;
+		Long nextFileNr = getNextFileNumber();
+		String newDirectory = getFilePath() + parts[0];
+
+		try {
+			File dir = new File(newDirectory);
+			dir.mkdirs();
+
+			// create new file on server
+			fileServerPath = newDirectory + "/" + parts[1] + "_" + nextFileNr
+					+ "." + fileEnding;
+
+			serverFile = new File(fileServerPath);
+			serverFile.createNewFile();
+
+			// write content to new file
+			content = IOUtility.getContent(new FileInputStream(file));
+			IOUtility.writeContent(new FileOutputStream(serverFile), content,
+					true);
+
+		} catch (FileNotFoundException e1) {
+			throw new ProcessingException(e1.getMessage());
+		} catch (IOException e) {
+			throw new ProcessingException(e.getMessage());
+		}
+		ServerFileData fileData = new ServerFileData(
+				serverFile.getAbsolutePath(), nextFileNr, serverFile.length());
+		fileData.setOldName(file.getName().split("\\.")[0]);
+		try {
+			fileData.setLastModified(m_formatter.parse(m_formatter.format(file
+					.lastModified())));
+		} catch (ParseException e) {
+			// no date set
+		}
+		return fileData;
+	}
+
+	@Override
+	public File getServerFile(Long fileNr) throws ProcessingException {
+		String pathAttr = (String) SERVICES.getService(IMetadataService.class)
+				.getMetadataValue(IStorageService.META_FILEPATH, fileNr);
+
+		return new File(pathAttr);
+
+	}
+
+	@Override
+	public boolean deleteFile(Long fileId) throws ProcessingException {
+		if (!ACCESS.check(new DeleteFilePermission())) {
+			throw new VetoException(TEXTS.get("VETODeleteFilePermission"));
+		}
+		// remove tag-file-connection
+		SQL.delete("DELETE FROM tag_file WHERE file_id = :fileId", new NVPair(
+				"fileId", fileId));
+		// remove unused permissions for file
+		SQL.delete("DELETE FROM role_file_permission WHERE file_id = :fileId",
+				new NVPair("fileId", fileId));
+
+		// save filepath from database
+		String path = (String) SERVICES.getService(IMetadataService.class)
+				.getMetadataValue(IStorageService.META_FILEPATH, fileId);
+		// StringHolder path = new StringHolder();
+		// SQL.selectInto(
+		// "SELECT file_path FROM file WHERE file_id = :fileId INTO :path",
+		// new NVPair("fileId", fileId), new NVPair("path", path));
+
+		// remove filedata in database
+		SQL.delete("DELETE FROM metadata WHERE file_id = :fileId", new NVPair(
+				"fileId", fileId));
+		SQL.delete("DELETE FROM version WHERE file_id = :fileId", new NVPair(
+				"fileId", fileId));
+		SQL.delete("DELETE FROM file_folder WHERE file_folder_id = :fileId",
+				new NVPair("fileId", fileId));
+
+		// remove file from server
+		System.out.println(path);
+		File file = new File(path);
+		return file.delete();
+	}
 
 	private void insertUserMetadata(MetadataTableFieldData tableData,
 			boolean update, Long fileId) throws ProcessingException {
@@ -143,76 +312,6 @@ public class FileService extends AbstractService implements IFileService {
 			SERVICES.getService(IMetadataService.class).updateOrInsertMetadata(
 					attributeId, fileId, standardMetadata.get(attributeId));
 		}
-	}
-
-	@Override
-	public FileFormData create(FileFormData formData, ServerFileData fileData,
-			Long parentFolderId) throws ProcessingException {
-
-		if (!ACCESS.check(new CreateFilePermission())) {
-			throw new VetoException(TEXTS.get("VETOCreateFilePermission"));
-		}
-		SQL.insert(
-				"INSERT INTO file_folder (name, u_id, parent_folder, is_folder) VALUES (:name, :uId, :parent, :isFolder)",
-				new NVPair("name", formData.getTitle().getValue()),
-				new NVPair("uId", (Long) ServerJob.getCurrentSession().getData(
-						IStartupService.USER_NR)), new NVPair("parent",
-						parentFolderId), new NVPair("isFolder", false));
-
-		// get generated file_id
-		LongHolder fileId = new LongHolder();
-		SQL.selectInto(
-				"SELECT max(file_folder_id) FROM file_folder INTO :fileId",
-				new NVPair("fileId", fileId));
-
-		insertTagsForFile(fileId.getValue(), formData.getAvailableTagsBox()
-				.getValue());
-		insertRegeneratedTags(formData, fileId.getValue());
-
-		insertRolesForFile(fileId.getValue(), formData.getFileFormRoles().getValue());
-
-		// filemanagement metadata
-		Long entryDateId = SERVICES.getService(
-				IUserDefinedAttributesService.class).getAttributeId(
-						IStorageService.META_ENTRYDATE);
-		Long filesizeId = SERVICES.getService(
-				IUserDefinedAttributesService.class).getAttributeId(
-						IStorageService.META_FILESIZE);
-		Long fileExtensionId = SERVICES.getService(
-				IUserDefinedAttributesService.class).getAttributeId(
-						IStorageService.META_FILEEXTENSION);
-		Long numberId = SERVICES
-				.getService(IUserDefinedAttributesService.class)
-				.getAttributeId(IStorageService.META_NUMBER);
-		Long filepathId = SERVICES.getService(
-				IUserDefinedAttributesService.class).getAttributeId(
-						IStorageService.META_FILEPATH);
-
-		SERVICES.getService(IMetadataService.class).addMetadata(entryDateId,
-				fileId.getValue(),
-				m_formatter.format(formData.getCreationDate().getValue()));
-		SERVICES.getService(IMetadataService.class).addMetadata(filesizeId,
-				fileId.getValue(), formData.getFilesize().getValue());
-		SERVICES.getService(IMetadataService.class).addMetadata(
-				fileExtensionId, fileId.getValue(),
-				formData.getFileExtension().getValue());
-
-		SERVICES.getService(IMetadataService.class).addMetadata(numberId,
-				fileId.getValue(), fileData.getNumber().toString());
-		SERVICES.getService(IMetadataService.class).addMetadata(filepathId,
-				fileId.getValue(), fileData.getPath());
-
-		// dcmi metadata
-		insertDCMIMetadata(formData, fileId.getValue());
-
-		// insert individual metadata
-		MetadataTableFieldData tableData = formData.getFileFormMetadataTable();
-		insertUserMetadata(tableData, false, fileId.getValue());
-		
-		//start handler
-		de.hsrm.thesis.filemanagement.server.Activator.getDefault().handle(fileId.getValue(), formData, fileData, parentFolderId);
-		
-		return formData;
 	}
 
 	private void insertRegeneratedTags(FileFormData formData, Long fileId)
@@ -284,6 +383,7 @@ public class FileService extends AbstractService implements IFileService {
 				// extract Value from fieldData
 				Long codeDatatype = ((ICategorizable) attributeCode)
 						.getCategory();
+
 				if (codeDatatype.equals(DatatypeCodeType.StringCode.ID)) {
 					value = ((AbstractValueFieldData<String>) map.get(codeName))
 							.getValue();
@@ -318,7 +418,7 @@ public class FileService extends AbstractService implements IFileService {
 
 	private Long getAttributeId(ICode<Long> code) throws ProcessingException {
 		String text = code.getText();
-		return SERVICES.getService(IUserDefinedAttributesService.class)
+		return SERVICES.getService(IAttributeService.class)
 				.getAttributeId(text);
 	}
 
@@ -329,14 +429,9 @@ public class FileService extends AbstractService implements IFileService {
 				new NVPair("tagId", tagId), new NVPair("fileId", fileId));
 	}
 
-	@Override
-	public Object[][] getFiles(FileSearchFormData searchFormData)
-			throws ProcessingException {
-		return getFileTableData(searchFormData, null, true);
-	}
-
 	private Object[][] getFileTableData(FileSearchFormData searchFormData,
-			Long folderId, boolean allFiles) throws ProcessingException {
+			Long folderId, boolean allFiles, Integer maxRowCount, Integer page)
+			throws ProcessingException {
 		if (!ACCESS.check(new ReadFilePermission())) {
 			throw new VetoException(TEXTS.get("VETOReadFilePermission"));
 		}
@@ -344,9 +439,10 @@ public class FileService extends AbstractService implements IFileService {
 				IStartupService.USER_NR);
 
 		StringBuilder stringBuilder = new StringBuilder();
+		
 
 		stringBuilder
-				.append("SELECT DISTINCT"
+				.append("SELECT  DISTINCT"
 						+ "            F.FILE_FOLDER_ID, "
 						+ "			   F.NAME, "
 						+ "            F.U_ID, "
@@ -354,13 +450,10 @@ public class FileService extends AbstractService implements IFileService {
 						+ "		FROM   FILE_FOLDER F "
 						+ "		LEFT OUTER JOIN METADATA M "
 						+ "		ON F.FILE_FOLDER_ID = M.FILE_ID "
-						// + "     FROM   METADATA M,"
-						// + "            FILE_FOLDER F "
 						// show files without tags
 						+ "     LEFT OUTER JOIN TAG_FILE T "
 						+ "     ON F.FILE_FOLDER_ID = T.FILE_ID "
 						+ "     WHERE  1 = 1 "
-						// + "     AND    F.FILE_FOLDER_ID = M.FILE_ID "
 						// visible for the typist of the file
 						+ "     AND    (F.U_ID = :userId "
 						+ "     OR     F.FILE_FOLDER_ID IN "
@@ -372,9 +465,9 @@ public class FileService extends AbstractService implements IFileService {
 
 		if (!allFiles && searchFormData.getFolderSearch().getValue()) {
 			if (folderId == null) {
-				stringBuilder.append(" AND parent_folder IS NULL ");
+				stringBuilder.append(" AND F.PARENT_FOLDER IS NULL ");
 			} else {
-				stringBuilder.append(" AND parent_folder = :folderId ");
+				stringBuilder.append(" AND F.PARENT_FOLDER = :folderId ");
 			}
 		}
 
@@ -385,6 +478,15 @@ public class FileService extends AbstractService implements IFileService {
 		}
 		if (searchFormData.getTypist().getValue() != null) {
 			stringBuilder.append(" AND F.U_ID = :typist ");
+		}
+		Long fileTypeAttrId = null;
+		if (searchFormData.getFileType().getValue() != null) {
+			ICode<Long> code = CODES
+					.getCode(DublinCoreMetadataElementSetCodeType.TypeCode.class);
+			fileTypeAttrId = SERVICES.getService(IAttributeService.class)
+					.getAttributeId(code.getText());
+			stringBuilder.append(" AND M.ATTRIBUTE_ID = :filetypeAttrId "
+					+ "			   AND M.VALUE = :fileType ");
 		}
 		// detailed search
 		int rows = searchFormData.getFileSearchMetadataTable().getRowCount();
@@ -409,76 +511,25 @@ public class FileService extends AbstractService implements IFileService {
 		if (searchFormData.getTag().getValue() != null) {
 			stringBuilder.append(" AND T.TAG_ID = :tag ");
 		}
+
+		if (maxRowCount != null) {
+			// paging
+			int minRow = maxRowCount * page - maxRowCount;
+			stringBuilder.append(" ORDER BY F.FILE_FOLDER_ID "
+					+ "				OFFSET "+ minRow +" ROWS "
+					+ "				FETCH NEXT " + maxRowCount.intValue() + " ROWS ONLY ");
+			bindings.put("minRow", minRow);
+		}
+
+		// TODO insert point for queries
 		return SQL.select(stringBuilder.toString(), new NVPair("userId",
-				user_id), new NVPair("folderId", folderId), bindings,
-				searchFormData);
-	}
-
-	@Override
-	public Object[][] getFolderFiles(FileSearchFormData searchFormData,
-			Long folderId) throws ProcessingException {
-		return getFileTableData(searchFormData, folderId, false);
-	}
-
-	@Override
-	public ServerFileData saveFile(File file) throws ProcessingException {
-
-		if (!ACCESS.check(new CreateFilePermission())) {
-			throw new VetoException(TEXTS.get("VETOCreateFilePermission"));
-		}
-
-		byte[] content;
-		File serverFile;
-
-		String fileEnding = file.getName().split("\\.")[file.getName().split(
-				"\\.").length - 1];
-		String currentDate = generateCurrentDate(TEXTS.get("StorageDirectory"));
-		String[] parts = currentDate.split(":");
-
-		String fileServerPath;
-		Long nextFileNr = getNextFileNumber();
-		String newDirectory = getFilePath() + parts[0];
-
-		try {
-			File dir = new File(newDirectory);
-			dir.mkdirs();
-
-			// create new file on server
-			fileServerPath = newDirectory + "/" + parts[1] + "_" + nextFileNr
-					+ "." + fileEnding;
-			serverFile = new File(fileServerPath);
-			serverFile.createNewFile();
-
-			// write content to new file
-			content = IOUtility.getContent(new FileInputStream(file));
-			IOUtility.writeContent(new FileOutputStream(serverFile), content,
-					true);
-
-		} catch (FileNotFoundException e1) {
-			throw new ProcessingException(e1.getMessage());
-		} catch (IOException e) {
-			throw new ProcessingException(e.getMessage());
-		}
-		Icon icon = FileSystemView.getFileSystemView()
-				.getSystemIcon(serverFile);
-		ServerFileData fileData = new ServerFileData(
-				serverFile.getAbsolutePath(), nextFileNr, serverFile.length(),
-				icon);
-		fileData.setOldName(file.getName().split("\\.")[0]);
-		try {
-			fileData.setLastModified(m_formatter.parse(m_formatter.format(file
-					.lastModified())));
-		} catch (ParseException e) {
-			// no date set
-		}
-
-		return fileData;
+				user_id), new NVPair("folderId", folderId), new NVPair(
+				"filetypeAttrId", fileTypeAttrId), bindings, searchFormData);
 	}
 
 	private String generateCurrentDate(String format) {
 		Date now = new Date();
 		String datePath = new SimpleDateFormat(format).format(now);
-
 		return datePath;
 	}
 
@@ -489,100 +540,24 @@ public class FileService extends AbstractService implements IFileService {
 	}
 
 	@Override
-	public File getServerFile(Long fileNr) throws ProcessingException {
-		String pathAttr = (String) SERVICES.getService(IMetadataService.class)
-				.getMetadataValue(TEXTS.get("Filepath"), fileNr);
-
-		return new File(pathAttr);
-
-	}
-
-	@Override
-	public void freeFile(Long fileId, Long[] roleIds)
-			throws ProcessingException {
-
-		if (!ACCESS.check(new FreeFilePermission())) {
-			throw new VetoException(TEXTS.get("VETOFreeFilePermission"));
-		}
-
-		SQL.delete("DELETE FROM role_file_permission WHERE file_id= :fileId",
-				new NVPair("fileId", fileId));
-
-		if (roleIds != null) {
-			// insert selected roles
-			for (Long roleId : roleIds) {
-				SQL.insert(
-						"INSERT INTO role_file_permission (file_id, role_id) VALUES (:fileId, :roleId)",
-						new NVPair("fileId", fileId), new NVPair("roleId",
-								roleId));
-			}
-		}
-	}
-
-	@Override
-	public void updateRoleFileAndFolderPermission(Long fileId, Long[] roleIds)
-			throws ProcessingException {
-		// free file
-		freeFile(fileId, roleIds);
-
-		// get all parent folders and add roles
-		Long id = new Long(fileId);
-		List<Long> parentFolder = new ArrayList<Long>();
-
-		while (id != null) {
-			Long parent = SERVICES.getService(IFolderService.class)
-					.getParentFolder(id);
-			id = parent;
-			if (id != null) {
-				parentFolder.add(parent);
-			}
-		}
-
-		for (Long parentFolderId : parentFolder) {
-			SERVICES.getService(IFolderService.class).addFileFolderFreeing(
-					parentFolderId, roleIds);
-		}
-
-	}
-
-	@Override
-	public void updateFileFreeing(Long fileId, Long[] roleIds)
-			throws ProcessingException {
-
-	}
-
-	@Override
-	public boolean deleteFile(Long fileId) throws ProcessingException {
-		if (!ACCESS.check(new DeleteFilePermission())) {
-			throw new VetoException(TEXTS.get("VETODeleteFilePermission"));
-		}
-		// remove tag-file-connection
-		SQL.delete("DELETE FROM tag_file WHERE file_id = :fileId", new NVPair(
-				"fileId", fileId));
-		// remove unused permissions for file
-		SQL.delete("DELETE FROM role_file_permission WHERE file_id = :fileId",
-				new NVPair("fileId", fileId));
-
-		// save filepath from database
-		String path = (String) SERVICES.getService(IMetadataService.class)
-				.getMetadataValue(TEXTS.get("Filepath"), fileId);
-		// StringHolder path = new StringHolder();
-		// SQL.selectInto(
-		// "SELECT file_path FROM file WHERE file_id = :fileId INTO :path",
-		// new NVPair("fileId", fileId), new NVPair("path", path));
-
-		// remove filedata in database
-		SQL.delete("DELETE FROM metadata WHERE file_id = :fileId", new NVPair(
-				"fileId", fileId));
-		SQL.delete("DELETE FROM version WHERE file_id = :fileId", new NVPair(
-				"fileId", fileId));
-		SQL.delete("DELETE FROM file_folder WHERE file_folder_id = :fileId",
-				new NVPair("fileId", fileId));
-
-		// remove file from server
-		System.out.println(path);
-		File file = new File(path);
-		return file.delete();
+	public int getNumberOfFiles(Long filetype) throws ProcessingException {
+		ICode<Long> code = CODES
+				.getCode(DublinCoreMetadataElementSetCodeType.TypeCode.class);
+		Long attrId = SERVICES.getService(IAttributeService.class)
+				.getAttributeId(code.getText());
+		IntegerHolder number = new IntegerHolder();
+		SQL.selectInto("SELECT distinct count(f.file_folder_id) "
+				+ "		FROM file_folder f," 
+				+ "			 metadata m "
+				+ "		WHERE f.is_folder = 'false' "
+				+ "		AND   m.file_id = f.file_folder_id "
+				+ "		AND   m.attribute_id = :attr "
+				+ "		AND   m.value = :value " 
+				+ "		INTO :number ", 
+				new NVPair("attr", attrId), 
+				new NVPair("value", filetype), 
+				new NVPair("number", number));
+		return number.getValue();
 	}
 
 }

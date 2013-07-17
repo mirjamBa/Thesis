@@ -6,10 +6,10 @@ import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
-public class MetadataFormData extends AbstractFormData {
+public class AttributeFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
-	public MetadataFormData() {
+	public AttributeFormData() {
 	}
 
 	public AttributeIdProperty getAttributeIdProperty() {

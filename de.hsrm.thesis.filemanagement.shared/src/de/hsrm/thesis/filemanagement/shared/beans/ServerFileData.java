@@ -7,15 +7,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.swing.Icon;
-
 public class ServerFileData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String m_path;
 	private Long m_number;
 	private String m_filesize;
-	private Icon m_icon;
 	private String m_oldName;
 	private Date m_lastModified;
 
@@ -64,26 +61,10 @@ public class ServerFileData implements Serializable {
 	 * @param m_filesize
 	 * @param m_icon
 	 */
-	public ServerFileData(String m_path, Long m_number, long bytes, Icon m_icon) {
+	public ServerFileData(String m_path, Long m_number, long bytes) {
 		this.m_path = m_path;
 		this.m_number = m_number;
-		this.m_icon = m_icon;
 		setFilesize(bytes);
-	}
-
-	/**
-	 * @return the m_icon
-	 */
-	public Icon getM_icon() {
-		return m_icon;
-	}
-
-	/**
-	 * @param m_icon
-	 *            the m_icon to set
-	 */
-	public void setM_icon(Icon m_icon) {
-		this.m_icon = m_icon;
 	}
 
 	public String getFileformat() {

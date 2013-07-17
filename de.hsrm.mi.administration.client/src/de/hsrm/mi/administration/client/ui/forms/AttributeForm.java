@@ -16,24 +16,24 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.CancelButton;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DatatypeField;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.DescriptionField;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.FileTypeField;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.MetadataBox.ShowInFileTableField;
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm.MainBox.OkButton;
-import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.AttributeBox;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.AttributeBox.DatatypeField;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.AttributeBox.DescriptionField;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.AttributeBox.FileTypeField;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.AttributeBox.ShowInFileTableField;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.CancelButton;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm.MainBox.OkButton;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
-import de.hsrm.thesis.filemanagement.shared.services.formdata.MetadataFormData;
+import de.hsrm.thesis.filemanagement.shared.services.formdata.AttributeFormData;
 
-@FormData(value = MetadataFormData.class, sdkCommand = SdkCommand.CREATE)
-public class MetadataForm extends AbstractForm {
+@FormData(value = AttributeFormData.class, sdkCommand = SdkCommand.CREATE)
+public class AttributeForm extends AbstractForm {
 
 	private Long m_attributeId;
 
-	public MetadataForm() throws ProcessingException {
+	public AttributeForm() throws ProcessingException {
 		super();
 	}
 
@@ -65,8 +65,8 @@ public class MetadataForm extends AbstractForm {
 		return getFieldByClass(MainBox.class);
 	}
 
-	public MetadataBox getMetadataBox() {
-		return getFieldByClass(MetadataBox.class);
+	public AttributeBox getMetadataBox() {
+		return getFieldByClass(AttributeBox.class);
 	}
 
 	public OkButton getOkButton() {
@@ -86,7 +86,7 @@ public class MetadataForm extends AbstractForm {
 		}
 
 		@Order(30.0)
-		public class MetadataBox extends AbstractGroupBox {
+		public class AttributeBox extends AbstractGroupBox {
 
 			@Override
 			protected String getConfiguredLabel() {
@@ -154,9 +154,9 @@ public class MetadataForm extends AbstractForm {
 
 		@Override
 		public void execStore() throws ProcessingException {
-			IUserDefinedAttributesService service = SERVICES
-					.getService(IUserDefinedAttributesService.class);
-			MetadataFormData formData = new MetadataFormData();
+			IAttributeService service = SERVICES
+					.getService(IAttributeService.class);
+			AttributeFormData formData = new AttributeFormData();
 			exportFormData(formData);
 			formData = service.update(formData);
 		}
@@ -166,9 +166,9 @@ public class MetadataForm extends AbstractForm {
 
 		@Override
 		public void execStore() throws ProcessingException {
-			IUserDefinedAttributesService service = SERVICES
-					.getService(IUserDefinedAttributesService.class);
-			MetadataFormData formData = new MetadataFormData();
+			IAttributeService service = SERVICES
+					.getService(IAttributeService.class);
+			AttributeFormData formData = new AttributeFormData();
 			exportFormData(formData);
 			formData = service.create(formData);
 		}

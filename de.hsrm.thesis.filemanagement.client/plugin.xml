@@ -30,11 +30,11 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService">
+            class="org.eclipse.scout.rt.shared.services.common.pwd.IPasswordManagementService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.filemanagement.shared.services.ISharedContextService">
+            class="de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
@@ -61,6 +61,10 @@
             factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
             class="de.hsrm.thesis.filemanagement.client.services.CustomIconProviderService">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
+            class="de.hsrm.thesis.filemanagement.client.services.ClientIconProviderService">
+      </service>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.lookup.ITagLookupService">
@@ -77,14 +81,14 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.lookup.IUserLookupService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.lookup.ILanguageLookupService">
+      </proxy>
       <service
             factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
             class="de.hsrm.thesis.filemanagement.client.services.ClientFileService">
       </service>
-      <proxy
-            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService">
-      </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.IAttributeService">
@@ -113,12 +117,25 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.thesis.filemanagement.shared.services.IFolderService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.IFileAndFolderFreeingService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.IFileAndFolderService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.thesis.filemanagement.shared.services.lookup.IPermissionsLookupService">
+      </proxy>
    </extension>
    <extension
+         name=""
          point="org.eclipse.scout.rt.extension.client.desktopExtensions">
       <desktopExtension
-            active="true"
-            class="de.hsrm.thesis.filemanagement.client.extension.FilemanagementDesktopExtension">
+            class="de.hsrm.thesis.filemanagement.client.extension.FilemanagementDesktopExtension"
+            active="true">
       </desktopExtension>
    </extension>
 

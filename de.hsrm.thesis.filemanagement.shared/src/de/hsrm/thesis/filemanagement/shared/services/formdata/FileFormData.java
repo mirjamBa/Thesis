@@ -6,6 +6,7 @@ import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.LanguageLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.RoleLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
@@ -353,7 +354,8 @@ public class FileFormData extends AbstractFormData {
 		@Override
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
-			ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
+			ruleMap.put(ValidationRule.LOOKUP_CALL, LanguageLookupCall.class);
+			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}
 	public static class NewTag extends AbstractValueFieldData<String> {

@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
 <plugin>
+
    <extension
+         name=""
          point="org.eclipse.scout.service.services">
    </extension>
    <extension
+         name=""
          point="org.eclipse.scout.rt.extension.client.menus">
    </extension>
    <extension
+         name=""
          point="org.eclipse.scout.rt.extension.client.desktopExtensions">
       <desktopExtension
-            active="true"
-            class="de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension">
+            class="de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension"
+            active="true">
       </desktopExtension>
    </extension>
 

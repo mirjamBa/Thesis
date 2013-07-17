@@ -1,6 +1,6 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
 
-public abstract class AbstracClienttHandler {
+public abstract class AbstractClientHandler {
 	protected IClientHandler nextHandler;
 }

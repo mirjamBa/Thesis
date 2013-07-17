@@ -28,7 +28,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.http.registry,
  org.eclipse.scout.rt.jdbc.derby,
  org.eclipse.scout.jaxws216;bundle-version="2.1.6",
- net.sourceforge.tess4j,
  de.hsrm.thesis.bachelor.shared,
  tikanearlyall;bundle-version="1.0.0",
  de.hsrm.thesis.bachelor.security;bundle-version="1.0.0"

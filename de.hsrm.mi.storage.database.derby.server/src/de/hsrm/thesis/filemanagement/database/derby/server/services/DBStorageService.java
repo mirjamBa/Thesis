@@ -5,6 +5,8 @@ import java.util.Set;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.NVPair;
+import org.eclipse.scout.commons.logger.IScoutLogger;
+import org.eclipse.scout.commons.logger.ScoutLogManager;
 import org.eclipse.scout.rt.server.services.common.jdbc.SQL;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
 import org.eclipse.scout.rt.shared.services.common.code.ICode;
@@ -25,12 +27,14 @@ import de.hsrm.thesis.filemanagement.shared.services.code.ICategorizable;
 public class DBStorageService extends AbstractService
 		implements
 			IStorageService {
+	private IScoutLogger logger = ScoutLogManager.getLogger(DBStorageService.class);
 
 	@Override
 	public void installStorage() throws ProcessingException {
 		Set<String> existingTables = getExistingTables();
 
 		if (!existingTables.contains("TABUSERS")) {
+			logger.info("install database");
 			SQL.insert(" CREATE TABLE TABUSERS ("
 					+ " u_id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT USERS_PK PRIMARY KEY, "
 					+ " username VARCHAR(32) NOT NULL, "
@@ -188,6 +192,7 @@ public class DBStorageService extends AbstractService
 	}
 
 	private Set<String> getExistingTables() throws ProcessingException {
+		logger.info("check existing tables");
 		Object[][] existingTables = SQL
 				.select("SELECT tablename FROM sys.systables");
 		HashSet<String> result = new HashSet<String>(existingTables.length);

@@ -1,31 +1,25 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
-import java.io.File;
-import java.util.Map;
-
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 
-public class DroppedFileMetadataHandler extends AbstracClienttHandler
+public class DroppedFileMetadataHandler extends AbstractClientHandler
 		implements
 			IClientHandler {
 
 	@Override
-	public void handle(File dropfile, ServerFileData fileData, Map<String, String> metaValues,
-			String fileformat, Long filetypeNr, Long parentFolderId) throws ProcessingException {
-		if(dropfile != null){
+	public void handle(FileUploadData data) throws ProcessingException {
+		if(data.getFile() != null){
 			// extract data
-			fileData = SERVICES.getService(IFileService.class).saveFile(dropfile);
-			metaValues = SERVICES.getService(ITikaService.class).extractDataFromFile(dropfile);
-			fileformat = fileData.getFileformat();
+			data.setServerFileData(SERVICES.getService(IFileService.class).saveFile(data.getFile()));
+			data.setMetaValues(SERVICES.getService(ITikaService.class).extractDataFromFile(data.getFile()));
 		}
 
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat, filetypeNr, parentFolderId);
+			nextHandler.handle(data);
 		}
 
 	}

@@ -5,6 +5,11 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.code.AbstractCodeType;
 
+/**
+ * Long-CodeType for all file types
+ * @author Mirjam Bayatloo
+ *
+ */
 public class FileTypeCodeType extends AbstractCodeType<Long> {
 
   private static final long serialVersionUID = 1L;

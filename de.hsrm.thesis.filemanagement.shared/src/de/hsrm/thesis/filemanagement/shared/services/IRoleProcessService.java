@@ -7,6 +7,11 @@ import org.eclipse.scout.service.IService;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.RoleFormData;
 
+/**
+ * Service Interface for role handling
+ * @author mba
+ *
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IRoleProcessService extends IService {
 

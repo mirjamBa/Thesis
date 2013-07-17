@@ -31,7 +31,6 @@
    <plugins>
       <plugin id="com.bsiag.scout.rt.ui.swing.laf.rayo.fragment" fragment="true"/>
       <plugin id="com.bsiag.scout.rt.ui.swing.rayo"/>
-      <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
       <plugin id="de.hsrm.mi.administration.client"/>
       <plugin id="de.hsrm.mi.administration.shared"/>
       <plugin id="de.hsrm.mi.user.client"/>

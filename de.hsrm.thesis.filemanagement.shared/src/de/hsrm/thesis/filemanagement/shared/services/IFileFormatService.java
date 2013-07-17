@@ -7,6 +7,12 @@ import org.eclipse.scout.service.IService2;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormatFormData;
 
+/**
+ * Service Interface for file format handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFileFormatService extends IService2 {
 
@@ -18,7 +24,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return the assigned FileFormatFormData
 	 * @throws ProcessingException
 	 */
-	public FileFormatFormData create(FileFormatFormData formData) throws ProcessingException;
+	public FileFormatFormData create(FileFormatFormData formData)
+			throws ProcessingException;
 
 	/**
 	 * Deletes all file formats from storage having one of the assigned ids
@@ -37,7 +44,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return the assigned FileFormatFormData
 	 * @throws ProcessingException
 	 */
-	public FileFormatFormData update(FileFormatFormData formData) throws ProcessingException;
+	public FileFormatFormData update(FileFormatFormData formData)
+			throws ProcessingException;
 
 	/**
 	 * Fetches all formats which belongs to the assigned file type id from
@@ -48,7 +56,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return Object[][]
 	 * @throws ProcessingException
 	 */
-	public Object[][] getFileFormats(Long filetypeNr) throws ProcessingException;
+	public Object[][] getFileFormats(Long filetypeNr)
+			throws ProcessingException;
 
 	/**
 	 * Decides whether there are more than one file type the assigned file
@@ -59,7 +68,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return boolean [true for multiple file format - file type connections]
 	 * @throws ProcessingException
 	 */
-	public boolean isFormatMultipleAssigned(String fileformat) throws ProcessingException;
+	public boolean isFormatMultipleAssigned(String fileformat)
+			throws ProcessingException;
 
 	/**
 	 * Fetches the file type id for the assigned file format from storage
@@ -69,7 +79,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return Long [file type id]
 	 * @throws ProcessingException
 	 */
-	public Long getFiletypeForFileFormat(String fileformat) throws ProcessingException;
+	public Long getFiletypeForFileFormat(String fileformat)
+			throws ProcessingException;
 
 	/**
 	 * Returns true if the assigned file format has already been stored
@@ -79,7 +90,8 @@ public interface IFileFormatService extends IService2 {
 	 * @return boolean
 	 * @throws ProcessingException
 	 */
-	public boolean isFileformatRegistered(String fileformat) throws ProcessingException;
+	public boolean isFileformatRegistered(String fileformat)
+			throws ProcessingException;
 
 	/**
 	 * Fetches an Array of ids of all file types, the assigned file format
@@ -90,5 +102,6 @@ public interface IFileFormatService extends IService2 {
 	 * @return Long[]
 	 * @throws ProcessingException
 	 */
-	public Long[] getFiletypesForFileFormat(String fileformat) throws ProcessingException;
+	public Long[] getFiletypesForFileFormat(String fileformat)
+			throws ProcessingException;
 }

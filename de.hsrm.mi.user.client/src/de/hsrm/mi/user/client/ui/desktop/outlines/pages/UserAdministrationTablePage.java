@@ -23,226 +23,244 @@ import de.hsrm.thesis.filemanagement.shared.security.UpdateUserPermission;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 import de.hsrm.thesis.filemanagement.shared.services.IUserProcessService;
 
-public class UserAdministrationTablePage extends AbstractPageWithTable<UserAdministrationTablePage.Table> {
+/**
+ * User Table Page from BahBahChat
+ * 
+ * @author BSI Business Systems Integrations AG
+ * 
+ */
+public class UserAdministrationTablePage
+		extends
+			AbstractPageWithTable<UserAdministrationTablePage.Table> {
 
-  @Override
-  protected boolean getConfiguredLeaf() {
-    return true;
-  }
+	@Override
+	protected boolean getConfiguredLeaf() {
+		return true;
+	}
 
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("Users");
-  }
+	@Override
+	protected String getConfiguredTitle() {
+		return TEXTS.get("Users");
+	}
 
-  @Override
-  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
-    return SERVICES.getService(IUserProcessService.class).getUsers();
-  }
+	@Override
+	protected Object[][] execLoadTableData(SearchFilter filter)
+			throws ProcessingException {
+		return SERVICES.getService(IUserProcessService.class).getUsers();
+	}
 
-  @Order(10.0)
-  public class Table extends AbstractExtensibleTable {
+	@Order(10.0)
+	public class Table extends AbstractExtensibleTable {
 
-    public UsernameColumn getUsernameColumn() {
-      return getColumnSet().getColumnByClass(UsernameColumn.class);
-    }
+		public UsernameColumn getUsernameColumn() {
+			return getColumnSet().getColumnByClass(UsernameColumn.class);
+		}
 
-    @Override
-    protected boolean getConfiguredAutoResizeColumns() {
-      return true;
-    }
+		@Override
+		protected boolean getConfiguredAutoResizeColumns() {
+			return true;
+		}
 
-    	@Override
+		@Override
 		protected String getConfiguredDefaultIconId() {
 			return Icons.Eye;
 		}
 
-    @Override
-    protected void execRowAction(ITableRow row) throws ProcessingException {
-      getMenu(ModifyUserMenu.class).execAction();
-    }
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyUserMenu.class).execAction();
+		}
 
-    public UserIdColumn getUserIdColumn() {
-      return getColumnSet().getColumnByClass(UserIdColumn.class);
-    }
+		public UserIdColumn getUserIdColumn() {
+			return getColumnSet().getColumnByClass(UserIdColumn.class);
+		}
 
-    @Order(10.0)
-    public class UserIdColumn extends AbstractLongColumn {
+		@Order(10.0)
+		public class UserIdColumn extends AbstractLongColumn {
 
-      @Override
-      protected boolean getConfiguredDisplayable() {
-        return false;
-      }
+			@Override
+			protected boolean getConfiguredDisplayable() {
+				return false;
+			}
 
-      @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredMandatory() {
+				return true;
+			}
 
-      @Override
-      protected boolean getConfiguredPrimaryKey() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredPrimaryKey() {
+				return true;
+			}
 
-      @Override
-      protected int getConfiguredWidth() {
-        return 0;
-      }
-    }
+			@Override
+			protected int getConfiguredWidth() {
+				return 0;
+			}
+		}
 
-    @Order(20.0)
-    public class UsernameColumn extends AbstractStringColumn {
+		@Order(20.0)
+		public class UsernameColumn extends AbstractStringColumn {
 
-      @Override
-      protected boolean getConfiguredAutoOptimizeWidth() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredAutoOptimizeWidth() {
+				return true;
+			}
 
-      @Override
-      protected String getConfiguredHeaderText() {
-        return TEXTS.get("Username");
-      }
+			@Override
+			protected String getConfiguredHeaderText() {
+				return TEXTS.get("Username");
+			}
 
-      @Override
-      protected int getConfiguredSortIndex() {
-        return 0;
-      }
+			@Override
+			protected int getConfiguredSortIndex() {
+				return 0;
+			}
 
-      @Override
-      protected int getConfiguredWidth() {
-        return 230;
-      }
-    }
+			@Override
+			protected int getConfiguredWidth() {
+				return 230;
+			}
+		}
 
-    @Order(10.0)
-    public class ModifyUserMenu extends AbstractMenu {
+		@Order(10.0)
+		public class ModifyUserMenu extends AbstractMenu {
 
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("ModifyUser");
-      }
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("ModifyUser");
+			}
 
-      @Override
-      protected void execPrepareAction() throws ProcessingException {
-        setVisiblePermission(new UpdateUserPermission());
-      }
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisiblePermission(new UpdateUserPermission());
+			}
 
-      @Override
-      protected void execAction() throws ProcessingException {
-        UserForm form = new UserForm();
-        form.getUsernameField().setValue(getUsernameColumn().getSelectedValue());
-        form.setUserId(getUserIdColumn().getSelectedValue());
-        form.getRoleField().setValue(SERVICES.getService(IUserProcessService.class).getUserRoles(getUserIdColumn().getSelectedValue()));
-        form.startModify();
-        form.waitFor();
-        if (form.isFormStored()) {
-          reloadPage();
-        }
-      }
-    }
+			@Override
+			protected void execAction() throws ProcessingException {
+				UserForm form = new UserForm();
+				form.getUsernameField().setValue(
+						getUsernameColumn().getSelectedValue());
+				form.setUserId(getUserIdColumn().getSelectedValue());
+				form.getRoleField().setValue(
+						SERVICES.getService(IUserProcessService.class)
+								.getUserRoles(
+										getUserIdColumn().getSelectedValue()));
+				form.startModify();
+				form.waitFor();
+				if (form.isFormStored()) {
+					reloadPage();
+				}
+			}
+		}
 
-    @Order(20.0)
-    public class NewUserMenu extends AbstractMenu {
+		@Order(20.0)
+		public class NewUserMenu extends AbstractMenu {
 
-      @Override
-      protected boolean getConfiguredEmptySpaceAction() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredEmptySpaceAction() {
+				return true;
+			}
 
-      @Override
-      protected boolean getConfiguredMultiSelectionAction() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredMultiSelectionAction() {
+				return true;
+			}
 
-      @Override
-      protected boolean getConfiguredSingleSelectionAction() {
-        return false;
-      }
+			@Override
+			protected boolean getConfiguredSingleSelectionAction() {
+				return false;
+			}
 
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("NewUser");
-      }
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("NewUser");
+			}
 
-      @Override
-      protected void execPrepareAction() throws ProcessingException {
-        setVisiblePermission(new CreateUserPermission());
-      }
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisiblePermission(new CreateUserPermission());
+			}
 
-      @Override
-      protected void execAction() throws ProcessingException {
-        UserForm frm = new UserForm();
-        frm.getRoleField().setValue(new Long[]{SERVICES.getService(IRoleProcessService.class).getUserRoleId()});
-        frm.startNew();
-        frm.waitFor();
-        if (frm.isFormStored()) {
-          reloadPage();
-        }
-      }
-    }
+			@Override
+			protected void execAction() throws ProcessingException {
+				UserForm frm = new UserForm();
+				frm.getRoleField().setValue(
+						new Long[]{SERVICES.getService(
+								IRoleProcessService.class).getUserRoleId()});
+				frm.startNew();
+				frm.waitFor();
+				if (frm.isFormStored()) {
+					reloadPage();
+				}
+			}
+		}
 
-    @Order(30.0)
-    public class ResetPasswordMenu extends AbstractMenu {
+		@Order(30.0)
+		public class ResetPasswordMenu extends AbstractMenu {
 
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("ResetPassword");
-      }
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("ResetPassword");
+			}
 
-      @Override
-      protected void execAction() throws ProcessingException {
-        DefaultPasswordForm frm = new DefaultPasswordForm();
-        frm.setUserId(getUserIdColumn().getSelectedValue().toString());
-        frm.startReset();
-        frm.waitFor();
-      }
+			@Override
+			protected void execAction() throws ProcessingException {
+				DefaultPasswordForm frm = new DefaultPasswordForm();
+				frm.setUserId(getUserIdColumn().getSelectedValue().toString());
+				frm.startReset();
+				frm.waitFor();
+			}
 
-      @Override
-      protected void execPrepareAction() throws ProcessingException {
-        setVisiblePermission(new ResetPasswordPermission());
-      }
-    }
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisiblePermission(new ResetPasswordPermission());
+			}
+		}
 
-    @Order(40.0)
-    public class SeparatorMenu extends AbstractMenu {
+		@Order(40.0)
+		public class SeparatorMenu extends AbstractMenu {
 
-      @Override
-      protected boolean getConfiguredSeparator() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredSeparator() {
+				return true;
+			}
 
-      @Override
-      protected void execPrepareAction() throws ProcessingException {
-        setVisiblePermission(new DeleteUserPermission());
-      }
-    }
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisiblePermission(new DeleteUserPermission());
+			}
+		}
 
-    @Order(50.0)
-    public class DeleteUserMenu extends AbstractMenu {
+		@Order(50.0)
+		public class DeleteUserMenu extends AbstractMenu {
 
-      @Override
-      protected boolean getConfiguredMultiSelectionAction() {
-        return true;
-      }
+			@Override
+			protected boolean getConfiguredMultiSelectionAction() {
+				return true;
+			}
 
-      @Override
-      protected void execPrepareAction() throws ProcessingException {
-        setVisiblePermission(new DeleteUserPermission());
-      }
+			@Override
+			protected void execPrepareAction() throws ProcessingException {
+				setVisiblePermission(new DeleteUserPermission());
+			}
 
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("DeleteUser");
-      }
+			@Override
+			protected String getConfiguredText() {
+				return TEXTS.get("DeleteUser");
+			}
 
-      @Override
-      protected void execAction() throws ProcessingException {
-        if (MessageBox.showDeleteConfirmationMessage(TEXTS.get("Users"), getUsernameColumn().getValues(getSelectedRows()))) {
-          SERVICES.getService(IUserProcessService.class).deleteUser(getUserIdColumn().getValues(getSelectedRows()));
-          reloadPage();
-        }
-      }
-    }
+			@Override
+			protected void execAction() throws ProcessingException {
+				if (MessageBox.showDeleteConfirmationMessage(
+						TEXTS.get("Users"),
+						getUsernameColumn().getValues(getSelectedRows()))) {
+					SERVICES.getService(IUserProcessService.class).deleteUser(
+							getUserIdColumn().getValues(getSelectedRows()));
+					reloadPage();
+				}
+			}
+		}
 
-  }
+	}
 }

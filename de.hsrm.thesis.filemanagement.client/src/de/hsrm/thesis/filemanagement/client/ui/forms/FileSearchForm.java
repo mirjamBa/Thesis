@@ -37,7 +37,7 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabB
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField;
-import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.BookmarkNameFormData;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
@@ -147,6 +147,11 @@ public class FileSearchForm extends AbstractSearchForm {
 
 				@Order(10.0)
 				public class GeneralSearchField extends AbstractStringField {
+					
+					@Override
+					protected boolean getConfiguredLabelVisible() {
+						return false;
+					}
 
 					@Override
 					protected String getConfiguredTooltipText() {
@@ -339,8 +344,7 @@ public class FileSearchForm extends AbstractSearchForm {
 	private void loadMetaAttributeTable() throws ProcessingException {
 		MetadataTableField.Table table = getFileSearchMetadataTableField()
 				.getTable();
-		Object[][] attr = SERVICES.getService(
-				IUserDefinedAttributesService.class)
+		Object[][] attr = SERVICES.getService(IAttributeService.class)
 				.getDetailedMetadataForAllFileTypes();
 		for (int i = 0; i < attr.length; i++) {
 			ITableRow row = table.createRow();

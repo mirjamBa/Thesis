@@ -31,7 +31,7 @@ public class PermissionTablePage
 
 	@Override
 	protected String getConfiguredTitle() {
-		return TEXTS.get("Permission");
+		return TEXTS.get("Permissions");
 	}
 
 	@Override

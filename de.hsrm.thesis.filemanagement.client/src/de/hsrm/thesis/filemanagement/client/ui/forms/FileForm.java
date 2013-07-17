@@ -52,11 +52,13 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.Ta
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.FileBox.TagBox.NewTagField;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
+import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
+import de.hsrm.thesis.filemanagement.shared.services.IFileAndFolderFreeingService;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.IMetadataService;
-import de.hsrm.thesis.filemanagement.shared.services.IUserDefinedAttributesService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
+import de.hsrm.thesis.filemanagement.shared.services.lookup.LanguageLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.TagLookupCall;
 import de.hsrm.thesis.filemanagement.shared.services.lookup.UserLookupCall;
 
@@ -533,7 +535,7 @@ public class FileForm extends AbstractForm {
 					}
 
 					@Order(120.0)
-					public class LanguageField extends AbstractStringField {
+					public class LanguageField extends AbstractSmartField<String> {
 
 						@Override
 						protected String getConfiguredLabel() {
@@ -543,6 +545,11 @@ public class FileForm extends AbstractForm {
 						@Override
 						protected String getConfiguredTooltipText() {
 							return TEXTS.get("LanguageToolTip");
+						}
+						
+						@Override
+						protected Class<? extends LookupCall> getConfiguredLookupCall() {
+							return LanguageLookupCall.class;
 						}
 					}
 
@@ -727,7 +734,7 @@ public class FileForm extends AbstractForm {
 		@Override
 		protected void execLoad() throws ProcessingException {
 			loadMetadataTable(
-					SERVICES.getService(IUserDefinedAttributesService.class)
+					SERVICES.getService(IAttributeService.class)
 							.getAttributes(getFiletypeNr()), false);
 		}
 
@@ -737,6 +744,7 @@ public class FileForm extends AbstractForm {
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
 			formData = service.create(formData, m_fileData, getParentFolderId());
+			setFileNr(formData.getFileNr());
 		}
 	}
 
@@ -744,7 +752,7 @@ public class FileForm extends AbstractForm {
 
 		@Override
 		protected void execStore() throws ProcessingException {
-			IFileService service = SERVICES.getService(IFileService.class);
+			IFileAndFolderFreeingService service = SERVICES.getService(IFileAndFolderFreeingService.class);
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
 			service.updateRoleFileAndFolderPermission(getFileNr(), formData.getFileFormRoles()

@@ -6,7 +6,12 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService2;
-
+/**
+ * Service Interface for metadata handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IMetadataService extends IService2 {
 
@@ -23,18 +28,8 @@ public interface IMetadataService extends IService2 {
 	 *            String
 	 * @throws ProcessingException
 	 */
-	public void addMetadata(Long attributeId, Long fileId, String metadata) throws ProcessingException;
-
-	/**
-	 * Fetches all meta data values for one file [attribute id, name, value,
-	 * data type]
-	 * 
-	 * @param fileId
-	 *            Long
-	 * @return Object[][]
-	 * @throws ProcessingException
-	 */
-	public Object[][] getMetadata(Long fileId) throws ProcessingException;
+	public void addMetadata(Long attributeId, Long fileId, String metadata)
+			throws ProcessingException;
 
 	/**
 	 * Fetches a matrix of user defined attributes for one or all file types
@@ -49,8 +44,8 @@ public interface IMetadataService extends IService2 {
 	 * @return Object[][]
 	 * @throws ProcessingException
 	 */
-	public Object[][] getMetadataAttributeMatrix(Long fileId, Long filetypeId, boolean onlyAttributesForFiletyp)
-			throws ProcessingException;
+	public Object[][] getMetadataAttributeMatrix(Long fileId, Long filetypeId,
+			boolean onlyAttributesForFiletyp) throws ProcessingException;
 
 	/**
 	 * Returns the meta data value for one attribute and one file
@@ -62,7 +57,8 @@ public interface IMetadataService extends IService2 {
 	 * @return Object
 	 * @throws ProcessingException
 	 */
-	public Object getMetadataValue(String attributeName, Long fileId) throws ProcessingException;
+	public Object getMetadataValue(String attributeName, Long fileId)
+			throws ProcessingException;
 
 	/**
 	 * Returns a map of attribute name and value-pairs for one file
@@ -74,7 +70,8 @@ public interface IMetadataService extends IService2 {
 	 * @return Map<String, Object>
 	 * @throws ProcessingException
 	 */
-	public Map<String, Object> getMetdataMapForFile(Long fileId, Long filetypeId) throws ProcessingException;
+	public Map<String, Object> getMetdataMapForFile(Long fileId, Long filetypeId)
+			throws ProcessingException;
 
 	/**
 	 * Modifies or creates meta data value for one file
@@ -87,7 +84,8 @@ public interface IMetadataService extends IService2 {
 	 *            String
 	 * @throws ProcessingException
 	 */
-	public void updateOrInsertMetadata(Long attributeId, Long fileId, String metadata) throws ProcessingException;
+	public void updateOrInsertMetadata(Long attributeId, Long fileId,
+			String metadata) throws ProcessingException;
 
 	/**
 	 * Fetches meta data for all files with one of the assigned file ids. Only
@@ -100,5 +98,6 @@ public interface IMetadataService extends IService2 {
 	 * @return Object[][]
 	 * @throws ProcessingException
 	 */
-	public Object[][] getMetadataForFiles(Long[] fileIds, String... attributeNames) throws ProcessingException;
+	public Object[][] getMetadataForFiles(Long[] fileIds,
+			String... attributeNames) throws ProcessingException;
 }

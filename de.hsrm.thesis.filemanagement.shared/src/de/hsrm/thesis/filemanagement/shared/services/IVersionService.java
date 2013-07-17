@@ -6,7 +6,12 @@ import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService2;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.VersionFormData;
-
+/**
+ * Service Interface for version handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IVersionService extends IService2 {
 

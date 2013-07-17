@@ -1,6 +1,7 @@
 package de.hsrm.thesis.filemanagement.client.ui.forms;
 
 import java.io.File;
+import java.util.Map;
 
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
@@ -17,14 +18,12 @@ import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.CancelButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox;
-import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.FileBox.FileField;
+import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm.MainBox.OkButton;
 import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.IFileService;
 import de.hsrm.thesis.filemanagement.shared.services.ITikaService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileChooserFormData;
-
-import java.util.Map;
 
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileChooserForm extends AbstractForm {
@@ -107,6 +106,7 @@ private Map<String, String> m_metaValues;
     protected void execStore() throws ProcessingException {
       File file = getFileField().getValueAsFile();
       ServerFileData fileDate = SERVICES.getService(IFileService.class).saveFile(file);
+      
       setFileData(fileDate);
 
       setMetaValues(SERVICES.getService(ITikaService.class).extractDataFromFile(file));

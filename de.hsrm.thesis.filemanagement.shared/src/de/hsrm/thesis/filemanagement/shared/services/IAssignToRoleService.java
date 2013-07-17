@@ -7,10 +7,35 @@ import org.eclipse.scout.service.IService;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.AssignToRoleFormData;
 
+/**
+ * Service Interface for allocation of permissions to roles
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
-	public interface IAssignToRoleService extends IService{
+public interface IAssignToRoleService extends IService {
 
-	public AssignToRoleFormData create(AssignToRoleFormData formData) throws ProcessingException;
+	/**
+	 * Allots permissions to role
+	 * 
+	 * @param formData
+	 *            AssignToRoleFormData
+	 * @return AssignToRoleFormData
+	 * @throws ProcessingException
+	 */
+	public AssignToRoleFormData create(AssignToRoleFormData formData)
+			throws ProcessingException;
 
-	public void remove(Long roleNr, String[] permission) throws ProcessingException;
+	/**
+	 * Removes the assigned permissions from the role
+	 * 
+	 * @param roleNr
+	 *            Long
+	 * @param permission
+	 *            String[]
+	 * @throws ProcessingException
+	 */
+	public void remove(Long roleNr, String[] permission)
+			throws ProcessingException;
 }

@@ -72,7 +72,7 @@ public class UserProcessService extends AbstractService
 		SQL.delete("DELETE FROM role WHERE user_creator_id = :ids", new NVPair(
 				"ids", u_id));
 
-		SQL.delete("DELETE FROM file WHERE u_id = :ids",
+		SQL.delete("DELETE FROM file_folder WHERE u_id = :ids",
 				new NVPair("ids", u_id));
 
 		SQL.delete("DELETE FROM TABUSERS WHERE u_id = :ids", new NVPair("ids",

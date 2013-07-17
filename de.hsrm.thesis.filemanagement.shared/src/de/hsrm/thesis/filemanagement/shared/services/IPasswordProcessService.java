@@ -1,17 +1,18 @@
 package de.hsrm.thesis.filemanagement.shared.services;
 
 import org.eclipse.scout.commons.exception.VetoException;
+import org.eclipse.scout.rt.shared.services.common.pwd.IPasswordManagementService;
 import org.eclipse.scout.rt.shared.validate.IValidationStrategy;
 import org.eclipse.scout.rt.shared.validate.InputValidation;
-import org.eclipse.scout.service.IService;
 
 /**
+ * Service Interface for password handling
  * 
  * @author BSI
- *
+ * 
  */
 @InputValidation(IValidationStrategy.PROCESS.class)
-public interface IPasswordProcessService extends IService {
+public interface IPasswordProcessService extends IPasswordManagementService {
 
 	/**
 	 * Validates the password for usage

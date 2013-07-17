@@ -17,6 +17,7 @@ import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.mi.user.client.ui.forms.RoleForm;
 import de.hsrm.mi.user.shared.security.ViewRoleTablePagePermission;
+import de.hsrm.thesis.filemanagement.shared.services.IRolePermissionService;
 import de.hsrm.thesis.filemanagement.shared.services.IRoleProcessService;
 
 public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
@@ -94,6 +95,11 @@ public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
 		public class NewRoleMenu extends AbstractExtensibleMenu {
 
 			@Override
+			protected boolean getConfiguredSingleSelectionAction() {
+				return false;
+			}
+
+			@Override
 			protected String getConfiguredText() {
 				return TEXTS.get("NewRole");
 			}
@@ -144,6 +150,12 @@ public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
 				form.getNameField()
 						.setValue(getRoleColumn().getSelectedValue());
 				form.setRoleId(getRoleIdColumn().getSelectedValue());
+
+				Object[][] permissions = SERVICES.getService(
+						IRolePermissionService.class).getPermissions(
+						getRoleIdColumn().getSelectedValue());
+				form.getPermissionsField().setValue(
+						getPermissionNames(permissions));
 				form.startModify();
 				form.waitFor();
 				if (form.isFormStored()) {
@@ -151,5 +163,13 @@ public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
 				}
 			}
 		}
+	}
+
+	private String[] getPermissionNames(Object[][] tableData) {
+		String[] result = new String[tableData.length];
+		for (int i = 0; i < tableData.length; i++) {
+			result[i] = (String) tableData[i][0];
+		}
+		return result;
 	}
 }

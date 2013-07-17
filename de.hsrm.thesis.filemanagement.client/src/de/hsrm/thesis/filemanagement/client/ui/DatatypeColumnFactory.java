@@ -11,16 +11,27 @@ import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDateColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractDoubleColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractObjectColumn;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.IColumn;
+import org.eclipse.scout.rt.shared.services.common.code.CODES;
+import org.eclipse.scout.rt.shared.services.common.code.ICode;
+import org.eclipse.scout.rt.shared.services.common.code.ICodeType;
 
 import de.hsrm.thesis.filemanagement.shared.services.code.DatatypeCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.code.DublinCoreMetadataElementSetCodeType;
+import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
 public class DatatypeColumnFactory extends ColumnFactory {
 
 	@Override
-	public IColumn<?> createColumn(Long datatypeId, final String columnId, final String label) {
-		if (datatypeId.equals(DatatypeCodeType.StringCode.ID)) {
+	public IColumn<?> createColumn(Long datatypeId, final String columnId,
+			final String label) {
+		ICode<Long> code = CODES
+				.getCode(DublinCoreMetadataElementSetCodeType.TypeCode.class);
+		if (columnId.equals(((Integer) code.getText().hashCode()).toString())) {
+			return  createDynamicFileTypeSmartColumn(columnId, label);
+		} else if (datatypeId.equals(DatatypeCodeType.StringCode.ID)) {
 			return createDynamicStringColumn(columnId, label);
 		} else if (datatypeId.equals(DatatypeCodeType.DateCode.ID)) {
 			return createDynamicDateColumn(columnId, label);
@@ -32,8 +43,33 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			return createDynamicObjectColumn(columnId, label);
 		}
 	}
+	private IColumn<?> createDynamicFileTypeSmartColumn(final String columnId,
+			final String label) {
+		return new AbstractSmartColumn<Long>() {
+			@Override
+			protected String getConfiguredHeaderText() {
+				return label;
+			}
 
-	private IColumn<?> createDynamicStringColumn(final String columnId, final String label) {
+			@Override
+			public String getColumnId() {
+				return columnId;
+			}
+
+			@Override
+			protected int getConfiguredWidth() {
+				return 120;
+			}
+
+			@Override
+			protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
+				return FileTypeCodeType.class;
+			}
+		};
+	}
+
+	private IColumn<?> createDynamicStringColumn(final String columnId,
+			final String label) {
 		return new AbstractStringColumn() {
 			@Override
 			protected String getConfiguredHeaderText() {
@@ -51,14 +87,16 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			}
 
 			@Override
-			protected String execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+			protected String execParseValue(ITableRow row, Object rawValue)
+					throws ProcessingException {
 				return super.execParseValue(row, rawValue);
 			}
 
 		};
 	}
 
-	private IColumn<?> createDynamicDateColumn(final String columnId, final String label) {
+	private IColumn<?> createDynamicDateColumn(final String columnId,
+			final String label) {
 		return new AbstractDateColumn() {
 			@Override
 			protected String getConfiguredHeaderText() {
@@ -76,14 +114,16 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			}
 
 			@Override
-			protected Date execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+			protected Date execParseValue(ITableRow row, Object rawValue)
+					throws ProcessingException {
 				return super.execParseValue(row, rawValue);
 			}
 
 		};
 	}
 
-	private IColumn<?> createDynamicLongColumn(final String columnId, final String label) {
+	private IColumn<?> createDynamicLongColumn(final String columnId,
+			final String label) {
 		return new AbstractLongColumn() {
 			@Override
 			protected String getConfiguredHeaderText() {
@@ -101,14 +141,16 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			}
 
 			@Override
-			protected Long execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+			protected Long execParseValue(ITableRow row, Object rawValue)
+					throws ProcessingException {
 				return super.execParseValue(row, rawValue);
 			}
 
 		};
 	}
 
-	private IColumn<?> createDynamicDoubleColumn(final String columnId, final String label) {
+	private IColumn<?> createDynamicDoubleColumn(final String columnId,
+			final String label) {
 		return new AbstractDoubleColumn() {
 			@Override
 			protected String getConfiguredHeaderText() {
@@ -126,14 +168,16 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			}
 
 			@Override
-			protected Double execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+			protected Double execParseValue(ITableRow row, Object rawValue)
+					throws ProcessingException {
 				return super.execParseValue(row, rawValue);
 			}
 
 		};
 	}
 
-	private IColumn<?> createDynamicObjectColumn(final String columnId, final String label) {
+	private IColumn<?> createDynamicObjectColumn(final String columnId,
+			final String label) {
 		return new AbstractObjectColumn() {
 
 			@Override
@@ -152,7 +196,8 @@ public class DatatypeColumnFactory extends ColumnFactory {
 			}
 
 			@Override
-			protected Object execParseValue(ITableRow row, Object rawValue) throws ProcessingException {
+			protected Object execParseValue(ITableRow row, Object rawValue)
+					throws ProcessingException {
 				return super.execParseValue(row, rawValue);
 			}
 

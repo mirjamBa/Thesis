@@ -1,23 +1,17 @@
 package de.hsrm.thesis.filemanagement.client.handler;
 
-import java.io.File;
-import java.util.Map;
-
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import de.hsrm.thesis.filemanagement.client.ui.forms.FileChooserForm;
-import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 
-public class FileChooserFormHandler extends AbstracClienttHandler
+public class FileChooserFormHandler extends AbstractClientHandler
 		implements
 			IClientHandler {
 
 	@Override
-	public void handle(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr,
-			Long parentFolderId) throws ProcessingException {
+	public void handle(FileUploadData data) throws ProcessingException {
 		// not necessary for drag and drop action
-		if (dropfile == null) {
+		if (data.getFile() == null) {
 
 			// choose file from filesystem
 			FileChooserForm form = new FileChooserForm();
@@ -25,25 +19,19 @@ public class FileChooserFormHandler extends AbstracClienttHandler
 			form.waitFor();
 			if (form.isFormStored()) {
 				// extract data
-				fileData = form.getFileData();
-				metaValues = form.getMetaValues();
-				fileformat = fileData.getFileformat();
-				doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
-						parentFolderId);
+				data.setServerFileData(form.getFileData());
+				data.setMetaValues(form.getMetaValues());
+				doNext(data);
 			}
 			//don't dispatch if form isn't stored and no dropfile is available
 		} else {
-			doNext(dropfile, fileData, metaValues, fileformat, filetypeNr,
-					parentFolderId);
+			doNext(data);
 		}
 	}
 
-	private void doNext(File dropfile, ServerFileData fileData,
-			Map<String, String> metaValues, String fileformat, Long filetypeNr,
-			Long parentFolderId) throws ProcessingException {
+	private void doNext(FileUploadData data) throws ProcessingException {
 		if (nextHandler != null) {
-			nextHandler.handle(dropfile, fileData, metaValues, fileformat,
-					filetypeNr, parentFolderId);
+			nextHandler.handle(data);
 		}
 	}
 

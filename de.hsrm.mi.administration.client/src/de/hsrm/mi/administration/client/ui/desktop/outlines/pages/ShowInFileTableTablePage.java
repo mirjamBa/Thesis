@@ -3,13 +3,14 @@ package de.hsrm.mi.administration.client.ui.desktop.outlines.pages;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.annotations.Replace;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.ui.forms.MetadataForm;
+import de.hsrm.mi.administration.client.ui.forms.AttributeForm;
 import de.hsrm.mi.administration.shared.security.ViewShowInFileTablePagePermission;
 import de.hsrm.thesis.filemanagement.shared.services.IAttributeService;
 
@@ -22,7 +23,8 @@ public class ShowInFileTableTablePage extends MetadataTablePage {
 
 	@Override
 	protected void execInitPage() throws ProcessingException {
-		setVisibleGranted(ACCESS.getLevel(new ViewShowInFileTablePagePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+		setVisibleGranted(ACCESS
+				.getLevel(new ViewShowInFileTablePagePermission()) > BasicHierarchyPermission.LEVEL_NONE);
 	}
 
 	@Override
@@ -35,12 +37,17 @@ public class ShowInFileTableTablePage extends MetadataTablePage {
 	@Order(10.0)
 	public class DisplayTable extends Table {
 
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyMenu.class).doAction();
+		}
+
 		@Order(20.0)
 		@Replace()
 		public class DisplayModifyMenu extends ModifyMenu {
 			@Override
 			protected void execAction() throws ProcessingException {
-				MetadataForm form = new MetadataForm();
+				AttributeForm form = new AttributeForm();
 
 				form.setAttributeId(getAttributIDColumn().getSelectedValue());
 				form.getDescriptionField().setValue(

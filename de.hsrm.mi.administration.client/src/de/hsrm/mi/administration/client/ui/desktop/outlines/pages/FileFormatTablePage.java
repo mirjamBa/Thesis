@@ -4,6 +4,7 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
+import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractLongColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractSmartColumn;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
@@ -20,8 +21,9 @@ import de.hsrm.thesis.filemanagement.client.ui.forms.FileFormatForm;
 import de.hsrm.thesis.filemanagement.shared.services.IFileFormatService;
 import de.hsrm.thesis.filemanagement.shared.services.code.FileTypeCodeType;
 
-public class FileFormatTablePage extends
-		AbstractPageWithTable<FileFormatTablePage.Table> {
+public class FileFormatTablePage
+		extends
+			AbstractPageWithTable<FileFormatTablePage.Table> {
 
 	private long m_filetypeNr;
 
@@ -53,6 +55,11 @@ public class FileFormatTablePage extends
 			return getColumnSet().getColumnByClass(IdColumn.class);
 		}
 
+		@Override
+		protected void execRowAction(ITableRow row) throws ProcessingException {
+			getMenu(ModifyMenu.class).doAction();
+		}
+
 		public FileFormatColumn getFileFormatColumn() {
 			return getColumnSet().getColumnByClass(FileFormatColumn.class);
 		}
@@ -61,7 +68,7 @@ public class FileFormatTablePage extends
 		protected boolean getConfiguredAutoResizeColumns() {
 			return true;
 		}
-		
+
 		@Override
 		protected boolean getConfiguredMultiSelect() {
 			return false;
@@ -117,7 +124,7 @@ public class FileFormatTablePage extends
 			protected boolean getConfiguredAutoOptimizeWidth() {
 				return true;
 			}
-			
+
 			@Override
 			protected Class<? extends ICodeType<Long>> getConfiguredCodeType() {
 				return FileTypeCodeType.class;
@@ -131,6 +138,11 @@ public class FileFormatTablePage extends
 			@Override
 			protected boolean getConfiguredEmptySpaceAction() {
 				return true;
+			}
+
+			@Override
+			protected boolean getConfiguredSingleSelectionAction() {
+				return false;
 			}
 
 			@Override

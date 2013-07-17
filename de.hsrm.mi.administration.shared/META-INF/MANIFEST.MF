@@ -4,7 +4,8 @@ Bundle-Name: Shared
 Bundle-SymbolicName: de.hsrm.mi.administration.shared;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.mi.administration.shared.Activator
-Export-Package: de.hsrm.mi.administration.shared.security,
+Export-Package: de.hsrm.mi.administration.shared,
+ de.hsrm.mi.administration.shared.security,
  de.hsrm.mi.administration.shared.services.common.text
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared,

@@ -28,7 +28,7 @@ public class ImageProcessService extends AbstractService implements IImageProces
 		}
 		return null;
 	}
-
+	
 	@Override
 	public byte[] scaleImage(byte[] content, int height) {
 		//FIXME not only png

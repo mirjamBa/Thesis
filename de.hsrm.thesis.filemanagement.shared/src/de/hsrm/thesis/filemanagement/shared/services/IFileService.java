@@ -11,6 +11,12 @@ import de.hsrm.thesis.filemanagement.shared.beans.ServerFileData;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileFormData;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FileSearchFormData;
 
+/**
+ * Service Interface for file handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFileService extends IService2 {
 
@@ -24,7 +30,8 @@ public interface IFileService extends IService2 {
 	 * @return FileFormData
 	 * @throws ProcessingException
 	 */
-	public FileFormData create(FileFormData formData, ServerFileData fileData, Long parentFolderId) throws ProcessingException;
+	public FileFormData create(FileFormData formData, ServerFileData fileData,
+			Long parentFolderId) throws ProcessingException;
 
 	/**
 	 * Modifies the assigned file data in the storage
@@ -34,20 +41,34 @@ public interface IFileService extends IService2 {
 	 * @return FileFormData
 	 * @throws ProcessingException
 	 */
-	public FileFormData update(FileFormData formData) throws ProcessingException;
+	public FileFormData update(FileFormData formData)
+			throws ProcessingException;
 
 	/**
-	 * Fetches all files which conforms to the assigned search criteria [file
-	 * id, file type id, file number, user id, file path]
+	 * Fetches all files which conforms to the assigned search criteria and have
+	 * the assigned parent folderId [file id, file type id, file number, user
+	 * id, file path]
 	 * 
 	 * @param searchFormData
 	 *            FileSearchFormData
+	 * @param folderId
+	 *            Long
 	 * @return Object[][]
 	 * @throws ProcessingException
 	 */
-	public Object[][] getFolderFiles(FileSearchFormData searchFormData, Long folderId) throws ProcessingException;
-	
-	public Object[][] getFiles(FileSearchFormData searchFormData) throws ProcessingException;
+	public Object[][] getFolderFiles(FileSearchFormData searchFormData,
+			Long folderId) throws ProcessingException;
+
+	/**
+	 * Fetches all files which conforms to the assigned search criteria from
+	 * every folder [file id, file type id, file number, user id, file path]
+	 * 
+	 * @param searchFormData
+	 * @return
+	 * @throws ProcessingException
+	 */
+	public Object[][] getFiles(FileSearchFormData searchFormData,
+			int maxRowCount, int page) throws ProcessingException;
 
 	/**
 	 * Extracts content from file, create new file with this content and saves
@@ -59,20 +80,6 @@ public interface IFileService extends IService2 {
 	 * @throws ProcessingException
 	 */
 	public ServerFileData saveFile(File file) throws ProcessingException;
-
-	/**
-	 * Modifies file access permission for the assigned files. Access for all
-	 * roles with one of the assigned role ids
-	 * 
-	 * @param fildId
-	 *            Long
-	 * @param roleIds
-	 *            Long[]
-	 * @throws ProcessingException
-	 */
-	public void freeFile(Long fileId, Long[] roleIds) throws ProcessingException;
-	
-	public void updateRoleFileAndFolderPermission(Long fileId, Long[] roleIds) throws ProcessingException;
 
 	/**
 	 * Delete the file belonging to the assigned file id an all its meta data
@@ -95,7 +102,13 @@ public interface IFileService extends IService2 {
 	 */
 	public File getServerFile(Long fileId) throws ProcessingException;
 
-	public void updateFileFreeing(Long fileId, Long[] roleIds) throws ProcessingException;
+	/**
+	 * Returns the number of files in storage for the assigned file type. 
+	 * 
+	 * @param filetype Long
+	 * @return int
+	 * @throws ProcessingException
+	 */
+	public int getNumberOfFiles(Long filetype) throws ProcessingException;
 
-	
 }

@@ -9,6 +9,7 @@ import org.eclipse.scout.service.IService;
 import de.hsrm.thesis.filemanagement.shared.services.formdata.UserFormData;
 
 /**
+ * Service Interface for user handling
  * 
  * @author BSI, Mirjam Bayatloo
  * 
@@ -18,11 +19,7 @@ public interface IUserProcessService extends IService {
 
 	static final String PERMISSION_KEY = "permission_id";
 
-	// ///////////////////////////@author
-	// BSI/////////////////////////////////////////////
-
-//	ICode<Integer> getUserPermission(String userName)
-//			throws ProcessingException;
+	// @author BSI //////////////////////////////
 
 	Object[][] getUsers() throws ProcessingException;
 
@@ -32,12 +29,6 @@ public interface IUserProcessService extends IService {
 
 	void updateUser(UserFormData formData) throws ProcessingException;
 
-//	public void registerUser() throws ProcessingException;
-
-//	public void unregisterUser() throws ProcessingException;
-
-//	public Set<String> getUsersOnline() throws ProcessingException;
-
 	public boolean isValidUser(String username, String password)
 			throws ProcessingException;
 
@@ -45,8 +36,7 @@ public interface IUserProcessService extends IService {
 
 	public void resetPassword(Long u_Id, String newPassword)
 			throws ProcessingException;
-	// ///////////////////////@author Mirjam
-	// Bayatloo/////////////////////////////////////
+	// @author Mirjam Bayatloo////////////////////
 
 	/**
 	 * Fetches all role ids the user is a member of

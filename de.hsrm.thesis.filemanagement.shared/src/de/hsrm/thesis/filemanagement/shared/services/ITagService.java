@@ -7,6 +7,12 @@ import org.eclipse.scout.service.IService2;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.TagFormData;
 
+/**
+ * Service Interface for tag handling
+ * 
+ * @author mba
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface ITagService extends IService2 {
 

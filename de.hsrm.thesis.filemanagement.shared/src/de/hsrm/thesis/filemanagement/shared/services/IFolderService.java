@@ -7,48 +7,78 @@ import org.eclipse.scout.service.IService;
 
 import de.hsrm.thesis.filemanagement.shared.services.formdata.FoldersFormData;
 
+/**
+ * Service Handling for folder handling
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IFolderService extends IService {
 
-	public Object[][] getFolders(Long folderId) throws ProcessingException;
-
+	/**
+	 * Saves folder data to storage
+	 * 
+	 * @param formData
+	 *            FoldersFormData
+	 * @param parentFolderId
+	 *            Long
+	 * @return FoldersFormData
+	 * @throws ProcessingException
+	 */
 	public FoldersFormData createFolder(FoldersFormData formData,
 			Long parentFolderId) throws ProcessingException;
 
-	public void deleteFolderAndChildFolders(Long folderId) throws ProcessingException;
+	/**
+	 * Removes only the folder from storage, no child folders or files will be
+	 * deleted
+	 * 
+	 * @param folderId
+	 *            Long
+	 * @throws ProcessingException
+	 */
+	public void deleteFolder(Long folderId) throws ProcessingException;
 
+	/**
+	 * Removes folder data and all files and folders with the assigned id as
+	 * parent folder from storage
+	 * 
+	 * @param folderId
+	 *            Long
+	 * @throws ProcessingException
+	 */
+	public void deleteFolderAndChildFolders(Long folderId)
+			throws ProcessingException;
+
+	/**
+	 * Changes folder data in storage
+	 * 
+	 * @param formData
+	 *            FoldersFormData
+	 * @return FoldersFormData
+	 * @throws ProcessingException
+	 */
 	public FoldersFormData updateFolder(FoldersFormData formData)
 			throws ProcessingException;
 
 	/**
-	 * frees only the folder without data
+	 * Fetches the parent folder id from storage for the assigned file or folder
+	 * id
 	 * 
-	 * @param folderId
-	 * @param roleIds
+	 * @param fileOrFolderId
+	 *            Long
+	 * @return Long
 	 * @throws ProcessingException
 	 */
-	public void freeFolder(Long folderId, Long[] roleIds)
+	public Long getParentFolderId(Long fileOrFolderId)
 			throws ProcessingException;
-
+	
 	/**
-	 * frees complete folder with files and child folders
-	 * 
-	 * @param folderId
-	 * @param roleIds
+	 * Returns a hierarchical info about the folder structure
+	 * @param fileOrFolderId
+	 * @return
 	 * @throws ProcessingException
 	 */
-	public void addFreeingToChildFolderAndFiles(Long folderId, Long[] roleIds)
-			throws ProcessingException;
+	public String getFolderHierarchy(Long fileOrFolderId) throws ProcessingException;
 
-	public Long getParentFolder(Long fileOrFolderId) throws ProcessingException;
-
-	public void addFileFolderFreeing(Long folderId, Long[] roleIds)
-			throws ProcessingException;
-
-	void removeFreeingFromChildFolderAndFiles(Long parentFolderId,
-			Long[] roleIds) throws ProcessingException;
-
-	public void slideFileOrFolder(Long slidedFFId, Long oldFolderId, Long newFolderId) throws ProcessingException;
-
-	void deleteFolder(Long folderId) throws ProcessingException;
 }

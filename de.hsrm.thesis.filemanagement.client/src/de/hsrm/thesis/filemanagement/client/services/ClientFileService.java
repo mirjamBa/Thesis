@@ -10,9 +10,12 @@ import java.io.IOException;
 import org.eclipse.scout.commons.IOUtility;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
+import org.eclipse.scout.rt.client.ClientJob;
+import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.file.RemoteFile;
 import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
+import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.AbstractService;
 import org.eclipse.scout.service.SERVICES;
 import org.eclipse.swt.program.Program;
@@ -27,28 +30,33 @@ public class ClientFileService extends AbstractService
 
 	@Override
 	public void openFile(Long fileNr) throws ProcessingException {
-		if(!ACCESS.check(new OpenFilePermission())){
-			  throw new VetoException(TEXTS.get("VETOOpenFilePermission"));
-		  }
-		// TODO test opening files from server
+		if (!ACCESS.check(new OpenFilePermission())) {
+			throw new VetoException(TEXTS.get("VETOOpenFilePermission"));
+		}
 		File file = SERVICES.getService(IFileService.class).getServerFile(
 				fileNr);
-		Desktop desktop = Desktop.getDesktop();
-		try {
-			desktop.open(file);
-		} catch (IOException e) {
-			try {
-				String fileExtension = file.getCanonicalPath().split("\\.")[file
-						.getCanonicalPath().split("\\.").length - 1];
-				Program program = Program.findProgram(fileExtension);
-				program.execute(file.getAbsolutePath());
 
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		if (UserAgentUtility.isWebClient()) {
+			IDesktop desktop = ClientJob.getCurrentSession().getDesktop();
+			desktop.openBrowserWindow(file.getAbsolutePath());
+		} else {
+			Desktop desktop = Desktop.getDesktop();
+			try {
+				desktop.open(file);
+			} catch (IOException e) {
+				try {
+					String fileExtension = file.getCanonicalPath().split("\\.")[file
+							.getCanonicalPath().split("\\.").length - 1];
+					Program program = Program.findProgram(fileExtension);
+					program.execute(file.getAbsolutePath());
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void downloadFile(File f, File tempfile) throws ProcessingException {
 		String filename = IOUtility.getFileName(f.getAbsolutePath());
@@ -66,7 +74,7 @@ public class ClientFileService extends AbstractService
 				// will do nothing when in rich client mode, but show a
 				// web
 				// save as dialog in web ui
-				 DownloadUtility.downloadFile(tempfile);
+				DownloadUtility.downloadFile(tempfile);
 			} catch (FileNotFoundException e1) {
 				throw new ProcessingException("Cannot find file " + e1);
 			} catch (IOException e1) {
@@ -75,6 +83,5 @@ public class ClientFileService extends AbstractService
 		}
 
 	}
-
 
 }
