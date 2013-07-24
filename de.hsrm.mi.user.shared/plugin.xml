@@ -6,7 +6,7 @@
          point="org.eclipse.scout.service.services">
        <service
             factory="org.eclipse.scout.service.DefaultServiceFactory"
-            class="de.hsrm.mi.user.shared.services.common.text.UserTextProviderService">
+            class="de.hsrm.perfunctio.user.shared.services.common.text.UserTextProviderService">
       </service>
    </extension>
    

@@ -1,23 +1,23 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Administration-client
-Bundle-SymbolicName: de.hsrm.mi.administration.client;singleton:=true
+Bundle-SymbolicName: de.hsrm.perfunctio.administration.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.hsrm.mi.administration.client.Activator
-Export-Package: de.hsrm.mi.administration.client,
- de.hsrm.mi.administration.client.extension,
- de.hsrm.mi.administration.client.ui.desktop.outlines,
- de.hsrm.mi.administration.client.ui.desktop.outlines.pages,
- de.hsrm.mi.administration.client.ui.forms
+Bundle-Activator: de.hsrm.perfunctio.administration.client.Activator
+Export-Package: de.hsrm.perfunctio.administration.client,
+ de.hsrm.perfunctio.administration.client.extension,
+ de.hsrm.perfunctio.administration.client.ui.desktop.outlines,
+ de.hsrm.perfunctio.administration.client.ui.desktop.outlines.pages,
+ de.hsrm.perfunctio.administration.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client,
  org.eclipse.scout.rt.extension.client,
- de.hsrm.mi.administration.shared,
+ de.hsrm.perfunctio.administration.shared,
  org.eclipse.scout.svg.client
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hsrm.thesis.filemanagement.client.ui.forms,
- de.hsrm.thesis.filemanagement.shared.services,
- de.hsrm.thesis.filemanagement.shared.services.code,
- de.hsrm.thesis.filemanagement.shared.services.formdata,
+Import-Package: de.hsrm.perfunctio.core.client.ui.forms,
+ de.hsrm.perfunctio.core.shared.services,
+ de.hsrm.perfunctio.core.shared.services.code,
+ de.hsrm.perfunctio.core.shared.services.formdata,
  org.w3c.dom.svg;version="[1.1.0,2.0.0)"
 Bundle-ActivationPolicy: lazy

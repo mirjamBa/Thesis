@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.rt.server.services.common.session.IServerSessionRegistryService;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.services.IStorageService;
+import de.hsrm.perfunctio.core.shared.services.IStorageService;
 
 /**
  * Dummy application in order to manage server side product configurations in *.product files.

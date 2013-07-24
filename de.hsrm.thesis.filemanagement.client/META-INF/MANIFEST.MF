@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Client
-Bundle-SymbolicName: de.hsrm.thesis.filemanagement.client;singleton:=true
+Bundle-SymbolicName: de.hsrm.perfunctio.core.client;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.hsrm.thesis.filemanagement.client.Activator
-Export-Package: de.hsrm.thesis.filemanagement.client,
- de.hsrm.thesis.filemanagement.client.extension,
- de.hsrm.thesis.filemanagement.client.handler,
- de.hsrm.thesis.filemanagement.client.services,
- de.hsrm.thesis.filemanagement.client.ui,
- de.hsrm.thesis.filemanagement.client.ui.desktop.outlines,
- de.hsrm.thesis.filemanagement.client.ui.desktop.outlines.pages,
- de.hsrm.thesis.filemanagement.client.ui.forms,
- de.hsrm.thesis.filemanagement.client.util
+Bundle-Activator: de.hsrm.perfunctio.core.client.Activator
+Export-Package: de.hsrm.perfunctio.core.client,
+ de.hsrm.perfunctio.core.client.extension,
+ de.hsrm.perfunctio.core.client.handler,
+ de.hsrm.perfunctio.core.client.services,
+ de.hsrm.perfunctio.core.client.ui,
+ de.hsrm.perfunctio.core.client.ui.desktop.outlines,
+ de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages,
+ de.hsrm.perfunctio.core.client.ui.forms,
+ de.hsrm.perfunctio.core.client.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.extension.client,
  org.eclipse.scout.rt.client,
  org.eclipse.swt,
  org.eclipse.scout.svg.client,
- de.hsrm.thesis.filemanagement.shared;bundle-version="1.0.0"
+ de.hsrm.perfunctio.core.shared;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.w3c.dom.svg;version="[1.1.0,2.0.0)"
 Bundle-ActivationPolicy: lazy

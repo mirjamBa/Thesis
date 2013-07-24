@@ -32,15 +32,15 @@
       <plugin id="com.bsiag.scout.rt.ui.swing.laf.rayo.fragment" fragment="true"/>
       <plugin id="com.bsiag.scout.rt.ui.swing.rayo"/>
       <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
-      <plugin id="de.hsrm.mi.administration.client"/>
-      <plugin id="de.hsrm.mi.administration.shared"/>
-      <plugin id="de.hsrm.mi.user.client"/>
-      <plugin id="de.hsrm.mi.user.shared"/>
+      <plugin id="de.hsrm.perfunctio.administration.client"/>
+      <plugin id="de.hsrm.perfunctio.administration.shared"/>
+      <plugin id="de.hsrm.perfunctio.core.client"/>
+      <plugin id="de.hsrm.perfunctio.core.shared"/>
+      <plugin id="de.hsrm.perfunctio.user.client"/>
+      <plugin id="de.hsrm.perfunctio.user.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.client"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.ui.swing"/>
-      <plugin id="de.hsrm.thesis.filemanagement.client"/>
-      <plugin id="de.hsrm.thesis.filemanagement.shared"/>
       <plugin id="javax.xml"/>
       <plugin id="org.apache.batik.bridge"/>
       <plugin id="org.apache.batik.css"/>

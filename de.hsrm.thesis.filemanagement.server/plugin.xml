@@ -6,31 +6,35 @@
          point="org.eclipse.scout.service.services">
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.TikaService">
+            class="de.hsrm.perfunctio.core.server.services.TikaService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.ImageProcessService">
+            class="de.hsrm.perfunctio.core.server.services.ImageProcessService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.StartupService">
+            class="de.hsrm.perfunctio.core.server.services.StartupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.common.security.FilemanagementPermissionService">
+            class="de.hsrm.perfunctio.core.server.services.common.security.FilemanagementPermissionService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.lookup.AllRoleLookupService">
+            class="de.hsrm.perfunctio.core.server.services.lookup.AllRoleLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.lookup.LanguageLookupService">
+            class="de.hsrm.perfunctio.core.server.services.lookup.LanguageLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.server.services.lookup.PermissionsLookupService">
+            class="de.hsrm.perfunctio.core.server.services.lookup.PermissionsLookupService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.perfunctio.core.server.services.PermissionControlService">
       </service>
    </extension>
 

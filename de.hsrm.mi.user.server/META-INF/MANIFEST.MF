@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Server
-Bundle-SymbolicName: de.hsrm.thesis.bachelor.security;singleton:=true
+Bundle-SymbolicName: de.hsrm.perfunctio.security;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.hsrm.mi.user.server.Activator
+Bundle-Activator: de.hsrm.perfunctio.server.Activator
 Require-Bundle: org.eclipse.core.runtime,
  javax.servlet,
  org.eclipse.scout.commons,
@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.service;bundle-version="3.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: de.hsrm.mi.user.server,
- de.hsrm.mi.user.server.security
-Import-Package: de.hsrm.thesis.filemanagement.shared.services
+Export-Package: de.hsrm.perfunctio.server,
+ de.hsrm.perfunctio.server.security
+Import-Package: de.hsrm.perfunctio.core.shared.services

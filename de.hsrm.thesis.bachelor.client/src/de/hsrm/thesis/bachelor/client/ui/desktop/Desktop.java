@@ -23,12 +23,12 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension;
-import de.hsrm.mi.user.client.extension.UserDesktopExtension;
+import de.hsrm.perfunctio.administration.client.extension.FileAdminDesktopExtension;
+import de.hsrm.perfunctio.core.client.extension.FilemanagementDesktopExtension;
+import de.hsrm.perfunctio.core.shared.Icons;
+import de.hsrm.perfunctio.user.client.extension.UserDesktopExtension;
 import de.hsrm.thesis.bachelor.client.ClientSession;
 import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
-import de.hsrm.thesis.filemanagement.client.extension.FilemanagementDesktopExtension;
-import de.hsrm.thesis.filemanagement.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);

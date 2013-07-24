@@ -6,87 +6,87 @@
          point="org.eclipse.scout.service.services">
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.common.security.AccessControlService">
+            class="de.hsrm.perfunctio.database.derby.server.services.common.security.AccessControlService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.DBStorageService">
+            class="de.hsrm.perfunctio.database.derby.server.services.DBStorageService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FileFormatService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FileFormatService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.TagService">
+            class="de.hsrm.perfunctio.database.derby.server.services.TagService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.MetadataService">
+            class="de.hsrm.perfunctio.database.derby.server.services.MetadataService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.VersionService">
+            class="de.hsrm.perfunctio.database.derby.server.services.VersionService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FiletypeService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FiletypeService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.PasswordProcessService">
+            class="de.hsrm.perfunctio.database.derby.server.services.PasswordProcessService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.lookup.FiletypeLookupService">
+            class="de.hsrm.perfunctio.database.derby.server.services.lookup.FiletypeLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.lookup.RoleLookupService">
+            class="de.hsrm.perfunctio.database.derby.server.services.lookup.RoleLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.lookup.UserLookupService">
+            class="de.hsrm.perfunctio.database.derby.server.services.lookup.UserLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.lookup.TagLookupService">
+            class="de.hsrm.perfunctio.database.derby.server.services.lookup.TagLookupService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.AttributeService">
+            class="de.hsrm.perfunctio.database.derby.server.services.AttributeService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FileService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FileService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.RoleProcessService">
+            class="de.hsrm.perfunctio.database.derby.server.services.RoleProcessService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.UserProcessService">
+            class="de.hsrm.perfunctio.database.derby.server.services.UserProcessService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.RolePermissionService">
+            class="de.hsrm.perfunctio.database.derby.server.services.RolePermissionService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.AssignToRoleService">
+            class="de.hsrm.perfunctio.database.derby.server.services.AssignToRoleService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FolderService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FolderService">
       </service>
        <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FileAndFolderFreeingService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FileAndFolderFreeingService">
       </service>
        <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.filemanagement.database.derby.server.services.FileAndFolderService">
+            class="de.hsrm.perfunctio.database.derby.server.services.FileAndFolderService">
       </service>
    </extension>
 

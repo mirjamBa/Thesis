@@ -1,24 +1,31 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Server
-Bundle-SymbolicName: de.hsrm.thesis.filemanagement.database.derby;singleton:=true
+Bundle-SymbolicName: de.hsrm.perfunctio.database.derby;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.hsrm.thesis.filemanagement.database.derby.server.Activator
-Export-Package: de.hsrm.thesis.filemanagement.database.derby.server,
- de.hsrm.thesis.filemanagement.database.derby.server.services,
- de.hsrm.thesis.filemanagement.database.derby.server.services.common.security,
- de.hsrm.thesis.filemanagement.database.derby.server.services.lookup
+Bundle-Activator: de.hsrm.perfunctio.database.derby.server.Activator
+Export-Package: de.hsrm.perfunctio.database.derby.server,
+ de.hsrm.perfunctio.database.derby.server.services,
+ de.hsrm.perfunctio.database.derby.server.services.common.security,
+ de.hsrm.perfunctio.database.derby.server.services.lookup
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.service,
  org.eclipse.scout.commons,
  org.eclipse.scout.rt.server
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hsrm.thesis.filemanagement.server,
- de.hsrm.thesis.filemanagement.shared.beans,
- de.hsrm.thesis.filemanagement.shared.security,
- de.hsrm.thesis.filemanagement.shared.services,
- de.hsrm.thesis.filemanagement.shared.services.code,
- de.hsrm.thesis.filemanagement.shared.services.formdata,
- de.hsrm.thesis.filemanagement.shared.services.lookup,
- de.hsrm.thesis.filemanagement.shared.utility
+Import-Package: de.hsrm.perfunctio.core.server,
+ de.hsrm.perfunctio.core.server.handler,
+ de.hsrm.perfunctio.core.server.services,
+ de.hsrm.perfunctio.core.server.services.common.security,
+ de.hsrm.perfunctio.core.server.services.lookup,
+ de.hsrm.perfunctio.core.shared,
+ de.hsrm.perfunctio.core.shared.beans,
+ de.hsrm.perfunctio.core.shared.security,
+ de.hsrm.perfunctio.core.shared.services,
+ de.hsrm.perfunctio.core.shared.services.code,
+ de.hsrm.perfunctio.core.shared.services.common.text,
+ de.hsrm.perfunctio.core.shared.services.formdata,
+ de.hsrm.perfunctio.core.shared.services.lookup,
+ de.hsrm.perfunctio.core.shared.utility,
+ de.hsrm.perfunctio.server
 Bundle-ActivationPolicy: lazy

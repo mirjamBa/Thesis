@@ -93,7 +93,7 @@
   <extension point="org.eclipse.scout.http.servletfilter.filters">
     <filter
       aliases="/"
-      class="de.hsrm.mi.user.server.security.BasicForwardSecurityFilter"
+      class="de.hsrm.perfunctio.server.security.BasicForwardSecurityFilter"
       ranking="20">
     </filter>
   </extension>

@@ -13,7 +13,7 @@
          name=""
          point="org.eclipse.scout.rt.extension.client.desktopExtensions">
       <desktopExtension
-            class="de.hsrm.mi.administration.client.extension.FileAdminDesktopExtension"
+            class="de.hsrm.perfunctio.administration.client.extension.FileAdminDesktopExtension"
             active="true">
       </desktopExtension>
    </extension>

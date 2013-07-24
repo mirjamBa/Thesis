@@ -13,9 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  de.hsrm.thesis.bachelor.shared,
  org.eclipse.scout.svg.client
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hsrm.mi.administration.client.extension,
- de.hsrm.mi.user.client.extension,
- de.hsrm.thesis.filemanagement.client.extension,
- de.hsrm.thesis.filemanagement.shared,
+Import-Package: de.hsrm.perfunctio.administration.client.extension,
+ de.hsrm.perfunctio.core.client.extension,
+ de.hsrm.perfunctio.core.shared,
+ de.hsrm.perfunctio.user.client.extension,
  org.w3c.dom.svg;version="[1.1.0,2.0.0)"
 Bundle-ActivationPolicy: lazy

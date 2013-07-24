@@ -5,7 +5,7 @@
          point="org.eclipse.scout.service.services">
       <service
             factory="org.eclipse.scout.service.DefaultServiceFactory"
-            class="de.hsrm.thesis.filemanagement.shared.services.common.text.FilemanagementTextProviderService">
+            class="de.hsrm.perfunctio.core.shared.services.common.text.FilemanagementTextProviderService">
       </service>
    </extension>
 

@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.server.AbstractServerSession;
 import org.eclipse.scout.rt.server.ServerJob;
 import org.eclipse.scout.service.SERVICES;
 
-import de.hsrm.thesis.filemanagement.shared.services.IStartupService;
+import de.hsrm.perfunctio.core.shared.services.IStartupService;
 
 public class ServerSession extends AbstractServerSession {
   private static IScoutLogger logger = ScoutLogManager.getLogger(ServerSession.class);

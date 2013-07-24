@@ -30,9 +30,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.jaxws216;bundle-version="2.1.6",
  de.hsrm.thesis.bachelor.shared,
  tikanearlyall;bundle-version="1.0.0",
- de.hsrm.thesis.bachelor.security;bundle-version="1.0.0"
+ de.hsrm.perfunctio.security;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hsrm.thesis.filemanagement.shared.services,
+Import-Package: de.hsrm.perfunctio.core.shared.services,
  javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"
 Bundle-ActivationPolicy: lazy
