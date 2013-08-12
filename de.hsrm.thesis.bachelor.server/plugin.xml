@@ -21,8 +21,7 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.thesis.bachelor.server.services.OCRProcessService"
-            session="de.hsrm.thesis.bachelor.server.ServerSession">
+            class="de.hsrm.thesis.bachelor.server.services.common.security.ThesisAccessControlService">
       </service>
    </extension>
    <extension
@@ -72,16 +71,6 @@
    <extension
          name=""
          point="org.eclipse.scout.http.servletfilter.filters">
-      <!--filter
-            aliases="/process /remotefiles /updatesite"
-            class="org.eclipse.scout.http.servletfilter.security.BasicSecurityFilter"
-            ranking="20">
-      </filter>
-      <filter
-            aliases="/process /remotefiles /updatesite"
-            class="org.eclipse.scout.http.servletfilter.security.AnonymousSecurityFilter"
-            ranking="30">
-      </filter-->
       <filter
             aliases="/process"
             class="de.hsrm.perfunctio.server.security.BasicForwardSecurityFilter"
@@ -116,8 +105,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            application="de.hsrm.thesis.bachelor.server.app"
-            name="bachelor Server">
+            name="bachelor Server"
+            application="de.hsrm.thesis.bachelor.server.app">
          <property
                name="appName"
                value="bachelor Server">

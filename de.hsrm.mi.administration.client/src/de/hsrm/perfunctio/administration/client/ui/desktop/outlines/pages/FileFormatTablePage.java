@@ -21,6 +21,12 @@ import de.hsrm.perfunctio.core.client.ui.forms.FileFormatForm;
 import de.hsrm.perfunctio.core.shared.services.IFileFormatService;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 
+/**
+ * TablePage for mapped file formats to file types
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileFormatTablePage
 		extends
 			AbstractPageWithTable<FileFormatTablePage.Table> {

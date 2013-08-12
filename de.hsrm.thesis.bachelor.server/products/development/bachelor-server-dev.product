@@ -29,9 +29,12 @@
 
    <plugins>
       <plugin id="com.mysql.jdbc_5117.fragment" fragment="true"/>
+      <plugin id="de.hsrm.perfunctio.administration.shared"/>
+      <plugin id="de.hsrm.perfunctio.core.server"/>
       <plugin id="de.hsrm.perfunctio.core.shared"/>
       <plugin id="de.hsrm.perfunctio.database.derby"/>
       <plugin id="de.hsrm.perfunctio.security"/>
+      <plugin id="de.hsrm.perfunctio.user.shared"/>
       <plugin id="de.hsrm.thesis.bachelor.server"/>
       <plugin id="de.hsrm.thesis.bachelor.shared"/>
       <plugin id="javax.servlet"/>
@@ -39,6 +42,7 @@
       <plugin id="org.apache.ant"/>
       <plugin id="org.apache.commons.codec"/>
       <plugin id="org.apache.derby.jdbc_1091.fragment" fragment="true"/>
+      <plugin id="org.apache.tika"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.runtime"/>
@@ -79,7 +83,6 @@
       <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.hamcrest.core"/>
       <plugin id="org.junit"/>
-      <plugin id="tikanearlyall"/>
    </plugins>
 
 

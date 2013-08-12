@@ -1,4 +1,4 @@
-package de.hsrm.perfunctio.core.server.services;
+package de.hsrm.perfunctio.database.derby.server.services;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.holders.LongArrayHolder;
@@ -12,6 +12,12 @@ import de.hsrm.perfunctio.core.shared.services.IPermissionControlService;
 import de.hsrm.perfunctio.core.shared.services.IUserProcessService;
 import de.hsrm.perfunctio.core.shared.utility.ArrayUtility;
 
+/**
+ * Service implementation for checking permissions
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class PermissionControlService extends AbstractService
 		implements
 			IPermissionControlService {
@@ -33,11 +39,11 @@ public class PermissionControlService extends AbstractService
 			}
 
 			LongArrayHolder roles = new LongArrayHolder();
-			//FIXME permissions/roles leer, entweder falsch gespeichert oder falsch geladen
 			SQL.selectInto(
 					"SELECT role_id FROM role_file_permission WHERE file_id = :ffId AND permission_name = :permission INTO :roles",
 					new NVPair("ffId", resource), new NVPair("permission",
-							function + "Permission"), new NVPair("roles", roles));
+							function + "Permission"),
+					new NVPair("roles", roles));
 
 			// roles of the user
 			Long[] userRoles = SERVICES.getService(IUserProcessService.class)
@@ -53,7 +59,7 @@ public class PermissionControlService extends AbstractService
 			}
 
 			return false;
-		}
+		} 
 		return true;
 	}
 

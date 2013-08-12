@@ -26,6 +26,5 @@ Import-Package: de.hsrm.perfunctio.core.server,
  de.hsrm.perfunctio.core.shared.services.common.text,
  de.hsrm.perfunctio.core.shared.services.formdata,
  de.hsrm.perfunctio.core.shared.services.lookup,
- de.hsrm.perfunctio.core.shared.utility,
- de.hsrm.perfunctio.server
+ de.hsrm.perfunctio.core.shared.utility
 Bundle-ActivationPolicy: lazy

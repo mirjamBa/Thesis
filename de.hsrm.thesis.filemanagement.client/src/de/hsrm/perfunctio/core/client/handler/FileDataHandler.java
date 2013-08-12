@@ -12,11 +12,21 @@ import de.hsrm.perfunctio.core.shared.services.IFileService;
 import de.hsrm.perfunctio.core.shared.services.IUserProcessService;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileFormData;
 
-public class FileDataHandler extends AbstractClientHandler implements IClientHandler {
-
+/**
+ * Concrete client handler, responsible for preparing, providing and converting
+ * the file form.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class FileDataHandler extends AbstractClientHandler {
+	private final int PRIORITY = 500;
 	private FileForm frm;
 	private FileFormData frmData;
-	
+
+	public FileDataHandler() {
+		this.priority = PRIORITY;
+	}
 
 	/**
 	 * @return the frmData
@@ -26,7 +36,8 @@ public class FileDataHandler extends AbstractClientHandler implements IClientHan
 	}
 
 	/**
-	 * @param frmData the frmData to set
+	 * @param frmData
+	 *            the frmData to set
 	 */
 	public void setFrmData(FileFormData frmData) {
 		this.frmData = frmData;
@@ -48,8 +59,7 @@ public class FileDataHandler extends AbstractClientHandler implements IClientHan
 	}
 
 	@Override
-	public void handle(FileUploadData data)
-			throws ProcessingException {
+	public void handle(FileUploadData data) throws ProcessingException {
 
 		// prepare fileform
 		frm = fillFileForm(data);
@@ -59,40 +69,39 @@ public class FileDataHandler extends AbstractClientHandler implements IClientHan
 			frm.startNew();
 			frm.touch();
 			frm.waitFor();
-			
-			if(frmData == null){
+
+			if (frmData == null) {
 				frmData = new FileFormData();
 			}
 			frm.exportFormData(frmData);
 			data.setFileFormData(frmData);
 			data.setFileId(frm.getFileNr());
-			
+
 		} else {
 			// drag and drop action: quick processing required
-			if(frmData == null){
+			if (frmData == null) {
 				frmData = new FileFormData();
 			}
 			frm.exportFormData(frmData);
 			data.setFileFormData(frmData);
-			frmData = SERVICES.getService(IFileService.class).create(frmData, data.getServerFileData(), frm.getParentFolderId());
+
+			frmData = SERVICES.getService(IFileService.class).create(frmData,
+					data.getServerFileData(), frm.getParentFolderId());
 			data.setFileId(frmData.getFileNr());
 		}
 		frm = null;
 		frmData = null;
 
 		if (nextHandler != null) {
-			nextHandler.handle(data);
+			((AbstractClientHandler) nextHandler).handle(data);
 		}
 	}
 
-	@Override
-	public void setNext(IClientHandler handler) {
-		this.nextHandler = handler;
-	}
-
-	private FileForm fillFileForm(FileUploadData data) throws ProcessingException {
+	private FileForm fillFileForm(FileUploadData data)
+			throws ProcessingException {
 		if (frm == null) {
-			frm = new FileForm(data.getServerFileData(), data.getFiletypeNr(), data.getParentFolderId());
+			frm = new FileForm(data.getServerFileData(), data.getFiletypeNr(),
+					data.getParentFolderId());
 		} else {
 			frm.setFileData(data.getServerFileData());
 			frm.setFiletypeNr(data.getFiletypeNr());
@@ -106,11 +115,12 @@ public class FileDataHandler extends AbstractClientHandler implements IClientHan
 			AbstractValueField<?> vField = (AbstractValueField<?>) frm
 					.getDCMIBox().getFieldByClass(f.getClass());
 			if (data.getMetaValues().containsKey(elementName.toUpperCase())) {
-				vField.parseValue(data.getMetaValues().get(elementName.toUpperCase()));
-			} else if (data.getMetaValues().containsKey(("dc:" + elementName)
-					.toUpperCase())) {
-				vField.parseValue(data.getMetaValues().get(("dc:" + elementName)
-						.toUpperCase()));
+				vField.parseValue(data.getMetaValues().get(
+						elementName.toUpperCase()));
+			} else if (data.getMetaValues().containsKey(
+					("dc:" + elementName).toUpperCase())) {
+				vField.parseValue(data.getMetaValues().get(
+						("dc:" + elementName).toUpperCase()));
 			}
 			vField.touch();
 		}
@@ -124,7 +134,8 @@ public class FileDataHandler extends AbstractClientHandler implements IClientHan
 					data.getMetaValues().get("Content-Type".toUpperCase()));
 		}
 		if (frm.getDateMetadataField().isEmpty()) {
-			frm.getDateMetadataField().setValue(data.getServerFileData().getLastModified());
+			frm.getDateMetadataField().setValue(
+					data.getServerFileData().getLastModified());
 		}
 
 		frm.getTypistField().setValue(

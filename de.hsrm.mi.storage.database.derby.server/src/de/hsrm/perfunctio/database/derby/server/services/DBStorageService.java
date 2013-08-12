@@ -100,8 +100,7 @@ public class DBStorageService extends AbstractService
 					+ "free_id	   BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY CONSTRAINT FREE_PK PRIMARY KEY, "
 					+ "file_id     BIGINT NOT NULL REFERENCES file_folder(file_folder_id),"
 					+ "role_id     BIGINT NOT NULL REFERENCES role(role_id), "
-					+ "permission_name	VARCHAR(256) )");
-			//FIXME perm name not null
+					+ "permission_name	VARCHAR(256))");
 			SQL.commit();
 
 			SQL.insert("CREATE TABLE user_role ("
@@ -115,7 +114,7 @@ public class DBStorageService extends AbstractService
 			
 			SQL.insert("CREATE TABLE role_permission ( "
 					+ "role_id		BIGINT NOT NULL REFERENCES role(role_id), "
-					+ "permission_name	VARCHAR(256) NOT NULL )");
+					+ "permission_name	VARCHAR(256))");
 			SQL.commit();
 			
 			//create default roles

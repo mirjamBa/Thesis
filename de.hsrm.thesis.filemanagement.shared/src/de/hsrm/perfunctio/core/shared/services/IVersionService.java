@@ -7,7 +7,7 @@ import org.eclipse.scout.service.IService2;
 
 import de.hsrm.perfunctio.core.shared.services.formdata.VersionFormData;
 /**
- * Service Interface for version handling
+ * Service Interface for version handling (not used)
  * 
  * @author Mirjam Bayatloo
  * 

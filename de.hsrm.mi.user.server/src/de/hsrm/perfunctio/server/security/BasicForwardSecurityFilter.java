@@ -28,8 +28,10 @@ import org.eclipse.scout.http.servletfilter.security.AbstractChainableSecurityFi
 import org.eclipse.scout.http.servletfilter.security.PrincipalHolder;
 
 /**
- * 
- * @author BSI Business Systems Integration AG
+ * @author BSI Business Systems Integrations AG, BahBahChat see <a href=
+ *         "https://github.com/BSI-Business-Systems-Integration-AG/org.eclipsescout.demo/blob/d95a1816cc0d362fffa23da7fdab2626962e8467/bahbah/org.eclipse.scout.bahbah.security/src/org/eclipse/scout/bahbah/server/security/BasicForwardSecurityFilter.java"
+ *         >http://github.com/BSI-Business-Systems-Integration-AG/org.
+ *         eclipsescout.demo</a>
  * 
  */
 public class BasicForwardSecurityFilter extends AbstractChainableSecurityFilter {

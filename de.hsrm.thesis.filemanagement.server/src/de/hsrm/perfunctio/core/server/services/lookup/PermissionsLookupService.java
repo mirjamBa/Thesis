@@ -14,6 +14,12 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.server.util.LookupUtility;
 import de.hsrm.perfunctio.core.shared.services.lookup.IPermissionsLookupService;
 
+/**
+ * Fetches all permissions as lookup-rows from the bundles
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class PermissionsLookupService extends AbstractLookupService
 		implements
 			IPermissionsLookupService {
@@ -26,8 +32,8 @@ public class PermissionsLookupService extends AbstractLookupService
 				IPermissionService.class).getAllPermissionClasses();
 
 		for (int i = 0; i < permissions.length; i++) {
-			if (permissions[i].getBundleSymbolicName().contains(
-					"perfunctio")) {
+			String bundleName = permissions[i].getBundleSymbolicName();
+			if (bundleName.contains("perfunctio")) {
 				rows.add(new LookupRow(permissions[i].getSimpleClassName(),
 						permissions[i].getSimpleClassName()));
 			}

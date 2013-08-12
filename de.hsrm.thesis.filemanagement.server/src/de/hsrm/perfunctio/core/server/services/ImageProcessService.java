@@ -17,7 +17,15 @@ import org.eclipse.scout.service.AbstractService;
 
 import de.hsrm.perfunctio.core.shared.services.IImageProcessService;
 
-public class ImageProcessService extends AbstractService implements IImageProcessService {
+/**
+ * Service implementation for image handling
+ * 
+ * @author BSI, Mirjam Bayatloo
+ * 
+ */
+public class ImageProcessService extends AbstractService
+		implements
+			IImageProcessService {
 
 	@Override
 	public byte[] getImage(String imageId) throws ProcessingException {
@@ -28,16 +36,21 @@ public class ImageProcessService extends AbstractService implements IImageProces
 		}
 		return null;
 	}
-	
-	@Override
+
+	/**
+	 * @author BSI Business Systems Integration AG
+	 * @see <a
+	 *      href="http://wiki.eclipse.org/Scout/HowTo/3.8/Display_images_in_a_table_page">http://wiki.eclipse.org/Scout/HowTo/3.8/Display_images_in_a_table_page</a>
+	 */
 	public byte[] scaleImage(byte[] content, int height) {
-		//FIXME not only png
 		final String fileExtension = "png";
-		if (content == null || height <= 0 || StringUtility.isNullOrEmpty(fileExtension)) {
+		if (content == null || height <= 0
+				|| StringUtility.isNullOrEmpty(fileExtension)) {
 			return content;
 		}
 		try {
-			BufferedImage image = ImageIO.read(new ByteArrayInputStream(content));
+			BufferedImage image = ImageIO
+					.read(new ByteArrayInputStream(content));
 			if (image == null) {
 				return content;
 			}
@@ -52,10 +65,13 @@ public class ImageProcessService extends AbstractService implements IImageProces
 				int newWidth = (int) (fl * originalWidth);
 				int newHeight = (int) (fl * originalHeight);
 
-				BufferedImage scaledImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+				BufferedImage scaledImage = new BufferedImage(newWidth,
+						newHeight, BufferedImage.TYPE_INT_RGB);
 				Graphics2D g = scaledImage.createGraphics();
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+						RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+						RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				g.drawImage(image, tx, null);
 				g.dispose();
 

@@ -31,6 +31,13 @@ import de.hsrm.perfunctio.core.shared.services.IFileFormatService;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.formdata.FiletypeChooserFormData;
 
+/**
+ * Form for decision between all available fileformat-filetype mappings for an
+ * assigned file
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FiletypeChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FiletypeChooserForm extends AbstractForm {
 

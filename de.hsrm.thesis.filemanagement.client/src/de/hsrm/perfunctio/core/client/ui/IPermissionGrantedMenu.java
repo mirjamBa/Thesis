@@ -1,4 +1,4 @@
-package de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages;
+package de.hsrm.perfunctio.core.client.ui;
 
 public interface IPermissionGrantedMenu {
 

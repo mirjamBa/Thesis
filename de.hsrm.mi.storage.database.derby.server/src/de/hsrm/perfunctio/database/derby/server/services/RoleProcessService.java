@@ -27,7 +27,7 @@ public class RoleProcessService extends AbstractService
 	@Override
 	public Object[][] getRoles() throws ProcessingException {
 		if (!ACCESS.check(new ReadRolesPermission())) {
-			throw new VetoException(TEXTS.get("VETORolesFilePermission"));
+			throw new VetoException(TEXTS.get("VETOReadRolesPermission"));
 		}
 		return SQL.select("SELECT role_id, name FROM role");
 	}

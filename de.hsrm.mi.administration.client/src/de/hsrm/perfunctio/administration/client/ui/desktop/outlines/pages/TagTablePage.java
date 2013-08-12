@@ -19,6 +19,12 @@ import de.hsrm.perfunctio.administration.client.ui.forms.TagForm;
 import de.hsrm.perfunctio.administration.shared.security.ViewTagTablePagePermission;
 import de.hsrm.perfunctio.core.shared.services.ITagService;
 
+/**
+ * TablePage to display, add, modify and remove all tags
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class TagTablePage extends AbstractPageWithTable<TagTablePage.Table> {
 
 	@Override

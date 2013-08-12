@@ -7,6 +7,13 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.perfunctio.core.shared.beans.ServerFileData;
+
+/**
+ * Data transfer object for the FileChooserForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileChooserFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

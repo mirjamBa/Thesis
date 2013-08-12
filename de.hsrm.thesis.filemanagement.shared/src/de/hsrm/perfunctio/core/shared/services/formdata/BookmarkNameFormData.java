@@ -2,6 +2,13 @@ package de.hsrm.perfunctio.core.shared.services.formdata;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
+
+/**
+ * Data transfer object for the BookmarkNameForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class BookmarkNameFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

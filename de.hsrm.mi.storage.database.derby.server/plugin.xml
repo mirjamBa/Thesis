@@ -38,10 +38,6 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
-            class="de.hsrm.perfunctio.database.derby.server.services.lookup.FiletypeLookupService">
-      </service>
-      <service
-            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.perfunctio.database.derby.server.services.lookup.RoleLookupService">
       </service>
       <service
@@ -59,6 +55,10 @@
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.perfunctio.database.derby.server.services.FileService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.perfunctio.database.derby.server.services.FileStorageService">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
@@ -80,13 +80,21 @@
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.perfunctio.database.derby.server.services.FolderService">
       </service>
-       <service
+      <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.perfunctio.database.derby.server.services.FileAndFolderFreeingService">
       </service>
-       <service
+      <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="de.hsrm.perfunctio.database.derby.server.services.FileAndFolderService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.perfunctio.database.derby.server.services.lookup.AllRoleLookupService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="de.hsrm.perfunctio.database.derby.server.services.PermissionControlService">
       </service>
    </extension>
 

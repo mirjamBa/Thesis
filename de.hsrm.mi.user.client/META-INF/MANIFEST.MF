@@ -6,8 +6,6 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.perfunctio.user.client.Activator
 Export-Package: de.hsrm.perfunctio.user.client,
  de.hsrm.perfunctio.user.client.extension,
- de.hsrm.perfunctio.user.client.forms,
- de.hsrm.perfunctio.user.client.services,
  de.hsrm.perfunctio.user.client.ui.desktop.outlines,
  de.hsrm.perfunctio.user.client.ui.desktop.outlines.pages,
  de.hsrm.perfunctio.user.client.ui.forms

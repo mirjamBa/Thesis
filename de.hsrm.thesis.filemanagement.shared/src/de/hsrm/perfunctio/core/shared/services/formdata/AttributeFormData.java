@@ -6,6 +6,13 @@ import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
+
+/**
+ * Data transfer object for the AttributeForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class AttributeFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
@@ -91,7 +98,6 @@ public class AttributeFormData extends AbstractFormData {
 		protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
 			super.initValidationRules(ruleMap);
 			ruleMap.put(ValidationRule.CODE_TYPE, FileTypeCodeType.class);
-			ruleMap.put(ValidationRule.MANDATORY, true);
 			ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
 		}
 	}

@@ -21,10 +21,16 @@ import de.hsrm.perfunctio.core.client.ui.forms.FileChooserForm.MainBox.FileBox;
 import de.hsrm.perfunctio.core.client.ui.forms.FileChooserForm.MainBox.FileBox.FileField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileChooserForm.MainBox.OkButton;
 import de.hsrm.perfunctio.core.shared.beans.ServerFileData;
-import de.hsrm.perfunctio.core.shared.services.IFileService;
-import de.hsrm.perfunctio.core.shared.services.ITikaService;
+import de.hsrm.perfunctio.core.shared.services.IFileStorageService;
+import de.hsrm.perfunctio.core.shared.services.IMetadataExtractionService;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileChooserFormData;
 
+/**
+ * Form for choosing files during the upload process
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FileChooserFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileChooserForm extends AbstractForm {
 
@@ -106,15 +112,15 @@ public class FileChooserForm extends AbstractForm {
 	}
 
 	public class NewHandler extends AbstractFormHandler {
-
+		
 		@Override
 		protected void execStore() throws ProcessingException {
 			File file = getFileField().getValueAsFile();
-			ServerFileData fileData = SERVICES.getService(IFileService.class)
-					.saveFile(file);
+			ServerFileData fileData = SERVICES.getService(
+					IFileStorageService.class).getServerFileData(file);
 			setFileData(fileData);
 
-			setMetaValues(SERVICES.getService(ITikaService.class)
+			setMetaValues(SERVICES.getService(IMetadataExtractionService.class)
 					.extractDataFromFile(file));
 
 		}

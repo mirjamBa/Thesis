@@ -3,8 +3,9 @@ package de.hsrm.perfunctio.core.shared.services.code;
 import org.eclipse.scout.rt.shared.services.common.code.AbstractCode;
 
 /**
- * Long-Code for the DCMI Type Vocabulary {@link http://purl.org/dc/dcmitype}
+ * Long-Code for the DCMI Type Vocabulary
  * 
+ * @see <a href="http://purl.org/dc/dcmitype">http://purl.org/dc/dcmitype</a>
  * @author Mirjam Bayatloo
  * 
  */

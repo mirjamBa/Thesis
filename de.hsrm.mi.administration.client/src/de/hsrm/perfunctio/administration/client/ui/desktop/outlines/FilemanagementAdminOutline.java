@@ -14,6 +14,13 @@ import de.hsrm.perfunctio.administration.client.ui.desktop.outlines.pages.ShowIn
 import de.hsrm.perfunctio.administration.client.ui.desktop.outlines.pages.TagTablePage;
 import de.hsrm.perfunctio.administration.shared.security.ViewAdminOutlinePermission;
 
+/**
+ * Administration Outline for filemanagement with the FileTypeTablepage,
+ * TagTablePage and ShowInFileTableTablePage
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FilemanagementAdminOutline extends AbstractExtensibleOutline {
 
 	@Override

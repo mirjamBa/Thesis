@@ -17,18 +17,15 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
-import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
-import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.perfunctio.administration.client.extension.FileAdminDesktopExtension;
 import de.hsrm.perfunctio.core.client.extension.FilemanagementDesktopExtension;
 import de.hsrm.perfunctio.core.shared.Icons;
 import de.hsrm.perfunctio.user.client.extension.UserDesktopExtension;
 import de.hsrm.thesis.bachelor.client.ClientSession;
-import de.hsrm.thesis.bachelor.shared.services.IOCRProcessService;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
@@ -159,20 +156,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           page.reloadPage();
         }
       }
-    }
-  }
-
-  @Order(40.0)
-  public class OCRTestingMenu extends AbstractExtensibleMenu {
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("OCRTesting");
-    }
-
-    @Override
-    protected void execAction() throws ProcessingException {
-      SERVICES.getService(IOCRProcessService.class).doOCR();
     }
   }
 

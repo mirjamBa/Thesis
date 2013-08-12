@@ -5,6 +5,13 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
+
+/**
+ * Data transfer object for the FileFormatForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileFormatFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

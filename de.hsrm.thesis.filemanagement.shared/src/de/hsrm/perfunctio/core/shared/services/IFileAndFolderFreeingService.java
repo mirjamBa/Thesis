@@ -37,7 +37,8 @@ public interface IFileAndFolderFreeingService extends IService {
 	 *            Long[]
 	 * @throws ProcessingException
 	 */
-	public void addFileFolderFreeing(Long folderId, Long[] roleIds, Map<Long, ArrayList<String>> permissionMapping)
+	public void addFileFolderFreeing(Long folderId, Long[] roleIds,
+			Map<Long, ArrayList<String>> permissionMapping)
 			throws ProcessingException;
 
 	/**
@@ -50,7 +51,8 @@ public interface IFileAndFolderFreeingService extends IService {
 	 * @throws ProcessingException
 	 */
 	public void removeFreeingFromChildFolderAndFiles(Long parentFolderId,
-			Map<Long, ArrayList<String>> permissions) throws ProcessingException;
+			Map<Long, ArrayList<String>> permissions)
+			throws ProcessingException;
 
 	/**
 	 * Deprives only file or folder of the assigned roles
@@ -59,7 +61,8 @@ public interface IFileAndFolderFreeingService extends IService {
 	 * @param roles
 	 * @throws ProcessingException
 	 */
-	void removeFreeingFromFolderOrFile(Long id, Map<Long, ArrayList<String>> permissions)
+	void removeFreeingFromFolderOrFile(Long id,
+			Map<Long, ArrayList<String>> permissions)
 			throws ProcessingException;
 
 	/**
@@ -88,7 +91,7 @@ public interface IFileAndFolderFreeingService extends IService {
 	public void updateRoleFileAndFolderPermission(Long folderId,
 			Long[] roleIds, Map<Long, ArrayList<String>> permissionMapping)
 			throws ProcessingException;
-	
+
 	/**
 	 * Fetches all role ids, the assigned file is freed for
 	 * 
@@ -99,7 +102,17 @@ public interface IFileAndFolderFreeingService extends IService {
 	 */
 	public Long[] getApprovedRolesForFileOrFolder(Long fileId)
 			throws ProcessingException;
-	
-	public Map<Long, ArrayList<String>> getRolePermissionsForFileOrFolder(Long fileId) throws ProcessingException;
+
+	/**
+	 * Collects every permission for every role, for which the assigned file is
+	 * freed
+	 * 
+	 * @param fileId
+	 *            Long
+	 * @return Map<Long, ArrayList<String>>
+	 * @throws ProcessingException
+	 */
+	public Map<Long, ArrayList<String>> getRolePermissionsForFileOrFolder(
+			Long fileId) throws ProcessingException;
 
 }

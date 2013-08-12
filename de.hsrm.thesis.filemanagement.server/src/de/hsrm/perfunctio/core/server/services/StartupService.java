@@ -11,23 +11,24 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.shared.services.IStartupService;
 import de.hsrm.perfunctio.core.shared.services.IUserProcessService;
 
+/**
+ * Service implementation to initialize server session settings
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class StartupService extends AbstractService implements IStartupService {
-	private static IScoutLogger logger = ScoutLogManager.getLogger(IStartupService.class);
+	private static IScoutLogger logger = ScoutLogManager
+			.getLogger(IStartupService.class);
 
 	@Override
 	public void initSessionData() throws ProcessingException {
 		IServerSession session = ServerJob.getCurrentSession();
 
-		if (session.getUserId() != null /*
-										 * &&
-										 * Subject.getSubject(AccessController
-										 * .getContext()) !=
-										 * Activator.getDefault
-										 * ().getBackendSubject()
-										 */) {
+		if (session.getUserId() != null) {
 			logger.info("created a new session for " + session.getUserId());
-			Long userNr = SERVICES.getService(IUserProcessService.class).getUserId(
-					session.getUserId());
+			Long userNr = SERVICES.getService(IUserProcessService.class)
+					.getUserId(session.getUserId());
 			session.setData(IStartupService.USER_NR, userNr);
 		}
 

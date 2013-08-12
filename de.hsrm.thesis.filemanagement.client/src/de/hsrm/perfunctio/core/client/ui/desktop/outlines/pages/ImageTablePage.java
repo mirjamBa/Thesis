@@ -15,9 +15,9 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.perfunctio.core.client.Activator;
-import de.hsrm.perfunctio.core.client.PagingForm;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.InformationField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.InformationField;
 import de.hsrm.perfunctio.core.shared.Icons;
 import de.hsrm.perfunctio.core.shared.beans.ColumnSpec;
 import de.hsrm.perfunctio.core.shared.services.IFileService;
@@ -25,12 +25,20 @@ import de.hsrm.perfunctio.core.shared.services.IFolderService;
 import de.hsrm.perfunctio.core.shared.services.IImageProcessService;
 import de.hsrm.perfunctio.core.shared.services.IMetadataService;
 import de.hsrm.perfunctio.core.shared.services.IStorageService;
-import de.hsrm.perfunctio.core.shared.services.ITikaService;
+import de.hsrm.perfunctio.core.shared.services.IMetadataExtractionService;
 import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileSearchFormData;
 import de.hsrm.perfunctio.core.shared.utility.ArrayUtility;
 
+/**
+ * File display for file with the image-filetype, provides a tables for
+ * image-preview, a search form and a form to display image meta data and links
+ * for browsing in the picture gallery
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class ImageTablePage extends FilesAndFoldersTablePage {
 
 	private int m_imageHeight;
@@ -226,7 +234,7 @@ public class ImageTablePage extends FilesAndFoldersTablePage {
 												.getSelectedValue()));
 
 				Map<String, String> data = SERVICES.getService(
-						ITikaService.class).extractDataFromFile(
+						IMetadataExtractionService.class).extractDataFromFile(
 						SERVICES.getService(IFileService.class).getServerFile(
 								getFileFolderIdColumn().getSelectedValue()));
 

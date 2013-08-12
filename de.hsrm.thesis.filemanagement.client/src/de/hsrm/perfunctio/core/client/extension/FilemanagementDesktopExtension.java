@@ -10,8 +10,15 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import de.hsrm.perfunctio.core.client.ui.desktop.outlines.FileManagementOutline;
 
-public class FilemanagementDesktopExtension extends AbstractDesktopExtension{
-	
+/**
+ * Filemanagement-Outline Extension for adding the FilemanagementOutline to an
+ * existing Scout-Application
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class FilemanagementDesktopExtension extends AbstractDesktopExtension {
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Class<? extends IOutline>[] getConfiguredOutlines() {
@@ -20,17 +27,19 @@ public class FilemanagementDesktopExtension extends AbstractDesktopExtension{
 		outlines.add(FileManagementOutline.class);
 		return outlines.toArray(new Class[outlines.size()]);
 	}
-	
-	@Order(10.0)
-	  public class FileManagementOutlineViewButton extends AbstractOutlineViewButton {
-	    public FileManagementOutlineViewButton() {
-	      super(getCoreDesktop(), FileManagementOutline.class);
-	    }
 
-	    @Override
-	    protected String getConfiguredText() {
-	      return TEXTS.get("FileManagement");
-	    }
-	  }
+	@Order(10.0)
+	public class FileManagementOutlineViewButton
+			extends
+				AbstractOutlineViewButton {
+		public FileManagementOutlineViewButton() {
+			super(getCoreDesktop(), FileManagementOutline.class);
+		}
+
+		@Override
+		protected String getConfiguredText() {
+			return TEXTS.get("FileManagement");
+		}
+	}
 
 }

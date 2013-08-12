@@ -7,9 +7,10 @@ import org.eclipse.scout.rt.shared.services.common.code.AbstractCode;
 import org.eclipse.scout.rt.shared.services.common.code.AbstractCodeType;
 
 /**
- * Long-CodeType for the Dublin Core Metadata Element Set 
- * {@link http://dublincore.org/documents/dces/}
+ * Long-CodeType for the Dublin Core Metadata Element Set
  * 
+ * @see <a
+ *      href="http://dublincore.org/documents/dces/">http://dublincore.org/documents/dces/</a>
  * @author mba
  * 
  */

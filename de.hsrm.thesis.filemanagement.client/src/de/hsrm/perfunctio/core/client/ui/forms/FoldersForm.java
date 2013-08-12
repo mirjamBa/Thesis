@@ -20,6 +20,12 @@ import de.hsrm.perfunctio.core.client.ui.forms.FoldersForm.MainBox.FoldersBox.Na
 import de.hsrm.perfunctio.core.shared.services.IFolderService;
 import de.hsrm.perfunctio.core.shared.services.formdata.FoldersFormData;
 
+/**
+ * Form for creating and modifying folders
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FoldersFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FoldersForm extends AbstractForm {
 
@@ -94,7 +100,7 @@ public class FoldersForm extends AbstractForm {
 	}
 
 	public class ModifyHandler extends AbstractFormHandler {
-		
+
 		@Override
 		protected void execStore() throws ProcessingException {
 			FoldersFormData formData = new FoldersFormData();
@@ -104,12 +110,13 @@ public class FoldersForm extends AbstractForm {
 	}
 
 	public class NewHandler extends AbstractFormHandler {
-		
+
 		@Override
 		protected void execStore() throws ProcessingException {
 			FoldersFormData formData = new FoldersFormData();
 			exportFormData(formData);
-			SERVICES.getService(IFolderService.class).createFolder(formData, getParentFolderId());
+			SERVICES.getService(IFolderService.class).createFolder(formData,
+					getParentFolderId());
 		}
 	}
 

@@ -71,17 +71,6 @@ public interface IFileService extends IService2 {
 			int maxRowCount, int page) throws ProcessingException;
 
 	/**
-	 * Extracts content from file, create new file with this content and saves
-	 * this copy to configured storage
-	 * 
-	 * @param file
-	 *            File
-	 * @return ServerFileData
-	 * @throws ProcessingException
-	 */
-	public ServerFileData saveFile(File file) throws ProcessingException;
-
-	/**
 	 * Delete the file belonging to the assigned file id an all its meta data
 	 * and permissions from storage
 	 * 

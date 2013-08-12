@@ -21,6 +21,12 @@ import de.hsrm.perfunctio.administration.shared.security.ViewFiletypeTablePagePe
 import de.hsrm.perfunctio.core.shared.services.IFiletypeService;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 
+/**
+ * TablePage for all Filetypes
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileTypeTablePage
 		extends
 			AbstractExtensiblePageWithTable<FileTypeTablePage.Table> {
@@ -40,7 +46,8 @@ public class FileTypeTablePage
 
 	@Override
 	protected void execInitPage() throws ProcessingException {
-		setVisibleGranted(ACCESS.getLevel(new ViewFiletypeTablePagePermission()) > BasicHierarchyPermission.LEVEL_NONE);
+		setVisibleGranted(ACCESS
+				.getLevel(new ViewFiletypeTablePagePermission()) > BasicHierarchyPermission.LEVEL_NONE);
 	}
 
 	@Override
@@ -92,6 +99,11 @@ public class FileTypeTablePage
 			protected int getConfiguredWidth() {
 				return 200;
 			}
+
+			@Override
+			protected boolean getConfiguredDisplayable() {
+				return false;
+			}
 		}
 
 		@Order(10.0)
@@ -100,6 +112,11 @@ public class FileTypeTablePage
 			@Override
 			protected String getConfiguredText() {
 				return TEXTS.get("Modify");
+			}
+
+			@Override
+			protected boolean getConfiguredVisible() {
+				return false;
 			}
 
 			@Override

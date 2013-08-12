@@ -24,6 +24,13 @@ import de.hsrm.perfunctio.user.client.ui.forms.RoleForm.MainBox.RoleBox;
 import de.hsrm.perfunctio.user.client.ui.forms.RoleForm.MainBox.RoleBox.NameField;
 import de.hsrm.perfunctio.user.client.ui.forms.RoleForm.MainBox.RoleBox.PermissionsField;
 
+/**
+ * Form to create and modify roles. Includes a name field and a listbox with
+ * available permissions.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = RoleFormData.class, sdkCommand = SdkCommand.CREATE)
 public class RoleForm extends AbstractForm {
 

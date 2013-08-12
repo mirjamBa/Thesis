@@ -4,6 +4,13 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
+
+/**
+ * Data transfer object for the VersionForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class VersionFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

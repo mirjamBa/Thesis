@@ -6,12 +6,22 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.lookup.TagLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.UserLookupCall;
+
+/**
+ * Data transfer object for the FileSearchForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileSearchFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 
 	public FileSearchFormData() {
 	}
 
+	public AndOr getAndOr() {
+		return getFieldByClass(AndOr.class);
+	}
 	public FileSearchMetadataTable getFileSearchMetadataTable() {
 		return getFieldByClass(FileSearchMetadataTable.class);
 	}
@@ -30,11 +40,16 @@ public class FileSearchFormData extends AbstractFormData {
 	public Typist getTypist() {
 		return getFieldByClass(Typist.class);
 	}
+	public static class AndOr extends AbstractValueFieldData<Boolean> {
+		private static final long serialVersionUID = 1L;
+
+		public AndOr() {
+		}
+	}
 	public static class FileSearchMetadataTable extends MetadataTableFieldData {
 		private static final long serialVersionUID = 1L;
 
 		public FileSearchMetadataTable() {
-			super();
 		}
 	}
 	public static class FileType extends AbstractValueFieldData<Long> {

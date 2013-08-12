@@ -11,6 +11,8 @@ import de.hsrm.perfunctio.core.shared.services.formdata.UserFormData;
 /**
  * Service Interface for user handling
  * 
+ * @see <a
+ *      href="https://github.com/BSI-Business-Systems-Integration-AG/org.eclipsescout.demo/blob/d95a1816cc0d362fffa23da7fdab2626962e8467/bahbah/org.eclipse.scout.bahbah.shared/src/org/eclipse/scout/bahbah/shared/services/process/IUserProcessService.java">https://github.com/BSI-Business-Systems-Integration-AG/org.eclipsescout.demo</a>
  * @author BSI, Mirjam Bayatloo
  * 
  */
@@ -91,9 +93,10 @@ public interface IUserProcessService extends IService {
 	 * @return Long
 	 */
 	public Long getCurrentUserId();
-	
+
 	/**
 	 * Returns the username of the session user
+	 * 
 	 * @return
 	 */
 	public String getCurrentUserName();

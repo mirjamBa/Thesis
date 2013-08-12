@@ -14,14 +14,7 @@ Export-Package: de.hsrm.thesis.bachelor.server;
    de.hsrm.thesis.bachelor.shared,
    org.eclipse.equinox.app,
    org.osgi.framework,
-   javax.security.auth",
- de.hsrm.thesis.bachelor.server.services;
-  uses:="de.hsrm.thesis.bachelor.shared.services,
-   org.eclipse.scout.rt.server.services.common.pwd,
-   de.hsrm.thesis.bachelor.shared.services.process,
-   org.eclipse.scout.service,
-   org.eclipse.scout.rt.shared.services.common.code,
-   org.osgi.framework"
+   javax.security.auth"
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.server,
  org.eclipse.scout.http.servletfilter,
@@ -29,10 +22,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.jdbc.derby,
  org.eclipse.scout.jaxws216;bundle-version="2.1.6",
  de.hsrm.thesis.bachelor.shared,
- tikanearlyall;bundle-version="1.0.0",
- de.hsrm.perfunctio.security;bundle-version="1.0.0"
+ de.hsrm.perfunctio.security;bundle-version="1.0.0",
+ org.apache.tika;bundle-version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: de.hsrm.perfunctio.core.shared.services,
+Import-Package: de.hsrm.perfunctio.administration.shared.security,
+ de.hsrm.perfunctio.core.shared.security,
+ de.hsrm.perfunctio.core.shared.services,
+ de.hsrm.perfunctio.database.derby.server.services.common.security,
+ de.hsrm.perfunctio.user.shared.security,
  javax.servlet;version="2.4.0",
  javax.servlet.http;version="2.4.0"
 Bundle-ActivationPolicy: lazy

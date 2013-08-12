@@ -2,6 +2,12 @@ package de.hsrm.perfunctio.core.shared.services.formdata;
 
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
 
+/**
+ * Data transfer object for the MetdataTableField
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class MetadataTableFieldData extends AbstractTableFieldData{
 	private static final long serialVersionUID = 1L;
 

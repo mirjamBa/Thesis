@@ -29,13 +29,14 @@ import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.ResetButto
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.SearchButton;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox;
-import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox;
-import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.FileSearchMetadataTableField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.FileTypeField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.DetailedBox.TypistField;
+import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.FolderSearchField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.GeneralSearchBox.GeneralSearchField;
+import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox;
+import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.AndOrField;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm.MainBox.TabBox.TagBox.TagField;
 import de.hsrm.perfunctio.core.shared.services.IAttributeService;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
@@ -44,6 +45,14 @@ import de.hsrm.perfunctio.core.shared.services.formdata.FileSearchFormData;
 import de.hsrm.perfunctio.core.shared.services.lookup.TagLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.UserLookupCall;
 
+/**
+ * Search form for files with a generell metadata search field, a checkable
+ * tags-listbox, the filetype and typist chosser field and a user defined
+ * metadata search table
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FileSearchFormData.class, sdkCommand = SdkCommand.USE)
 public class FileSearchForm extends AbstractSearchForm {
 	private SearchBookmarkForm bookmarkForm;
@@ -81,6 +90,10 @@ public class FileSearchForm extends AbstractSearchForm {
 
 	public TagField getTagField() {
 		return getFieldByClass(TagField.class);
+	}
+
+	public AndOrField getAndOrField() {
+		return getFieldByClass(AndOrField.class);
 	}
 
 	public BookmarkButton getBookmarkButton() {
@@ -147,7 +160,7 @@ public class FileSearchForm extends AbstractSearchForm {
 
 				@Order(10.0)
 				public class GeneralSearchField extends AbstractStringField {
-					
+
 					@Override
 					protected boolean getConfiguredLabelVisible() {
 						return false;
@@ -260,6 +273,15 @@ public class FileSearchForm extends AbstractSearchForm {
 						return TagLookupCall.class;
 					}
 				}
+
+				@Order(20.0)
+				public class AndOrField extends AbstractCheckBox {
+
+					@Override
+					protected String getConfiguredLabel() {
+						return TEXTS.get("AndOr");
+					}
+				}
 			}
 		}
 
@@ -352,6 +374,14 @@ public class FileSearchForm extends AbstractSearchForm {
 			table.getAttributeColumn().setValue(row, (String) attr[i][1]);
 			table.getDatatypeColumn().setValue(row, (Long) attr[i][2]);
 			table.addRow(row);
+		}
+	}
+
+	public void closeForm() throws ProcessingException {
+		if (bookmarkForm.isFormOpen()) {
+			getLoadBookmarkButton().setLabel(
+					getLoadBookmarkButton().getConfiguredLabel());
+			bookmarkForm.doClose();
 		}
 	}
 }

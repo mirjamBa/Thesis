@@ -1,4 +1,4 @@
-package de.hsrm.perfunctio.user.client.forms;
+package de.hsrm.perfunctio.user.client.ui.forms;
 
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
@@ -17,11 +17,17 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.shared.services.IAssignToRoleService;
 import de.hsrm.perfunctio.core.shared.services.formdata.AssignToRoleFormData;
 import de.hsrm.perfunctio.core.shared.services.lookup.AllRoleLookupCall;
-import de.hsrm.perfunctio.user.client.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox;
-import de.hsrm.perfunctio.user.client.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox.RoleField;
-import de.hsrm.perfunctio.user.client.forms.AssignToRoleForm.MainBox.CancelButton;
-import de.hsrm.perfunctio.user.client.forms.AssignToRoleForm.MainBox.OkButton;
+import de.hsrm.perfunctio.user.client.ui.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox;
+import de.hsrm.perfunctio.user.client.ui.forms.AssignToRoleForm.MainBox.CancelButton;
+import de.hsrm.perfunctio.user.client.ui.forms.AssignToRoleForm.MainBox.OkButton;
+import de.hsrm.perfunctio.user.client.ui.forms.AssignToRoleForm.MainBox.AssignToRoleFormBox.RoleField;
 
+/**
+ * Form for adding one ore more selected permissions to a role.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = AssignToRoleFormData.class, sdkCommand = SdkCommand.CREATE)
 public class AssignToRoleForm extends AbstractForm {
 

@@ -1,12 +1,16 @@
-/**
- * 
- */
 package de.hsrm.perfunctio.core.shared.beans;
 
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * Container for the file data, extracted during the upload process.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class ServerFileData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -15,6 +19,21 @@ public class ServerFileData implements Serializable {
 	private String m_filesize;
 	private String m_oldName;
 	private Date m_lastModified;
+	private File file;
+
+	/**
+	 * @return the file
+	 */
+	public File getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(File file) {
+		this.file = file;
+	}
 
 	/**
 	 * @return the m_lastModified
@@ -24,15 +43,17 @@ public class ServerFileData implements Serializable {
 	}
 
 	/**
-	 * @param m_lastModified the m_lastModified to set
+	 * @param m_lastModified
+	 *            the m_lastModified to set
 	 */
 	public void setLastModified(Date lastModified) {
 		this.m_lastModified = lastModified;
 	}
-
+	
 	public void setFilesize(long bytes) {
 		double kilobytes = (bytes / 1024.0);
-		BigDecimal b = new BigDecimal(String.valueOf(kilobytes)).setScale(2, BigDecimal.ROUND_HALF_UP);
+		BigDecimal b = new BigDecimal(String.valueOf(kilobytes)).setScale(2,
+				BigDecimal.ROUND_HALF_UP);
 		m_filesize = b + " kb";
 	}
 
@@ -44,7 +65,8 @@ public class ServerFileData implements Serializable {
 	}
 
 	/**
-	 * @param m_oldName the m_oldName to set
+	 * @param m_oldName
+	 *            the m_oldName to set
 	 */
 	public void setOldName(String oldName) {
 		this.m_oldName = oldName;

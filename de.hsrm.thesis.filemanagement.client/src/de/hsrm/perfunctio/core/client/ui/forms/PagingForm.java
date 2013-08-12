@@ -1,4 +1,4 @@
-package de.hsrm.perfunctio.core.client;
+package de.hsrm.perfunctio.core.client.ui.forms;
 
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
@@ -15,19 +15,25 @@ import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.FormClosingButton;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.HierarchyField;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.InformationField;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox.FirstButton;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox.LastButton;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox.NextButton;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox.PageField;
-import de.hsrm.perfunctio.core.client.PagingForm.MainBox.PagingBox.PageBox.PreviousButton;
 import de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages.ImageTablePage;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.FormClosingButton;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.HierarchyField;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.InformationField;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox.FirstButton;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox.LastButton;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox.NextButton;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox.PageField;
+import de.hsrm.perfunctio.core.client.ui.forms.PagingForm.MainBox.PagingBox.PageBox.PreviousButton;
 import de.hsrm.perfunctio.core.shared.services.formdata.PagingFormData;
 
+/**
+ * Form for file-metadata-infos with an extra paging box for browsing
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = PagingFormData.class, sdkCommand = SdkCommand.CREATE)
 public class PagingForm extends AbstractForm {
 	private ImageTablePage page;

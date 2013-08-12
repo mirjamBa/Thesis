@@ -6,6 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The array utility class contains some useful operations on arrays
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class ArrayUtility {
 
 	/**

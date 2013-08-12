@@ -21,6 +21,13 @@ import de.hsrm.perfunctio.core.shared.services.IAttributeService;
 import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 
+/**
+ * TablePage for all additional meta attributes connected with a filetype, new-,
+ * modify- and delete-menu available
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class MetadataTablePage
 		extends
 			AbstractExtensiblePageWithTable<MetadataTablePage.Table> {

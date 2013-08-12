@@ -18,16 +18,22 @@ import org.eclipse.scout.service.AbstractService;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import de.hsrm.perfunctio.core.shared.services.ITikaService;
+import de.hsrm.perfunctio.core.shared.services.IMetadataExtractionService;
 
-public class TikaService extends AbstractService implements ITikaService {
+/**
+ * Service implementation for extracting metadata with the tika-tool
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class TikaService extends AbstractService implements IMetadataExtractionService {
 
 	@Override
 	public Map<String, String> extractDataFromFile(File file)
 			throws ProcessingException {
 		Parser parser = new AutoDetectParser();
 		Map<String, String> metaValues = new HashMap<String, String>();
-
+		
 		try {
 			InputStream stream = new FileInputStream(file);
 			DefaultHandler handler = new DefaultHandler();
@@ -39,7 +45,6 @@ public class TikaService extends AbstractService implements ITikaService {
 
 			for (String key : metadata.names()) {
 				metaValues.put(key.toUpperCase(), metadata.get(key));
-//				System.out.println(key.toUpperCase() + " ----- " + metadata.get(key.toUpperCase()));
 			}
 
 		} catch (FileNotFoundException e) {

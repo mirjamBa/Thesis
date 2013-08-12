@@ -15,10 +15,18 @@ import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import de.hsrm.perfunctio.core.client.ui.IPermissionGrantedMenu;
 import de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages.FilesAndFoldersTablePage;
-import de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages.IPermissionGrantedMenu;
 import de.hsrm.perfunctio.core.shared.security.ReadFilePermission;
 
+/**
+ * Table for displaying all available menus from the FilesAndFoldersTablePage
+ * and their visible permissions. Includes a checkable column for selecting
+ * menu-permissions.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class PermissionTableField
 		extends
 			AbstractTableField<PermissionTableField.Table> {
@@ -45,8 +53,8 @@ public class PermissionTableField
 		protected void execInitTable() throws ProcessingException {
 			setTableData(null);
 		}
-		
-		protected Map<String, String> getMenuPermissionMapping(){
+
+		protected Map<String, String> getMenuPermissionMapping() {
 			Map<String, String> menuPermissionMapping = new HashMap<String, String>();
 			for (ITableRow row : getTable().getRows()) {
 				menuPermissionMapping.put((String) row.getCellValue(0),
@@ -54,8 +62,8 @@ public class PermissionTableField
 			}
 			return menuPermissionMapping;
 		}
-		
-		protected Map<String, String> getPermissionMenuMapping(){
+
+		protected Map<String, String> getPermissionMenuMapping() {
 			Map<String, String> permissionMenuMapping = new HashMap<String, String>();
 			for (ITableRow row : getTable().getRows()) {
 				permissionMenuMapping.put((String) row.getCellValue(2),
@@ -79,16 +87,20 @@ public class PermissionTableField
 					getOkColumn().setValue(newRow, false);
 				}
 				if (menu instanceof IPermissionGrantedMenu) {
-					getPermissionColumn().setValue(newRow, ((IPermissionGrantedMenu)menu).getVisiblePermission() + "Permission");
+					getPermissionColumn().setValue(
+							newRow,
+							((IPermissionGrantedMenu) menu)
+									.getVisiblePermission() + "Permission");
 				}
 				addRow(newRow);
 			}
-			
-			//add read permission
+
+			// add read permission
 			ITableRow row = createRow();
 			getMenuNameColumn().setValue(row, TEXTS.get("ReadPermission"));
 			getOkColumn().setValue(row, true);
-			getPermissionColumn().setValue(row, new ReadFilePermission().getName());
+			getPermissionColumn().setValue(row,
+					new ReadFilePermission().getName());
 			row.setEnabled(false);
 			row.setTooltipText(TEXTS.get("PermissionTableToolTip"));
 			addRow(row);

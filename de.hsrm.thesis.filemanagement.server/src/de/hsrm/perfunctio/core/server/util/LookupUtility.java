@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 
+/**
+ * Utility class for looup-rows
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class LookupUtility {
 
 	public static LookupRow[] sortLookupRows(List<LookupRow> rows) {

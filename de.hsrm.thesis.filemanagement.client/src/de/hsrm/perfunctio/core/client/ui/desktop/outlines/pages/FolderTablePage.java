@@ -5,6 +5,13 @@ import org.eclipse.scout.commons.annotations.Replace;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+/**
+ * Displays the folder content of the assigned folder (files and other child
+ * folders).
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FolderTablePage extends FilesAndFoldersTablePage {
 
 	public FolderTablePage(Long folderId) {

@@ -4,10 +4,6 @@
    <extension
          name=""
          point="org.eclipse.scout.service.services">
-      <proxy
-            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.thesis.bachelor.shared.services.IOCRProcessService">
-      </proxy>
    </extension>
    <extension
          name=""

@@ -19,8 +19,6 @@ public class FileAndFolderService extends AbstractService
 	@Override
 	public void slideFileOrFolder(Long slidedFFId, Long oldFolderId,
 			Long newFolderId) throws ProcessingException {
-		System.out.println("SLIDE " + slidedFFId + " FROM " + oldFolderId
-				+ " TO " + newFolderId);
 		if (oldFolderId != newFolderId) {
 			// update parent folder id for shifted file/folder
 			SQL.update(

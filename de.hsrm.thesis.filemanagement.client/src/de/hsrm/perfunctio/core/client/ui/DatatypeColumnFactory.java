@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.hsrm.perfunctio.core.client.ui;
 
 import java.util.Date;
@@ -22,6 +19,12 @@ import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.DublinCoreMetadataElementSetCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 
+/**
+ * Concrete column factory for creating columns, relies on datatypes
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class DatatypeColumnFactory extends ColumnFactory {
 
 	@Override
@@ -30,7 +33,7 @@ public class DatatypeColumnFactory extends ColumnFactory {
 		ICode<Long> code = CODES
 				.getCode(DublinCoreMetadataElementSetCodeType.TypeCode.class);
 		if (columnId.equals(((Integer) code.getText().hashCode()).toString())) {
-			return  createDynamicFileTypeSmartColumn(columnId, label);
+			return createDynamicFileTypeSmartColumn(columnId, label);
 		} else if (datatypeId.equals(DatatypeCodeType.StringCode.ID)) {
 			return createDynamicStringColumn(columnId, label);
 		} else if (datatypeId.equals(DatatypeCodeType.DateCode.ID)) {

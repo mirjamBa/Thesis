@@ -13,6 +13,12 @@ import org.eclipse.scout.service.SERVICES;
 
 import de.hsrm.perfunctio.core.shared.services.IUserProcessService;
 
+/**
+ * Client service implmentation for handling bookmarks of user-search-requests
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileSearchBookmarkService extends AbstractService
 		implements
 			IFileSearchBookmarkService {
@@ -33,12 +39,10 @@ public class FileSearchBookmarkService extends AbstractService
 
 		String username = SERVICES.getService(IUserProcessService.class)
 				.getCurrentUserName();
-		File dir = new File(getBookmarkPath()
-				+ username + "\\");
+		File dir = new File(getBookmarkPath() + username + "\\");
 		dir.mkdirs();
 
-		String filePath = getBookmarkPath()
-				+ username + "\\" + filename
+		String filePath = getBookmarkPath() + username + "\\" + filename
 				+ FILE_EXTENSION;
 		File f = new File(filePath);
 		try {
@@ -54,7 +58,8 @@ public class FileSearchBookmarkService extends AbstractService
 	@Override
 	public Object[][] getBookmarks() throws ProcessingException {
 		File fir = new File(getBookmarkPath()
-				+ SERVICES.getService(IUserProcessService.class).getCurrentUserName() + "\\");
+				+ SERVICES.getService(IUserProcessService.class)
+						.getCurrentUserName() + "\\");
 		String[] filenames = fir.list();
 		if (filenames != null) {
 			Object[][] res = new Object[filenames.length][];
@@ -71,7 +76,8 @@ public class FileSearchBookmarkService extends AbstractService
 	@Override
 	public String getBookmarkXml(String filename) throws ProcessingException {
 		File f = new File(getBookmarkPath()
-				+ SERVICES.getService(IUserProcessService.class).getCurrentUserName() + "\\" + filename
+				+ SERVICES.getService(IUserProcessService.class)
+						.getCurrentUserName() + "\\" + filename
 				+ FILE_EXTENSION);
 		try {
 			String content = IOUtility.getContent(new FileReader(f));
@@ -85,7 +91,8 @@ public class FileSearchBookmarkService extends AbstractService
 	@Override
 	public boolean deleteBookmark(String filename) throws ProcessingException {
 		File file = new File(getBookmarkPath()
-				+ SERVICES.getService(IUserProcessService.class).getCurrentUserName() + "\\" + filename
+				+ SERVICES.getService(IUserProcessService.class)
+						.getCurrentUserName() + "\\" + filename
 				+ FILE_EXTENSION);
 		return file.delete();
 	}

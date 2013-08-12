@@ -14,6 +14,14 @@ import de.hsrm.perfunctio.administration.client.ui.forms.AttributeForm;
 import de.hsrm.perfunctio.administration.shared.security.ViewShowInFileTablePagePermission;
 import de.hsrm.perfunctio.core.shared.services.IAttributeService;
 
+/**
+ * Collection of all DublinCoreMetadataElememtSet-attributes and additional
+ * attributes, displayed in the MetadataTablePage. You can set the display-flag
+ * for every attribute, so that it is displayed in the FilesAndFoldersTablePage
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class ShowInFileTableTablePage extends MetadataTablePage {
 
 	@Override

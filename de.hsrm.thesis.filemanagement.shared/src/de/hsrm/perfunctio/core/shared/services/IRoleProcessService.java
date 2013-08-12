@@ -9,8 +9,9 @@ import de.hsrm.perfunctio.core.shared.services.formdata.RoleFormData;
 
 /**
  * Service Interface for role handling
- * @author mba
- *
+ * 
+ * @author Mirjam Bayatloo
+ * 
  */
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IRoleProcessService extends IService {

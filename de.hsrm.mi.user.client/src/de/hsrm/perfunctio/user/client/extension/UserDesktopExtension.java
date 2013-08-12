@@ -10,6 +10,13 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import de.hsrm.perfunctio.user.client.ui.desktop.outlines.UserOutline;
 
+/**
+ * User-Administration-Outline Extension for adding the UserOutline to an
+ * existing Scout-Application
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class UserDesktopExtension extends AbstractDesktopExtension {
 
 	@SuppressWarnings("unchecked")

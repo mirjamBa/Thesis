@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.hsrm.perfunctio.core.shared.Activator
 Export-Package: de.hsrm.perfunctio.core.shared,
  de.hsrm.perfunctio.core.shared.beans,
+ de.hsrm.perfunctio.core.shared.handler,
  de.hsrm.perfunctio.core.shared.security,
  de.hsrm.perfunctio.core.shared.services,
  de.hsrm.perfunctio.core.shared.services.code,

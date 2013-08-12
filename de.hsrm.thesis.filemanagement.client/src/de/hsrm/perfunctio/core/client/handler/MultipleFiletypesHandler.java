@@ -6,9 +6,19 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.client.ui.forms.FiletypeChooserForm;
 import de.hsrm.perfunctio.core.shared.services.IFileFormatService;
 
-public class MultipleFiletypesHandler extends AbstractClientHandler
-		implements
-			IClientHandler {
+/**
+ * Concrete client handler, responsible for providing the filetype chooser form,
+ * if the upload-file-format is mapped to several filetypes
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class MultipleFiletypesHandler extends AbstractClientHandler {
+	private final int PRIORITY = 400;
+
+	public MultipleFiletypesHandler() {
+		this.priority = PRIORITY;
+	}
 
 	@Override
 	public void handle(FileUploadData data) throws ProcessingException {
@@ -19,7 +29,8 @@ public class MultipleFiletypesHandler extends AbstractClientHandler
 			// force choosing one of the assigned filetypes
 			FiletypeChooserForm ft = new FiletypeChooserForm();
 			ft.getFileNameField().setValue(
-					data.getServerFileData().getOldName() + "." + data.getFileFormat());
+					data.getServerFileData().getOldName() + "."
+							+ data.getFileFormat());
 			ft.setFileformat(data.getFileFormat());
 			ft.startNew();
 			ft.waitFor();
@@ -31,7 +42,8 @@ public class MultipleFiletypesHandler extends AbstractClientHandler
 
 			// extract filetype
 			if (data.getFiletypeNr() == null) {
-				data.setFiletypeNr(SERVICES.getService(IFileFormatService.class)
+				data.setFiletypeNr(SERVICES
+						.getService(IFileFormatService.class)
 						.getFiletypeForFileFormat(data.getFileFormat()));
 			}
 
@@ -41,14 +53,8 @@ public class MultipleFiletypesHandler extends AbstractClientHandler
 
 	private void doNext(FileUploadData data) throws ProcessingException {
 		if (nextHandler != null) {
-			nextHandler.handle(data);
+			((AbstractClientHandler) nextHandler).handle(data);
 		}
-	}
-
-	@Override
-	public void setNext(IClientHandler handler) {
-		this.nextHandler = handler;
-
 	}
 
 }

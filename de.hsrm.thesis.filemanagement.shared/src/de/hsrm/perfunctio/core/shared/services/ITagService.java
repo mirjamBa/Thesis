@@ -10,7 +10,7 @@ import de.hsrm.perfunctio.core.shared.services.formdata.TagFormData;
 /**
  * Service Interface for tag handling
  * 
- * @author mba
+ * @author Mirjam Bayatloo
  * 
  */
 @InputValidation(IValidationStrategy.PROCESS.class)

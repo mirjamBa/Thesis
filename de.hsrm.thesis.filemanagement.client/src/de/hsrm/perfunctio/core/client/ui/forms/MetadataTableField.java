@@ -21,7 +21,16 @@ import de.hsrm.perfunctio.core.client.ui.DatatypeFormFieldFactory;
 import de.hsrm.perfunctio.core.client.ui.FormFieldFactory;
 import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 
-public class MetadataTableField extends AbstractTableField<MetadataTableField.Table> {
+/**
+ * Table to display attributes with an id, their name, value and datatype. The
+ * value column is an editable Column.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class MetadataTableField
+		extends
+			AbstractTableField<MetadataTableField.Table> {
 
 	@Override
 	protected String getConfiguredLabel() {
@@ -94,10 +103,13 @@ public class MetadataTableField extends AbstractTableField<MetadataTableField.Ta
 			}
 
 			@Override
-			protected IFormField execPrepareEdit(final ITableRow row) throws ProcessingException {
+			protected IFormField execPrepareEdit(final ITableRow row)
+					throws ProcessingException {
 				// extract value and datatype
-				String value = (String) row.getCellValue(getTable().getColumnSet().getColumnCount() - 2);
-				Long datatype = (Long) row.getCellValue(getTable().getColumnSet().getColumnCount() - 1);
+				String value = (String) row.getCellValue(getTable()
+						.getColumnSet().getColumnCount() - 2);
+				Long datatype = (Long) row.getCellValue(getTable()
+						.getColumnSet().getColumnCount() - 1);
 
 				// return field with or without value
 				FormFieldFactory factory = new DatatypeFormFieldFactory();
@@ -106,15 +118,19 @@ public class MetadataTableField extends AbstractTableField<MetadataTableField.Ta
 			}
 
 			@Override
-			protected void execCompleteEdit(ITableRow row, IFormField editingField) throws ProcessingException {
+			protected void execCompleteEdit(ITableRow row,
+					IFormField editingField) throws ProcessingException {
 
 				@SuppressWarnings("rawtypes")
-				Object value = (Object) ((AbstractValueField) editingField).getValue();
+				Object value = (Object) ((AbstractValueField) editingField)
+						.getValue();
 
 				if (value != null) {
 					if (editingField instanceof AbstractDateField) {
-						Date date = ((AbstractDateField) editingField).getValue();
-						SimpleDateFormat formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
+						Date date = ((AbstractDateField) editingField)
+								.getValue();
+						SimpleDateFormat formatter = new SimpleDateFormat(
+								TEXTS.get("SimpleDateFormat"));
 						getValueColumn().setValue(row, formatter.format(date));
 					} else {
 						getValueColumn().setValue(row, value.toString());

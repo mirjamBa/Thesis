@@ -8,12 +8,13 @@ Export-Package: de.hsrm.perfunctio.core.server,
  de.hsrm.perfunctio.core.server.handler,
  de.hsrm.perfunctio.core.server.services,
  de.hsrm.perfunctio.core.server.services.common.security,
- de.hsrm.perfunctio.core.server.services.lookup
+ de.hsrm.perfunctio.core.server.services.lookup,
+ de.hsrm.perfunctio.core.server.util
 Require-Bundle: org.eclipse.core.runtime,
- tikanearlyall,
  de.hsrm.perfunctio.core.shared,
  org.eclipse.scout.service,
  org.eclipse.scout.commons,
- org.eclipse.scout.rt.server
+ org.eclipse.scout.rt.server,
+ org.apache.tika;bundle-version="1.3.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

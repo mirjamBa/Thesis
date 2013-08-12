@@ -22,6 +22,13 @@ import de.hsrm.perfunctio.core.client.ui.forms.SearchBookmarkForm.MainBox.Bookma
 import de.hsrm.perfunctio.core.client.ui.forms.SearchBookmarkForm.MainBox.BookmarkBox.BookmarkField;
 import de.hsrm.perfunctio.core.shared.services.formdata.SearchBookmarkFormData;
 
+/**
+ * Form for displaying all saved search request for the current user on the
+ * current client
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = SearchBookmarkFormData.class, sdkCommand = SdkCommand.CREATE)
 public class SearchBookmarkForm extends AbstractForm {
 

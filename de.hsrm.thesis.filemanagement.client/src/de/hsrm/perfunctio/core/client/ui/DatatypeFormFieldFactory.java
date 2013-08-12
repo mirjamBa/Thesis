@@ -12,18 +12,27 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 
+/**
+ * Concrete form field factory for creating form fields, relying on an assigned
+ * data type
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class DatatypeFormFieldFactory extends FormFieldFactory {
 
 	@Override
 	public IFormField createFormField(Long datatypeId, String value) {
 		IFormField field;
 		if (datatypeId.equals(DatatypeCodeType.DateCode.ID)) {
-			SimpleDateFormat formatter = new SimpleDateFormat(TEXTS.get("SimpleDateFormat"));
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					TEXTS.get("SimpleDateFormat"));
 			field = new AbstractDateField() {
 			};
 			if (value != null) {
 				try {
-					((AbstractDateField) field).setValue(formatter.parse(value));
+					((AbstractDateField) field)
+							.setValue(formatter.parse(value));
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -40,7 +49,8 @@ public class DatatypeFormFieldFactory extends FormFieldFactory {
 			field = new AbstractDoubleField() {
 			};
 			if (value != null) {
-				((AbstractDoubleField) field).setValue(Double.parseDouble(value));
+				((AbstractDoubleField) field).setValue(Double
+						.parseDouble(value));
 			}
 			return field;
 		} else {

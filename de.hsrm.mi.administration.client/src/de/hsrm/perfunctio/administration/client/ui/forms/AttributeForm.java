@@ -28,6 +28,14 @@ import de.hsrm.perfunctio.core.shared.services.code.DatatypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.formdata.AttributeFormData;
 
+/**
+ * Form for Attributes, used in the MetadataTablePage and
+ * ShowInFileTableTablePage. The form includes a field for the attribute name,
+ * the datatape, the file type and finally a checkbox for the display-flag.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = AttributeFormData.class, sdkCommand = SdkCommand.CREATE)
 public class AttributeForm extends AbstractForm {
 
@@ -149,10 +157,6 @@ public class AttributeForm extends AbstractForm {
 					return FileTypeCodeType.class;
 				}
 
-				@Override
-				protected boolean getConfiguredMandatory() {
-					return true;
-				}
 			}
 		}
 

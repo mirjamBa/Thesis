@@ -10,11 +10,17 @@ import de.hsrm.perfunctio.core.client.ui.forms.FileForm;
 
 import org.eclipse.scout.commons.annotations.FormData;
 
+/**
+ * Page for displaying file-data in a form
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FilePage extends AbstractPage {
 	FileForm fileForm;
 	private Long m_fileId;
-	
-	public FilePage(FileForm form, Long fileId){
+
+	public FilePage(FileForm form, Long fileId) {
 		super();
 		fileForm = form;
 		m_fileId = fileId;
@@ -29,12 +35,12 @@ public class FilePage extends AbstractPage {
 	protected String getConfiguredTitle() {
 		return TEXTS.get("File");
 	}
-	
+
 	@Override
 	protected String getConfiguredIconId() {
 		return AbstractIcons.DateFieldDate;
 	}
-	
+
 	@Override
 	protected void execPageActivated() throws ProcessingException {
 		fileForm.setDisplayHint(IForm.DISPLAY_HINT_VIEW);
@@ -42,7 +48,7 @@ public class FilePage extends AbstractPage {
 		fileForm.setEnabledGranted(false);
 		fileForm.startModify();
 	}
-	
+
 	@Override
 	protected void execPageDeactivated() throws ProcessingException {
 		fileForm.doClose();
@@ -57,9 +63,9 @@ public class FilePage extends AbstractPage {
 	public void setFileId(Long fileId) {
 		m_fileId = fileId;
 	}
-	
-	public void closeForm() throws ProcessingException{
+
+	public void closeForm() throws ProcessingException {
 		fileForm.doClose();
 	}
-	
+
 }

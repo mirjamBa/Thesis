@@ -7,6 +7,13 @@ import de.hsrm.perfunctio.core.shared.services.lookup.IRoleLookupService;
 
 import org.eclipse.scout.commons.annotations.FormData;
 
+/**
+ * LookupCall for all role lookup-rows, which have benn created by the assigned
+ * user.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class RoleLookupCall extends LookupCall {
 
 	private static final long serialVersionUID = 1L;

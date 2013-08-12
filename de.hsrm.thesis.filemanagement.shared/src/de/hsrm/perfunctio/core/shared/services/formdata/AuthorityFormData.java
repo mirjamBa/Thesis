@@ -5,6 +5,13 @@ import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
 import de.hsrm.perfunctio.core.shared.services.lookup.RoleLookupCall;
+
+/**
+ * Data transfer object for the AuthorityForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class AuthorityFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

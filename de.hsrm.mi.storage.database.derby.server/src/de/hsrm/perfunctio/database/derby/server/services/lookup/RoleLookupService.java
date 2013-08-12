@@ -4,6 +4,12 @@ import org.eclipse.scout.rt.server.services.lookup.AbstractSqlLookupService;
 
 import de.hsrm.perfunctio.core.shared.services.lookup.IRoleLookupService;
 
+/**
+ * Fetches all role-ids and rolename as lookup-rows from the database
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class RoleLookupService extends AbstractSqlLookupService
 		implements
 			IRoleLookupService {

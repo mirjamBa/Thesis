@@ -13,10 +13,17 @@ import de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages.FilePage;
 import de.hsrm.perfunctio.core.client.ui.desktop.outlines.pages.FolderTablePage;
 import de.hsrm.perfunctio.core.shared.services.IFileAndFolderService;
 
+/**
+ * Abstract Outline for filemanagement, providing the drag and drop mechanism
+ * for the outline tree.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public abstract class AbstractFileManagementOutline
 		extends
 			AbstractExtensibleOutline {
-//	private boolean m_resolved = false;
+	// private boolean m_resolved = false;
 
 	@Override
 	protected String getConfiguredTitle() {
@@ -71,7 +78,7 @@ public abstract class AbstractFileManagementOutline
 
 					// reload tree
 					((IPage) page.getTree().getRootNode()).reloadPage();
-//					setTreeNodeState(true, page.getTree());
+					// setTreeNodeState(true, page.getTree());
 				} catch (ProcessingException e) {
 					e.printStackTrace();
 				}
@@ -80,35 +87,35 @@ public abstract class AbstractFileManagementOutline
 		}
 	}
 
-//	private void setTreeNodeState(boolean state, ITree tree) {
-//		ITreeNode root = tree.getRootNode();
-//		if (state) {
-//			if (!m_resolved) {
-//				resolveAllTreeNodes(root, state);
-//				m_resolved = true;
-//			} else {
-//				tree.expandAll(root);
-//			}
-//		} else {
-//			tree.collapseAll(root);
-//		}
-//	}
-//
-//	private void resolveAllTreeNodes(ITreeNode root, boolean state) {
-//		for (ITreeNode child : root.getChildNodes()) {
-//			if (child instanceof VirtualPage) {
-//				try {
-//					root.resolveVirtualChildNode(child);
-//				} catch (ProcessingException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		root.getTree().expandAll(root);
-//		for (ITreeNode child : root.getChildNodes()) {
-//			resolveAllTreeNodes(child, state);
-//		}
-//	}
+	// private void setTreeNodeState(boolean state, ITree tree) {
+	// ITreeNode root = tree.getRootNode();
+	// if (state) {
+	// if (!m_resolved) {
+	// resolveAllTreeNodes(root, state);
+	// m_resolved = true;
+	// } else {
+	// tree.expandAll(root);
+	// }
+	// } else {
+	// tree.collapseAll(root);
+	// }
+	// }
+	//
+	// private void resolveAllTreeNodes(ITreeNode root, boolean state) {
+	// for (ITreeNode child : root.getChildNodes()) {
+	// if (child instanceof VirtualPage) {
+	// try {
+	// root.resolveVirtualChildNode(child);
+	// } catch (ProcessingException e) {
+	// e.printStackTrace();
+	// }
+	// }
+	// }
+	// root.getTree().expandAll(root);
+	// for (ITreeNode child : root.getChildNodes()) {
+	// resolveAllTreeNodes(child, state);
+	// }
+	// }
 
 	@Override
 	protected boolean getConfiguredDragEnabled() {

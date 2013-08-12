@@ -26,10 +26,17 @@ import de.hsrm.perfunctio.core.client.util.DownloadUtility;
 import de.hsrm.perfunctio.core.shared.security.OpenFilePermission;
 import de.hsrm.perfunctio.core.shared.services.IFileService;
 
+/**
+ * Client Service implementation for file handling on client side.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class ClientFileService extends AbstractService
 		implements
 			IClientFileService {
-	private IScoutLogger logger = ScoutLogManager.getLogger(ClientFileService.class);
+	private IScoutLogger logger = ScoutLogManager
+			.getLogger(ClientFileService.class);
 
 	@Override
 	public void openFile(Long fileNr) throws ProcessingException {
@@ -75,9 +82,6 @@ public class ClientFileService extends AbstractService
 						.getFileExtension(filename));
 				o = new FileOutputStream(tempfile);
 				rf.writeData(o);
-				// will do nothing when in rich client mode, but show a
-				// web
-				// save as dialog in web ui
 				DownloadUtility.downloadFile(tempfile);
 			} catch (FileNotFoundException e1) {
 				throw new ProcessingException("Cannot find file " + e1);

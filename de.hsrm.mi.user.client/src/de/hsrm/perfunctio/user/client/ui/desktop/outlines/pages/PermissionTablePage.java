@@ -17,9 +17,15 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.shared.services.IAssignToRoleService;
 import de.hsrm.perfunctio.core.shared.services.IRolePermissionService;
 import de.hsrm.perfunctio.core.shared.services.lookup.PermissionsLookupCall;
-import de.hsrm.perfunctio.user.client.forms.AssignToRoleForm;
+import de.hsrm.perfunctio.user.client.ui.forms.AssignToRoleForm;
 import de.hsrm.perfunctio.user.shared.security.ViewPermissionTablePagePermission;
 
+/**
+ * Table Page for all Perfunctio-Permissions
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class PermissionTablePage
 		extends
 			AbstractExtensiblePageWithTable<PermissionTablePage.Table> {
@@ -46,16 +52,17 @@ public class PermissionTablePage
 	protected Object[][] execLoadTableData(SearchFilter filter)
 			throws ProcessingException {
 		if (getRoleId() == null) {
-			
+			// get all permissions
 			PermissionsLookupCall call = new PermissionsLookupCall();
 			LookupRow[] rows = call.getDataByAll();
-			
+
 			Object[][] data = new Object[rows.length][1];
 			for (int i = 0; i < rows.length; i++) {
 				data[i][0] = rows[i].getKey();
 			}
 			return data;
 		} else {
+			// get permissions for the role
 			return SERVICES.getService(IRolePermissionService.class)
 					.getPermissions(getRoleId());
 		}

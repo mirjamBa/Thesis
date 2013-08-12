@@ -5,12 +5,18 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupService;
 
 import de.hsrm.perfunctio.core.shared.services.lookup.IUserLookupService;
 
-public class UserLookupCall extends LookupCall{
+/**
+ * LookupCall for all user lookup-rows
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class UserLookupCall extends LookupCall {
 
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @Override
-  protected Class<? extends ILookupService> getConfiguredService() {
-    return IUserLookupService.class;
-  }
+	@Override
+	protected Class<? extends ILookupService> getConfiguredService() {
+		return IUserLookupService.class;
+	}
 }

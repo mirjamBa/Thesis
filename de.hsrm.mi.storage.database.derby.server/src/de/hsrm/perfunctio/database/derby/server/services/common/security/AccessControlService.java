@@ -21,60 +21,85 @@ import org.eclipse.scout.service.SERVICES;
 import de.hsrm.perfunctio.core.shared.services.IRoleProcessService;
 import de.hsrm.perfunctio.core.shared.services.IStartupService;
 
+/**
+ * Service to load authorities for users. Gives the perfunctio-administrator
+ * every permission.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class AccessControlService extends AbstractAccessControlService {
-  private static IScoutLogger logger = ScoutLogManager.getLogger(AccessControlService.class);
+	protected static IScoutLogger logger = ScoutLogManager
+			.getLogger(AccessControlService.class);
 
-  @Override
-  protected Permissions execLoadPermissions() {
-    Permissions permissions = new Permissions();
+	@Override
+	protected Permissions execLoadPermissions() {
+		Permissions permissions = new Permissions();
 
-    Long userNr = (Long) ServerJob.getCurrentSession().getData(IStartupService.USER_NR);
+		Long userNr = (Long) ServerJob.getCurrentSession().getData(
+				IStartupService.USER_NR);
 
-    if (userNr != null) {
-      //permissio to call service
-      permissions.add(new RemoteServiceAccessPermission("*.shared.*", "*"));
-    }
+		if (userNr != null) {
+			// permissio to call service
+			permissions
+					.add(new RemoteServiceAccessPermission("*.shared.*", "*"));
+		}
 
-    try {
-      //FIXME remove
-      if (SERVICES.getService(IRoleProcessService.class).getAdminRoleId().equals(userNr)) {
-        permissions.add(new AllPermission());
-      }
-    }
-    catch (ProcessingException e1) {
-      e1.printStackTrace();
-    }
+		try {
+			// admin gets all permissions
+			if (SERVICES.getService(IRoleProcessService.class).getAdminRoleId()
+					.equals(userNr)) {
+				permissions.add(new AllPermission());
+			}
+		} catch (ProcessingException e1) {
+			e1.printStackTrace();
+		}
 
-    StringArrayHolder perm = new StringArrayHolder();
-    try {
-      SQL.selectInto("SELECT DISTINCT p.permission_name "
-          + "         FROM            role_permission p, "
-          + "                         user_role r "
-          + "         WHERE           r.u_id = :userNr "
-          + "         AND             r.role_id = p.role_id "
-          + "         INTO            :perm ",
-          new NVPair("perm", perm),
-          new NVPair("userNr", userNr));
+		StringArrayHolder perm = new StringArrayHolder();
+		try {
+			SQL.selectInto("SELECT DISTINCT p.permission_name "
+					+ "         FROM            role_permission p, "
+					+ "                         user_role r "
+					+ "         WHERE           r.u_id = :userNr "
+					+ "         AND             r.role_id = p.role_id "
+					+ "         INTO            :perm ", new NVPair("perm",
+					perm), new NVPair("userNr", userNr));
 
-      HashMap<String, String> map = new HashMap<String, String>();
-      for (BundleClassDescriptor descriptor : SERVICES.getService(IPermissionService.class).getAllPermissionClasses()) {
-        map.put(descriptor.getSimpleClassName(), descriptor.getClassName());
-      }
+			HashMap<String, String> map = new HashMap<String, String>();
+			for (BundleClassDescriptor descriptor : SERVICES.getService(
+					IPermissionService.class).getAllPermissionClasses()) {
+				map.put(descriptor.getSimpleClassName(),
+						descriptor.getClassName());
+			}
 
-      //instantiate permissions and assign them
-      for (String simpleClass : perm.getValue()) {
-        try {
-          permissions.add((Permission) Class.forName(map.get(simpleClass)).newInstance());
-        }
-        catch (Exception e) {
-          logger.error("cannot find permission " + simpleClass + ": " + e.getMessage());
-        }
-      }
-    }
-    catch (ProcessingException e) {
-      logger.error("cannot read permissions: " + e.getMessage());
-    }
+			// instantiate permissions and assign them
+			for (String simpleClass : perm.getValue()) {
+				Permission p = initPermission(map.get(simpleClass));
+				if (p != null) {
+					permissions.add(p);
+				}
+			}
+		} catch (ProcessingException e) {
+			logger.error("cannot read permissions: " + e.getMessage());
+		}
 
-    return permissions;
-  }
+		return permissions;
+	}
+
+	/**
+	 * Creates new permissions from class-name, override method if permissions
+	 * from other bundles than perfunctio.core.shared used
+	 * 
+	 * @param className
+	 * @return
+	 */
+	protected Permission initPermission(String className) {
+		try {
+			return (Permission) Class.forName(className).newInstance();
+		} catch (Exception e) {
+			logger.error("cannot find permission " + className + ": "
+					+ e.getMessage());
+			return null;
+		}
+	}
 }

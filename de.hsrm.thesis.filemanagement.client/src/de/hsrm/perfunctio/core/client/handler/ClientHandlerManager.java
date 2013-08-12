@@ -1,13 +1,18 @@
 package de.hsrm.perfunctio.core.client.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.scout.commons.exception.ProcessingException;
 
-public class ClientHandlerManager {
+import de.hsrm.perfunctio.core.shared.handler.AbstractHandlerManager;
 
-	private List<IClientHandler> handler;
+/**
+ * Handler container for managing all client handler. Activates the handler
+ * chain
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class ClientHandlerManager extends AbstractHandlerManager {
+
 	private FileChooserFormHandler fileChooserFormHandler;
 	private DroppedFileMetadataHandler droppedFileMetadataHander;
 	private UnknownFileformatHandler unknownFileFormatHandler;
@@ -15,7 +20,7 @@ public class ClientHandlerManager {
 	private FileDataHandler fileDataHandler;
 
 	public ClientHandlerManager() {
-		handler = new ArrayList<IClientHandler>();
+		super();
 
 		fileChooserFormHandler = new FileChooserFormHandler();
 		droppedFileMetadataHander = new DroppedFileMetadataHandler();
@@ -70,13 +75,8 @@ public class ClientHandlerManager {
 		return fileDataHandler;
 	}
 
-	public void addHandler(IClientHandler newHandler) {
-		handler.get(handler.size() - 1).setNext(newHandler);
-		handler.add(newHandler);
-	}
-
 	public void handle(FileUploadData data) throws ProcessingException {
-		handler.get(0).handle(data);
+		((AbstractClientHandler) handler.get(0)).handle(data);
 	}
 
 }

@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manager for comparing role-permission statess
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class RolePermissionManager {
 
 	private Map<Long, Map<String, Boolean>> permissionState;
@@ -18,6 +24,13 @@ public class RolePermissionManager {
 		permissionState.put(role, permissions);
 	}
 
+	/**
+	 * Returns the stored permissions for the assigned role
+	 * 
+	 * @param role
+	 *            Long
+	 * @return Map<String, Boolean>s
+	 */
 	public Map<String, Boolean> getPermissions(Long role) {
 		if (permissionState.containsKey(role)) {
 			return permissionState.get(role);
@@ -26,6 +39,14 @@ public class RolePermissionManager {
 		}
 	}
 
+	/**
+	 * Returns a map in which every role is mapped on a list with selected
+	 * permissions for the role
+	 * 
+	 * @param roles
+	 *            Long[]
+	 * @return Map<Long, ArrayList<String>>
+	 */
 	public Map<Long, ArrayList<String>> getPermissionsForSelectedRoles(
 			Long[] roles) {
 		Map<Long, ArrayList<String>> map = new HashMap<Long, ArrayList<String>>();

@@ -28,6 +28,12 @@ import de.hsrm.perfunctio.core.shared.services.IFileAndFolderFreeingService;
 import de.hsrm.perfunctio.core.shared.services.formdata.AuthorityFormData;
 import de.hsrm.perfunctio.core.shared.utility.RolePermissionUtility;
 
+/**
+ * Form to manage file or folder freeings
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = AuthorityFormData.class, sdkCommand = SdkCommand.USE)
 public class AuthorityForm extends AbstractForm {
 

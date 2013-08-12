@@ -5,9 +5,18 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 
 import de.hsrm.perfunctio.core.client.ui.forms.FileChooserForm;
 
-public class FileChooserFormHandler extends AbstractClientHandler
-		implements
-			IClientHandler {
+/**
+ * Concrete client handler, responsible for providing the file chooser form.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
+public class FileChooserFormHandler extends AbstractClientHandler {
+	private final int PRIORITY = 100;
+
+	public FileChooserFormHandler() {
+		this.priority = PRIORITY;
+	}
 
 	@Override
 	public void handle(FileUploadData data) throws ProcessingException {
@@ -20,11 +29,12 @@ public class FileChooserFormHandler extends AbstractClientHandler
 			form.waitFor();
 			if (form.isFormStored()) {
 				data.setServerFileData(form.getFileData());
-				data.setFileFormat(IOUtility.getFileExtension(data.getServerFileData().getPath()));
+				data.setFileFormat(IOUtility.getFileExtension(data
+						.getServerFileData().getPath()));
 				data.setMetaValues(form.getMetaValues());
 				doNext(data);
 			}
-			//don't dispatch if form isn't stored and no dropfile is available
+			// don't dispatch if form isn't stored and no dropfile is available
 		} else {
 			doNext(data);
 		}
@@ -32,13 +42,8 @@ public class FileChooserFormHandler extends AbstractClientHandler
 
 	private void doNext(FileUploadData data) throws ProcessingException {
 		if (nextHandler != null) {
-			nextHandler.handle(data);
+			((AbstractClientHandler) nextHandler).handle(data);
 		}
-	}
-
-	@Override
-	public void setNext(IClientHandler handler) {
-		this.nextHandler = handler;
 	}
 
 }

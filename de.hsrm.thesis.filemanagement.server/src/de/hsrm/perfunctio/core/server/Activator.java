@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.osgi.framework.BundleContext;
 
-import de.hsrm.perfunctio.core.server.handler.IServerHandler;
+import de.hsrm.perfunctio.core.server.handler.AbstractServerHandler;
 import de.hsrm.perfunctio.core.server.handler.ServerHandlerManager;
 import de.hsrm.perfunctio.core.shared.beans.ServerFileData;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileFormData;
@@ -35,12 +35,36 @@ public class Activator extends Plugin {
 		return handlerManager;
 	}
 
-	public void addHandler(IServerHandler handler) {
+	/**
+	 * Adds a new handler at the end of the handler chain
+	 * 
+	 * @param handler
+	 */
+	public void appendHandler(AbstractServerHandler handler) {
 		handlerManager.addHandler(handler);
 	}
 
-	public void handle(Long fileId, FileFormData formData, ServerFileData fileData,
-			Long parentFolderId) throws ProcessingException {
+	/**
+	 * Adds a new handler to the chain depending on the priorities
+	 * 
+	 * @param handler
+	 */
+	public void addHandler(AbstractServerHandler handler) {
+		handlerManager.addHandler(handler);
+	}
+
+	/**
+	 * Start handling data by the handler chain
+	 * 
+	 * @param fileId
+	 * @param formData
+	 * @param fileData
+	 * @param parentFolderId
+	 * @throws ProcessingException
+	 */
+	public void handle(Long fileId, FileFormData formData,
+			ServerFileData fileData, Long parentFolderId)
+			throws ProcessingException {
 		if (handlerManager.hasHandler()) {
 			handlerManager.handle(fileId, formData, fileData, parentFolderId);
 		}

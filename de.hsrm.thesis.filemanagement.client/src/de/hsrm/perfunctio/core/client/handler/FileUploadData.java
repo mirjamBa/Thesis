@@ -6,24 +6,30 @@ import java.util.Map;
 import de.hsrm.perfunctio.core.shared.beans.ServerFileData;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileFormData;
 
+/**
+ * Container class for all objects, used during the file upload process
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileUploadData {
 	private File m_file;
 	private Long m_fileId;
-	
+
 	private ServerFileData m_serverFileData;
 	private Map<String, String> m_metaValues;
-	
+
 	private Long m_parentFolderId;
-	
+
 	private FileFormData m_fileFormData;
-	
+
 	private String m_fileFormat;
 	private Long m_filetypeNr;
-	
-	public FileUploadData(){
-		
+
+	public FileUploadData() {
+
 	}
-	
+
 	/**
 	 * @return the m_file
 	 */
@@ -32,7 +38,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param file the file to set
+	 * @param file
+	 *            the file to set
 	 */
 	public void setFile(File file) {
 		this.m_file = file;
@@ -46,7 +53,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param fileId the fileId to set
+	 * @param fileId
+	 *            the fileId to set
 	 */
 	public void setFileId(Long fileId) {
 		this.m_fileId = fileId;
@@ -60,7 +68,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param serverFileData the serverFileData to set
+	 * @param serverFileData
+	 *            the serverFileData to set
 	 */
 	public void setServerFileData(ServerFileData serverFileData) {
 		this.m_serverFileData = serverFileData;
@@ -74,7 +83,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param metaValues the metaValues to set
+	 * @param metaValues
+	 *            the metaValues to set
 	 */
 	public void setMetaValues(Map<String, String> metaValues) {
 		this.m_metaValues = metaValues;
@@ -88,7 +98,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param parentFolderId the parentFolderId to set
+	 * @param parentFolderId
+	 *            the parentFolderId to set
 	 */
 	public void setParentFolderId(Long parentFolderId) {
 		this.m_parentFolderId = parentFolderId;
@@ -102,7 +113,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param fileFormData the fileFormData to set
+	 * @param fileFormData
+	 *            the fileFormData to set
 	 */
 	public void setFileFormData(FileFormData fileFormData) {
 		this.m_fileFormData = fileFormData;
@@ -116,7 +128,8 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param fileFormat the file format to set
+	 * @param fileFormat
+	 *            the file format to set
 	 */
 	public void setFileFormat(String fileFormat) {
 		this.m_fileFormat = fileFormat;
@@ -130,13 +143,11 @@ public class FileUploadData {
 	}
 
 	/**
-	 * @param filetypeNr the filetypeNr to set
+	 * @param filetypeNr
+	 *            the filetypeNr to set
 	 */
 	public void setFiletypeNr(Long filetypeNr) {
 		this.m_filetypeNr = filetypeNr;
 	}
-	
-	
-	
 
 }

@@ -22,6 +22,11 @@ import de.hsrm.perfunctio.administration.client.ui.forms.TagForm.MainBox.TagBox.
 import de.hsrm.perfunctio.core.shared.services.ITagService;
 import de.hsrm.perfunctio.core.shared.services.formdata.TagFormData;
 
+/**
+ * Form for tags with a tag-name field.
+ * @author Mirjam Bayatloo
+ *
+ */
 @FormData(value = TagFormData.class, sdkCommand = SdkCommand.CREATE)
 public class TagForm extends AbstractForm {
 

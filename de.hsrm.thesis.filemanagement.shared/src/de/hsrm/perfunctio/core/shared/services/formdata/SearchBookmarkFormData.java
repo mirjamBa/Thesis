@@ -1,6 +1,13 @@
 package de.hsrm.perfunctio.core.shared.services.formdata;
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
 import org.eclipse.scout.rt.shared.data.form.fields.tablefield.AbstractTableFieldData;
+
+/**
+ * Data transfer object for the SearchBookmarkForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class SearchBookmarkFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

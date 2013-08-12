@@ -24,6 +24,12 @@ import de.hsrm.perfunctio.core.shared.services.IFileFormatService;
 import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileFormatFormData;
 
+/**
+ * Form for creating and modifying file format - filetype mappings
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FileFormatFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FileFormatForm extends AbstractForm {
 
@@ -103,7 +109,7 @@ public class FileFormatForm extends AbstractForm {
 
 				@Override
 				protected String getConfiguredLabel() {
-				  return TEXTS.get("FileFormat");
+					return TEXTS.get("FileFormat");
 				}
 
 				@Override

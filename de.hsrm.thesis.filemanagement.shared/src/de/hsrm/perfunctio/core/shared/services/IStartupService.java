@@ -6,7 +6,7 @@ import org.eclipse.scout.rt.shared.validate.InputValidation;
 import org.eclipse.scout.service.IService;
 
 /**
- * Service Interface for session initialisation
+ * Service Interface for session initialization
  * 
  * @author Mirjam Bayatloo
  * 

@@ -8,6 +8,11 @@ import org.osgi.framework.Bundle;
 /**
  * Custom Permission Service, that accept all *Permission classes. Workaround
  * for Bug 410561 https://bugs.eclipse.org/bugs/show_bug.cgi?id=410561
+ * 
+ * @see <a
+ *      href="http://wiki.eclipse.org/Scout/Tutorial/3.9/Minicrm/Permissions#PermissionService">http://wiki.eclipse.org/Scout/Tutorial/3.9/Minicrm/Permissions#PermissionService</a>
+ * 
+ * 
  */
 @Priority(100)
 public class FilemanagementPermissionService extends PermissionService

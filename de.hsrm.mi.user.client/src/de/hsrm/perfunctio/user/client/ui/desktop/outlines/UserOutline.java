@@ -14,6 +14,13 @@ import de.hsrm.perfunctio.user.client.ui.desktop.outlines.pages.RoleTablePage;
 import de.hsrm.perfunctio.user.client.ui.desktop.outlines.pages.UserAdministrationTablePage;
 import de.hsrm.perfunctio.user.shared.security.ViewUserOutlinePermission;
 
+/**
+ * Outline with the UserAdministrationTablePage, the RoleTablePage and the
+ * PermissionTablePage
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class UserOutline extends AbstractOutline {
 
 	@Override

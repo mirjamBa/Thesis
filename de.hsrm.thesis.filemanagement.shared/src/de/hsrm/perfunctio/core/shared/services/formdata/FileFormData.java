@@ -10,6 +10,13 @@ import de.hsrm.perfunctio.core.shared.services.lookup.LanguageLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.RoleLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.TagLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.UserLookupCall;
+
+/**
+ * Data transfer object for the FileForm
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FileFormData extends AbstractFormData {
 	private static final long serialVersionUID = 1L;
 

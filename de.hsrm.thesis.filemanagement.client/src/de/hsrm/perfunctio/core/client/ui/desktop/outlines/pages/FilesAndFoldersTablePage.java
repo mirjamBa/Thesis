@@ -36,8 +36,11 @@ import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTa
 import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
 import org.eclipse.scout.rt.shared.AbstractIcons;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.security.BasicHierarchyPermission;
 import org.eclipse.scout.rt.shared.services.common.code.CODES;
+import org.eclipse.scout.rt.shared.services.common.code.ICode;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+import org.eclipse.scout.rt.shared.services.common.security.ACCESS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import org.eclipse.scout.service.SERVICES;
@@ -47,10 +50,12 @@ import de.hsrm.perfunctio.core.client.handler.FileUploadData;
 import de.hsrm.perfunctio.core.client.services.IClientFileService;
 import de.hsrm.perfunctio.core.client.ui.ColumnFactory;
 import de.hsrm.perfunctio.core.client.ui.DatatypeColumnFactory;
+import de.hsrm.perfunctio.core.client.ui.IPermissionGrantedMenu;
 import de.hsrm.perfunctio.core.client.ui.forms.AuthorityForm;
 import de.hsrm.perfunctio.core.client.ui.forms.FileForm;
 import de.hsrm.perfunctio.core.client.ui.forms.FileSearchForm;
 import de.hsrm.perfunctio.core.client.ui.forms.FoldersForm;
+import de.hsrm.perfunctio.core.client.ui.forms.ImagePreviewForm;
 import de.hsrm.perfunctio.core.shared.Icons;
 import de.hsrm.perfunctio.core.shared.beans.ColumnSpec;
 import de.hsrm.perfunctio.core.shared.security.CreateFilePermission;
@@ -73,10 +78,19 @@ import de.hsrm.perfunctio.core.shared.services.IStorageService;
 import de.hsrm.perfunctio.core.shared.services.ITagService;
 import de.hsrm.perfunctio.core.shared.services.IUserProcessService;
 import de.hsrm.perfunctio.core.shared.services.code.DublinCoreMetadataElementSetCodeType;
+import de.hsrm.perfunctio.core.shared.services.code.FileTypeCodeType;
 import de.hsrm.perfunctio.core.shared.services.formdata.FileSearchFormData;
 import de.hsrm.perfunctio.core.shared.services.lookup.UserLookupCall;
 import de.hsrm.perfunctio.core.shared.utility.ArrayUtility;
 
+/**
+ * File display class, contains a file table for all attributes and a search
+ * form. Displays files and folders (FilePage as child page for every file and
+ * FoldersTablePage as child page for every folder)
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class FilesAndFoldersTablePage
 		extends
 			AbstractExtensiblePageWithTable<FilesAndFoldersTablePage.FilesAndFoldersTable> {
@@ -132,8 +146,26 @@ public class FilesAndFoldersTablePage
 		} else {
 			// create a page with a form for files
 			FileForm form = prepareFileForm(row);
-			return new FilePage(form, getTable().getFileFolderIdColumn()
-					.getValue(row));
+			Long fileId = getTable().getFileFolderIdColumn().getValue(row);
+			preview(fileId);
+			return new FilePage(form, fileId);
+		}
+	}
+
+	protected void preview(Long fileId) throws ProcessingException {
+		// show 5 seconds preview for images
+		ICode<Long> code = CODES
+				.getCode(DublinCoreMetadataElementSetCodeType.TypeCode.class);
+		if (SERVICES.getService(IMetadataService.class)
+				.getMetadataValue(code.getText(), fileId)
+				.equals(FileTypeCodeType.ImageCode.ID)) {
+			((FileSearchForm) getSearchFormInternal()).closeForm();
+			ImagePreviewForm img = new ImagePreviewForm();
+			File f = SERVICES.getService(IFileService.class).getServerFile(
+					fileId);
+			byte[] content = IOUtility.getContent(f.getAbsolutePath());
+			img.getImagePreviewField().setImage(content);
+			img.startNew();
 		}
 	}
 
@@ -227,6 +259,13 @@ public class FilesAndFoldersTablePage
 		protected void execRowAction(ITableRow row) throws ProcessingException {
 			if (!getIsFolderColumn().getValue(row)) {
 				getMenu(ModifyMenu.class).doAction();
+			}
+		}
+		
+		@Override
+		protected void execRowClick(ITableRow row) throws ProcessingException {
+			if (!getIsFolderColumn().getValue(row)) {
+				preview(getFileFolderIdColumn().getValue(row));
 			}
 		}
 
@@ -340,10 +379,43 @@ public class FilesAndFoldersTablePage
 			}
 		}
 
+		protected Long getFolderId() {
+			if (getTable().getIsFolderColumn().getSelectedValue() != null
+					&& getTable().getIsFolderColumn().getSelectedValue() == true) {
+				return getTable().getFileFolderIdColumn().getSelectedValue();
+			} else {
+				return ((FilesAndFoldersTablePage) getTree().getSelectedNode())
+						.getFolderId();
+			}
+		}
+
+		protected String getFolderName() {
+			if (getTable().getIsFolderColumn().getSelectedValue() != null
+					&& getTable().getIsFolderColumn().getSelectedValue() == true) {
+				return getTable().getNameColumn().getSelectedValue();
+			} else {
+				return ((FilesAndFoldersTablePage) getTree().getSelectedNode())
+						.getFolderName();
+			}
+		}
+
+		protected boolean selectedResourceIsIFile() {
+			if (getTree().getSelectedNode() instanceof FilePage
+					|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
+							.getIsFolderColumn().getSelectedValue() == false)) {
+				return true;
+			}
+			return false;
+		}
+
+		protected void prepareNewFile() throws ProcessingException {
+		}
+
 		@Order(10.0)
 		public class NewFileMenu extends AbstractExtensibleMenu
 				implements
 					IPermissionGrantedMenu {
+			protected Long resourceId;
 
 			@Override
 			public String getVisiblePermission() {
@@ -352,13 +424,8 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage
-						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
-								.getIsFolderColumn().getSelectedValue() == false)) {
-					setVisible(false);
-				} else {
-					setVisible(true);
-				}
+				// create new files only in folders
+				setVisible(!selectedResourceIsIFile());
 
 				for (ITreeNode node : getTree().getRootNode().getChildNodes()) {
 					if (node.equals(getTree().getSelectedNode())) {
@@ -366,21 +433,27 @@ public class FilesAndFoldersTablePage
 						break;
 					}
 				}
+
 				if (isVisible()) {
 					Long currentUser = SERVICES.getService(
 							IUserProcessService.class).getCurrentUserId();
-					Long resource;
-					if (getIsFolderColumn().getSelectedValue() != null
-							&& getIsFolderColumn().getSelectedValue() == true) {
-						resource = getFileFolderIdColumn().getSelectedValue();
+
+					resourceId = getFolderId();
+
+					if (resourceId == null) {
+						// root, only check create file
+						setVisibleGranted(ACCESS
+								.getLevel(new CreateFilePermission()) > BasicHierarchyPermission.LEVEL_NONE);
 					} else {
-						resource = ((FilesAndFoldersTablePage) getTree()
-								.getSelectedNode()).getFolderId();
+						// is user authorized to create new files for the
+						// choosen folder
+						setVisible(SERVICES.getService(
+								IPermissionControlService.class).check(
+								currentUser, resourceId,
+								new CreateFilePermission().getName()));
 					}
-					setVisible(SERVICES.getService(
-							IPermissionControlService.class).check(currentUser,
-							resource, new CreateFilePermission().getName()));
 				}
+				prepareNewFile();
 
 			}
 			@Override
@@ -396,14 +469,7 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				FileUploadData data = new FileUploadData();
-				if (getIsFolderColumn().getSelectedValue() != null
-						&& getIsFolderColumn().getSelectedValue() == true) {
-					data.setParentFolderId(getFileFolderIdColumn()
-							.getSelectedValue());
-				} else {
-					data.setParentFolderId(((FilesAndFoldersTablePage) getTree()
-							.getSelectedNode()).getFolderId());
-				}
+				data.setParentFolderId(resourceId);
 				Activator.getDefault().handle(data);
 				reloadPage();
 			}
@@ -413,6 +479,7 @@ public class FilesAndFoldersTablePage
 		public class NewFolderMenu extends AbstractExtensibleMenu
 				implements
 					IPermissionGrantedMenu {
+			protected Long resourceId;
 
 			@Override
 			public String getVisiblePermission() {
@@ -421,29 +488,30 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				if (getTree().getSelectedNode() instanceof FilePage
-						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
-								.getIsFolderColumn().getSelectedValue() == false)) {
-					setVisible(false);
-				} else {
-					setVisible(true);
-				}
+				setVisible(!selectedResourceIsIFile());
+
 				if (getTree().getSelectedNode().equals(
 						getTree().getRootNode().getChildNode(0))) {
 					setVisible(true);
 				}
+
 				if (isVisible()) {
 
 					Long currentUser = SERVICES.getService(
 							IUserProcessService.class).getCurrentUserId();
-					Long resource = ((FilesAndFoldersTablePage) getTree()
-							.getSelectedNode()).getFolderId();
-					setVisible(SERVICES.getService(
-							IPermissionControlService.class).check(currentUser,
-							resource, new CreateFolderPermission().getName()));
-					// setVisibleGranted(ACCESS
-					// .getLevel(new CreateFolderPermission()) >
-					// BasicHierarchyPermission.LEVEL_NONE);
+
+					resourceId = getFolderId();
+
+					if (resourceId == null) {
+						// root, only check create file
+						setVisibleGranted(ACCESS
+								.getLevel(new CreateFolderPermission()) > BasicHierarchyPermission.LEVEL_NONE);
+					} else {
+						setVisible(SERVICES.getService(
+								IPermissionControlService.class)
+								.check(currentUser, resourceId,
+										getVisiblePermission()));
+					}
 				}
 
 			}
@@ -475,6 +543,8 @@ public class FilesAndFoldersTablePage
 		public class ModifyFolderMenu extends AbstractExtensibleMenu
 				implements
 					IPermissionGrantedMenu {
+			protected Long resourceId;
+			protected String folderName;
 
 			@Override
 			public String getVisiblePermission() {
@@ -483,24 +553,18 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				setVisible(true);
-				if (getTree().getSelectedNode() instanceof FilePage
-						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
-								.getIsFolderColumn().getSelectedValue() == false)) {
-					setVisible(false);
-				}
+				setVisible(!selectedResourceIsIFile());
+
 				if (isVisible()) {
 					Long currentUser = SERVICES.getService(
 							IUserProcessService.class).getCurrentUserId();
-					Long resource = ((FilesAndFoldersTablePage) getTree()
-							.getSelectedNode()).getFolderId();
+
+					resourceId = getFolderId();
+					folderName = getFolderName();
+
 					setVisible(SERVICES.getService(
 							IPermissionControlService.class).check(currentUser,
-							resource, new UpdateFolderPermission().getName()));
-
-					// setVisibleGranted(ACCESS
-					// .getLevel(new UpdateFolderPermission()) >
-					// BasicHierarchyPermission.LEVEL_NONE);
+							resourceId, new UpdateFolderPermission().getName()));
 				}
 			}
 
@@ -512,12 +576,8 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				FoldersForm form = new FoldersForm();
-				form.setFolderId(((FilesAndFoldersTablePage) getTree()
-						.getSelectedNode()).getFolderId());
-				form.getNameField()
-						.setValue(
-								((FilesAndFoldersTablePage) getTree()
-										.getSelectedNode()).getFolderName());
+				form.setFolderId(resourceId);
+				form.getNameField().setValue(folderName);
 				form.startModify();
 				form.waitFor();
 				if (form.isFormStored()) {
@@ -530,6 +590,7 @@ public class FilesAndFoldersTablePage
 		public class DeleteFolderMenu extends AbstractExtensibleMenu
 				implements
 					IPermissionGrantedMenu {
+			protected Long resourceId;
 
 			@Override
 			public String getVisiblePermission() {
@@ -538,24 +599,15 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				setVisible(true);
-				if (getTree().getSelectedNode() instanceof FilePage
-						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
-								.getIsFolderColumn().getSelectedValue() == false)) {
-					setVisible(false);
-				}
+				setVisible(!selectedResourceIsIFile());
+
 				if (isVisible()) {
 					Long currentUser = SERVICES.getService(
 							IUserProcessService.class).getCurrentUserId();
-					Long resource = ((FilesAndFoldersTablePage) getTree()
-							.getSelectedNode()).getFolderId();
+					resourceId = getFolderId();
 					setVisible(SERVICES.getService(
 							IPermissionControlService.class).check(currentUser,
-							resource, new DeleteFolderPermission().getName()));
-
-					// setVisibleGranted(ACCESS
-					// .getLevel(new DeleteFolderPermission()) >
-					// BasicHierarchyPermission.LEVEL_NONE);
+							resourceId, new DeleteFolderPermission().getName()));
 				}
 			}
 
@@ -567,9 +619,7 @@ public class FilesAndFoldersTablePage
 			@Override
 			protected void execAction() throws ProcessingException {
 				SERVICES.getService(IFolderService.class)
-						.deleteFolderAndChildFolders(
-								((FilesAndFoldersTablePage) getTree()
-										.getSelectedNode()).getFolderId());
+						.deleteFolderAndChildFolders(resourceId);
 				reloadPage();
 			}
 		}
@@ -578,6 +628,7 @@ public class FilesAndFoldersTablePage
 		public class AuthorityFolderMenu extends AbstractExtensibleMenu
 				implements
 					IPermissionGrantedMenu {
+			protected Long resourceId;
 
 			@Override
 			public String getVisiblePermission() {
@@ -586,24 +637,15 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				setVisible(true);
-				if (getTree().getSelectedNode() instanceof FilePage
-						|| (getTable().getIsFolderColumn().getSelectedValue() != null && getTable()
-								.getIsFolderColumn().getSelectedValue() == false)) {
-					setVisible(false);
-				}
+				setVisible(!selectedResourceIsIFile());
+
 				if (isVisible()) {
 					Long currentUser = SERVICES.getService(
 							IUserProcessService.class).getCurrentUserId();
-					Long resource = ((FilesAndFoldersTablePage) getTree()
-							.getSelectedNode()).getFolderId();
+					resourceId = getFolderId();
 					setVisible(SERVICES.getService(
 							IPermissionControlService.class).check(currentUser,
-							resource, new FreeFolderPermission().getName()));
-
-					// setVisibleGranted(ACCESS
-					// .getLevel(new FreeFolderPermission()) >
-					// BasicHierarchyPermission.LEVEL_NONE);
+							resourceId, new FreeFolderPermission().getName()));
 				}
 			}
 
@@ -616,12 +658,8 @@ public class FilesAndFoldersTablePage
 			protected void execAction() throws ProcessingException {
 				Map<Long, ArrayList<String>> permissions = SERVICES.getService(
 						IFileAndFolderFreeingService.class)
-						.getRolePermissionsForFileOrFolder(
-								((FilesAndFoldersTablePage) getTree()
-										.getSelectedNode()).getFolderId());
-				AuthorityForm form = new AuthorityForm(
-						((FilesAndFoldersTablePage) getTree().getSelectedNode())
-								.getFolderId(), permissions);
+						.getRolePermissionsForFileOrFolder(resourceId);
+				AuthorityForm form = new AuthorityForm(resourceId, permissions);
 				form.startNew();
 				form.waitFor();
 			}
@@ -647,8 +685,6 @@ public class FilesAndFoldersTablePage
 								new OpenFilePermission().getName()));
 				if (isVisible())
 					setVisible(!getIsFolderColumn().getSelectedValue());
-				// setVisibleGranted(ACCESS.getLevel(new OpenFilePermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
 			}
 
 			@Override
@@ -675,8 +711,6 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				// setVisibleGranted(ACCESS.getLevel(new DeleteFilePermission())
-				// > BasicHierarchyPermission.LEVEL_NONE);
 				Long currentUser = SERVICES.getService(
 						IUserProcessService.class).getCurrentUserId();
 				Long resource = getFileFolderIdColumn().getSelectedValue();
@@ -712,8 +746,6 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				// setVisibleGranted(ACCESS.getLevel(new FreeFilePermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
 				Long currentUser = SERVICES.getService(
 						IUserProcessService.class).getCurrentUserId();
 				Long resource = getFileFolderIdColumn().getSelectedValue();
@@ -757,8 +789,6 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				// setVisibleGranted(ACCESS.getLevel(new UpdateFilePermission())
-				// > BasicHierarchyPermission.LEVEL_NONE);
 				Long currentUser = SERVICES.getService(
 						IUserProcessService.class).getCurrentUserId();
 				Long resource = getFileFolderIdColumn().getSelectedValue();
@@ -797,9 +827,6 @@ public class FilesAndFoldersTablePage
 
 			@Override
 			protected void execPrepareAction() throws ProcessingException {
-				// setVisibleGranted(ACCESS.getLevel(new
-				// DownloadFilePermission()) >
-				// BasicHierarchyPermission.LEVEL_NONE);
 				Long currentUser = SERVICES.getService(
 						IUserProcessService.class).getCurrentUserId();
 				Long resource = getFileFolderIdColumn().getSelectedValue();

@@ -61,6 +61,12 @@ import de.hsrm.perfunctio.core.shared.services.lookup.LanguageLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.TagLookupCall;
 import de.hsrm.perfunctio.core.shared.services.lookup.UserLookupCall;
 
+/**
+ * Form for creating and modifying file meta data
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = FileFormData.class, sdkCommand = SdkCommand.USE)
 public class FileForm extends AbstractForm {
 
@@ -243,11 +249,10 @@ public class FileForm extends AbstractForm {
 	public TagBox getTagBox() {
 		return getFieldByClass(TagBox.class);
 	}
-	
-	public AuthorityBox getAuthorityBox(){
+
+	public AuthorityBox getAuthorityBox() {
 		return getFieldByClass(AuthorityBox.class);
 	}
-
 
 	@Order(10.0)
 	public class MainBox extends AbstractGroupBox {
@@ -263,7 +268,7 @@ public class FileForm extends AbstractForm {
 			public DetailedBox getDetailedBox() {
 				return getFieldByClass(DetailedBox.class);
 			}
-			
+
 			@Order(10.0)
 			public class MetadataBox extends AbstractGroupBox {
 
@@ -671,28 +676,15 @@ public class FileForm extends AbstractForm {
 				protected String getConfiguredLabel() {
 					return TEXTS.get("Authority");
 				}
-				
-				public FileFormRolesField getRolesField(){
+
+				public FileFormRolesField getRolesField() {
 					return getFieldByClass(FileFormRolesField.class);
 				}
-				
+
 				@Order(10.0)
 				public class FileFormRolesField extends RolesField {
 				}
 
-//				public class FileFormTableField extends PermissionTableField {
-//					
-//					@SuppressWarnings("rawtypes")
-//					@Override
-//					protected Class<? extends IValueField> getConfiguredMasterField() {
-//						return FileFormRolesField.class;
-//					}
-//
-//					@Override
-//					protected boolean getConfiguredMasterRequired() {
-//						return true;
-//					}
-//				}
 			}
 		}
 
@@ -745,7 +737,6 @@ public class FileForm extends AbstractForm {
 
 		@Override
 		protected void execLoad() throws ProcessingException {
-			// TODO check choosen method right??
 			loadMetadataTable(SERVICES.getService(IAttributeService.class)
 					.getAttributes(getFiletypeNr(), false), false);
 		}
@@ -769,7 +760,6 @@ public class FileForm extends AbstractForm {
 					.getService(IFileAndFolderFreeingService.class);
 			FileFormData formData = new FileFormData();
 			exportFormData(formData);
-			// FIXME set PermissionTable
 			service.updateRoleFileAndFolderPermission(getFileNr(), formData
 					.getFileFormRoles().getValue(), null);
 		}

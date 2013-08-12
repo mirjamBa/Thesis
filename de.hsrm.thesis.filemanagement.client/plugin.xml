@@ -10,7 +10,11 @@
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.perfunctio.core.shared.services.ITikaService">
+            class="de.hsrm.perfunctio.core.shared.services.IFileStorageService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="de.hsrm.perfunctio.core.shared.services.IMetadataExtractionService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
@@ -68,10 +72,6 @@
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="de.hsrm.perfunctio.core.shared.services.lookup.ITagLookupService">
-      </proxy>
-      <proxy
-            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
-            class="de.hsrm.perfunctio.core.shared.services.lookup.IFiletypeLookupService">
       </proxy>
       <proxy
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"

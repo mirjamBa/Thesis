@@ -18,6 +18,12 @@ import de.hsrm.perfunctio.core.client.ui.forms.BookmarkNameForm.MainBox.CancelBu
 import de.hsrm.perfunctio.core.client.ui.forms.BookmarkNameForm.MainBox.OkButton;
 import de.hsrm.perfunctio.core.shared.services.formdata.BookmarkNameFormData;
 
+/**
+ * Form for creating a new search bookmark
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 @FormData(value = BookmarkNameFormData.class, sdkCommand = SdkCommand.CREATE)
 public class BookmarkNameForm extends AbstractForm {
 

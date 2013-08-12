@@ -15,7 +15,7 @@ import org.eclipse.scout.service.IService2;
  * 
  */
 @InputValidation(IValidationStrategy.PROCESS.class)
-public interface ITikaService extends IService2 {
+public interface IMetadataExtractionService extends IService2 {
 
 	/**
 	 * Extracts all meta data from file which have been detected by the

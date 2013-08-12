@@ -20,6 +20,13 @@ import de.hsrm.perfunctio.core.shared.services.IRoleProcessService;
 import de.hsrm.perfunctio.user.client.ui.forms.RoleForm;
 import de.hsrm.perfunctio.user.shared.security.ViewRoleTablePagePermission;
 
+/**
+ * TablePage for all available Roles with their Permissions as a child page. You
+ * can add, modify and delete roles with this page.
+ * 
+ * @author Mirjam Bayatloo
+ * 
+ */
 public class RoleTablePage extends AbstractPageWithTable<RoleTablePage.Table> {
 
 	@Override
